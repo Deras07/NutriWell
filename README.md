@@ -249,4 +249,4 @@ The demo application showcases:
 5. **Meal Cards**: Food-focused card designs with ratings
 6. **Component Showcase**: All UI components demonstrated
 
-Visit `http://localhost:3000` to see the complete design system in action! 
+Visit `http://localhost:3000` to see the complete design system in action!
