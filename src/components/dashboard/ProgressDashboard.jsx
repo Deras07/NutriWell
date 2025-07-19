@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '../ui/card'
 import { Button } from '../ui/button'
 import { Input, NumberInput } from '../ui/input'
 import { Badge } from '../ui/badge'
-import { 
+import {
   CalorieBarChart, 
   WeightProgressChart, 
   GoalCompletionDonut,
@@ -124,10 +124,10 @@ export const ProgressDashboard = ({ userPlan = 'free', className = '' }) => {
           <div className="mt-4">
             <Badge variant="warning" size="large">
               Free Plan: Basic metrics and 7-day history
-            </Badge>
-          </div>
-        )}
-      </div>
+          </Badge>
+            </div>
+          )}
+        </div>
 
       {/* Quick Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -211,7 +211,7 @@ export const ProgressDashboard = ({ userPlan = 'free', className = '' }) => {
             </CardHeader>
             <CardContent>
               {weightData.length > 0 ? (
-                <div className="h-64">
+              <div className="h-64">
                   <WeightProgressChart weightData={weightData.slice(-10)} />
                 </div>
               ) : (
@@ -225,7 +225,7 @@ export const ProgressDashboard = ({ userPlan = 'free', className = '' }) => {
                     >
                       Log Your First Weight
                     </Button>
-                  </div>
+              </div>
                 </div>
               )}
             </CardContent>
@@ -387,8 +387,8 @@ export const ProgressDashboard = ({ userPlan = 'free', className = '' }) => {
                   <div className="font-medium text-blue-800">📊 Average Intake</div>
                   <div className="text-blue-600">
                     {stats.avgCalories > 0 ? `${stats.avgCalories} calories per day` : 'No data yet'}
-                  </div>
-                </div>
+                        </div>
+                      </div>
                 <div className="p-3 bg-purple-50 rounded-lg">
                   <div className="font-medium text-purple-800">🎯 Goal Achievement</div>
                   <div className="text-purple-600">
@@ -420,7 +420,7 @@ export const ProgressDashboard = ({ userPlan = 'free', className = '' }) => {
                 step={0.1}
                 placeholder="Enter your current weight"
               />
-            </div>
+                </div>
 
             <div className="flex gap-3">
               <Button 
@@ -437,7 +437,7 @@ export const ProgressDashboard = ({ userPlan = 'free', className = '' }) => {
                 disabled={!newWeight}
               >
                 Add Weight
-              </Button>
+                </Button>
             </div>
           </div>
         </div>
@@ -458,8 +458,8 @@ const StatCard = ({ title, value, icon, description, color = 'text-gray-600' }) 
           </div>
           <div className="text-3xl">{icon}</div>
         </div>
-      </CardContent>
-    </Card>
+              </CardContent>
+            </Card>
   )
 }
 
