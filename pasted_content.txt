@@ -1,0 +1,41 @@
+Redesign my nutrition website at https://kbnupgsz.manus.space/ to create a modern, elegant, and visually appealing aesthetic for 20-35-year-olds, focusing on students and young professionals interested in healthy eating. Use the following guidelines to update the design and user experience, drawing inspiration from top nutrition websites like greenletes.com, trulyrealnutrition.com, thehormonedietician.com, sblended.com, and nutritionmoderation.com:
+
+
+
+
+
+Hero Section: Create a dynamic hero section with a high-resolution image of a healthy meal or active young adult (e.g., a student preparing food). Add a bold, animated headline (e.g., “Fuel Your Day with Healthy Eating”) using a modern sans-serif font like Montserrat. Include a clear call-to-action button (e.g., “Start Your Meal Plan”) in soft coral (#FF6F61) or golden yellow (#F5C149).
+
+
+
+Color Palette: Use a modern, wellness-inspired palette: navy blue (#1B263B) for headers and backgrounds, soft coral (#FF6F61) for buttons and highlights, crisp white (#FFFFFF) for main backgrounds, seafoam green (#78C0A8) for secondary elements, and golden yellow (#F5C149) for accents. Ensure high contrast (4.5:1 ratio) for accessibility per WCAG guidelines.
+
+
+
+Typography: Implement clean, readable sans-serif fonts (e.g., Montserrat or Lato) for headings and body text. Use bold, large headings in navy blue (#1B263B) for key sections and subtle shadow effects for visual depth. Ensure font sizes are mobile-friendly (min 16px for body text).
+
+
+
+Visuals: Incorporate high-quality images of nutritious foods, lifestyle shots (e.g., students cooking), and subtle illustrations (e.g., wave or leaf patterns in seafoam green) to add a youthful, modern touch. Use Manus’s image processing to compress images for fast loading (under 2 seconds).
+
+
+
+Navigation: Design a simple, mobile-responsive navigation bar with 4-5 items (e.g., Home, Meal Planner, Recipes, Blog, Contact). Add two prominent CTA buttons (e.g., “Get Started” and “Contact”) in soft coral (#FF6F61) or golden yellow (#F5C149), placed in the top-right corner.
+
+
+
+UX Improvements: Ensure mobile responsiveness with smooth transitions and a clean layout. Add a short onboarding pop-up guiding users to key features (e.g., “Explore Healthy Eating!”) in soft coral. Use Manus’s automation to track user interactions and optimize load times.
+
+
+
+Accessibility: Add alt text to all images, ensure keyboard navigation, and verify WCAG compliance using Manus’s dashboard tools.
+
+
+
+Social Integration: Include Instagram and X icons in the footer, linking to your profiles, styled in navy blue or golden yellow. Use Manus to generate shareable content for social media.
+
+
+
+Performance: Optimize for fast loading (under 2 seconds) by compressing images and minimizing scripts. Test for stability using Manus’s analytics, addressing any server overload issues.
+
+Deploy the redesigned site as a public URL, ensuring HTTPS and GDPR-compliant data handling for user inputs. Provide a preview of the updated design in your dashboard and generate a report of changes made. Test the site with 10 users to ensure functionality and aesthetics align with the 20-35-year-old demographic.
