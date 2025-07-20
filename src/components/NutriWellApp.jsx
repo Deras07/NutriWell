@@ -76,19 +76,57 @@ export const NutriWellApp = () => {
     switch (currentPage) {
       case 'onboarding':
         return (
-          <OnboardingFlow 
-            onComplete={handleOnboardingComplete}
-            className="py-12"
-          />
+          <div className="min-h-screen bg-gradient-to-br from-primary-sage/10 via-secondary-white to-accent-coral/10">
+            <div className="max-w-7xl mx-auto px-4 py-12">
+              {/* Header Section */}
+              <div className="text-center mb-12 animate-slide-up">
+                <div className="inline-flex items-center space-x-2 bg-primary-sage/10 px-4 py-2 rounded-full mb-4">
+                  <span className="text-2xl animate-bounce-gentle">🎯</span>
+                  <span className="text-primary-sage font-medium">Personalization</span>
+                </div>
+                <h1 className="text-4xl md:text-5xl font-heading font-bold text-text-dark mb-4">
+                  Build Your
+                  <span className="bg-gradient-to-r from-primary-sage to-accent-coral bg-clip-text text-transparent"> Perfect Plan</span>
+                </h1>
+                <p className="text-xl text-text-light max-w-2xl mx-auto">
+                  Let's create a personalized nutrition plan tailored to your goals
+                </p>
+              </div>
+              <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
+                <OnboardingFlow 
+                  onComplete={handleOnboardingComplete}
+                />
+              </div>
+            </div>
+          </div>
         )
       
       case 'meal-plan-results':
         return (
-          <MealPlanDisplay 
-            userData={onboardingData}
-            onGetFullPlan={handleGetFullPlan}
-            className="py-12"
-          />
+          <div className="min-h-screen bg-gradient-to-br from-accent-golden/10 via-secondary-white to-primary-sage/10">
+            <div className="max-w-7xl mx-auto px-4 py-12">
+              {/* Header Section */}
+              <div className="text-center mb-12 animate-slide-up">
+                <div className="inline-flex items-center space-x-2 bg-accent-golden/10 px-4 py-2 rounded-full mb-4">
+                  <span className="text-2xl animate-bounce-gentle">🎉</span>
+                  <span className="text-accent-golden font-medium">Your Plan Ready</span>
+                </div>
+                <h1 className="text-4xl md:text-5xl font-heading font-bold text-text-dark mb-4">
+                  Your Personalized
+                  <span className="bg-gradient-to-r from-accent-golden to-primary-sage bg-clip-text text-transparent"> Meal Plan</span>
+                </h1>
+                <p className="text-xl text-text-light max-w-2xl mx-auto">
+                  Here's your customized nutrition plan based on your preferences
+                </p>
+              </div>
+              <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
+                <MealPlanDisplay 
+                  userData={onboardingData}
+                  onGetFullPlan={handleGetFullPlan}
+                />
+              </div>
+            </div>
+          </div>
         )
       
       case 'meal-planning':
@@ -258,57 +296,213 @@ export const NutriWellApp = () => {
       
       case 'recipes':
         return (
-          <div className="py-12">
-            <RecipeBuilder userPlan={userPlan} />
+          <div className="min-h-screen bg-gradient-to-br from-secondary-mint via-secondary-white to-secondary-peach overflow-hidden relative">
+            {/* Floating background elements */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-20 left-10 w-16 h-16 bg-primary-sage/20 rounded-full animate-float"></div>
+              <div className="absolute top-1/4 right-20 w-12 h-12 bg-accent-lime/30 rounded-full animate-bounce-gentle"></div>
+              <div className="absolute bottom-1/3 left-1/4 w-20 h-20 bg-primary-sage/15 rounded-full animate-pulse-slow"></div>
+            </div>
+            <div className="max-w-7xl mx-auto px-4 py-12 relative z-10">
+              {/* Header Section */}
+              <div className="text-center mb-12 animate-slide-up">
+                <div className="inline-flex items-center space-x-2 bg-primary-sage/10 px-4 py-2 rounded-full mb-4">
+                  <span className="text-2xl animate-bounce-gentle">👨‍🍳</span>
+                  <span className="text-primary-sage font-medium">Recipe Builder</span>
+                </div>
+                <h1 className="text-4xl md:text-5xl font-heading font-bold text-text-dark mb-4">
+                  Create Custom
+                  <span className="bg-gradient-to-r from-primary-sage to-accent-lime bg-clip-text text-transparent"> Recipes</span>
+                </h1>
+                <p className="text-xl text-text-light max-w-2xl mx-auto">
+                  Build personalized recipes with automatic nutrition calculations
+                </p>
+              </div>
+              <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
+                <RecipeBuilder userPlan={userPlan} />
+              </div>
+            </div>
           </div>
         )
       
       case 'grocery':
         return (
-          <div className="py-12">
-            <GroceryListGenerator userPlan={userPlan} />
+          <div className="min-h-screen bg-gradient-to-br from-secondary-peach via-secondary-white to-secondary-mint">
+            <div className="max-w-7xl mx-auto px-4 py-12">
+              {/* Header Section */}
+              <div className="text-center mb-12 animate-slide-up">
+                <div className="inline-flex items-center space-x-2 bg-accent-coral/10 px-4 py-2 rounded-full mb-4">
+                  <span className="text-2xl animate-bounce-gentle">🛒</span>
+                  <span className="text-accent-coral font-medium">Smart Shopping</span>
+                </div>
+                <h1 className="text-4xl md:text-5xl font-heading font-bold text-text-dark mb-4">
+                  Organized
+                  <span className="bg-gradient-to-r from-accent-coral to-accent-orange bg-clip-text text-transparent"> Grocery Lists</span>
+                </h1>
+                <p className="text-xl text-text-light max-w-2xl mx-auto">
+                  Generate smart shopping lists categorized by food groups
+                </p>
+              </div>
+              <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
+                <GroceryListGenerator userPlan={userPlan} />
+              </div>
+            </div>
           </div>
         )
 
       case 'tracker':
         return (
-          <div className="py-12">
-            <NutritionTracker userPlan={userPlan} />
+          <div className="min-h-screen bg-gradient-to-br from-primary-teal/10 via-secondary-white to-accent-golden/10">
+            <div className="max-w-7xl mx-auto px-4 py-12">
+              {/* Header Section */}
+              <div className="text-center mb-12 animate-slide-up">
+                <div className="inline-flex items-center space-x-2 bg-primary-teal/10 px-4 py-2 rounded-full mb-4">
+                  <span className="text-2xl animate-bounce-gentle">📊</span>
+                  <span className="text-primary-teal font-medium">Nutrition Tracking</span>
+                </div>
+                <h1 className="text-4xl md:text-5xl font-heading font-bold text-text-dark mb-4">
+                  Track Your
+                  <span className="bg-gradient-to-r from-primary-teal to-accent-golden bg-clip-text text-transparent"> Progress</span>
+                </h1>
+                <p className="text-xl text-text-light max-w-2xl mx-auto">
+                  Monitor your daily nutrition goals with detailed insights
+                </p>
+              </div>
+              <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
+                <NutritionTracker userPlan={userPlan} />
+              </div>
+            </div>
           </div>
         )
 
       case 'dashboard':
         return (
-          <div className="py-12">
-            <ProgressDashboard userPlan={userPlan} />
+          <div className="min-h-screen bg-gradient-to-br from-accent-golden/10 via-secondary-white to-primary-sage/10 overflow-hidden relative">
+            {/* Floating background elements */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-32 right-16 w-14 h-14 bg-accent-golden/20 rounded-full animate-float"></div>
+              <div className="absolute bottom-40 left-16 w-18 h-18 bg-primary-sage/25 rounded-full animate-bounce-gentle"></div>
+              <div className="absolute top-1/2 right-1/3 w-10 h-10 bg-accent-golden/15 rounded-full animate-pulse-slow"></div>
+            </div>
+            <div className="max-w-7xl mx-auto px-4 py-12 relative z-10">
+              {/* Header Section */}
+              <div className="text-center mb-12 animate-slide-up">
+                <div className="inline-flex items-center space-x-2 bg-accent-golden/10 px-4 py-2 rounded-full mb-4">
+                  <span className="text-2xl animate-bounce-gentle">📈</span>
+                  <span className="text-accent-golden font-medium">Progress Dashboard</span>
+                </div>
+                <h1 className="text-4xl md:text-5xl font-heading font-bold text-text-dark mb-4">
+                  Your Health
+                  <span className="bg-gradient-to-r from-accent-golden to-primary-sage bg-clip-text text-transparent"> Journey</span>
+                </h1>
+                <p className="text-xl text-text-light max-w-2xl mx-auto">
+                  Comprehensive overview of your nutrition and wellness progress
+                </p>
+              </div>
+              <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
+                <ProgressDashboard userPlan={userPlan} />
+              </div>
+            </div>
           </div>
         )
 
       case 'education':
         return (
-          <div className="py-12">
-            <EducationalHub userPlan={userPlan} />
+          <div className="min-h-screen bg-gradient-to-br from-info/10 via-secondary-white to-primary-teal/10">
+            <div className="max-w-7xl mx-auto px-4 py-12">
+              {/* Header Section */}
+              <div className="text-center mb-12 animate-slide-up">
+                <div className="inline-flex items-center space-x-2 bg-info/10 px-4 py-2 rounded-full mb-4">
+                  <span className="text-2xl animate-bounce-gentle">📚</span>
+                  <span className="text-info font-medium">Educational Hub</span>
+                </div>
+                <h1 className="text-4xl md:text-5xl font-heading font-bold text-text-dark mb-4">
+                  Learn &
+                  <span className="bg-gradient-to-r from-info to-primary-teal bg-clip-text text-transparent"> Grow</span>
+                </h1>
+                <p className="text-xl text-text-light max-w-2xl mx-auto">
+                  Expand your nutrition knowledge with expert-curated content
+                </p>
+              </div>
+              <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
+                <EducationalHub userPlan={userPlan} />
+              </div>
+            </div>
           </div>
         )
 
       case 'community':
         return (
-          <div className="py-12">
-            <CommunityForum userPlan={userPlan} />
+          <div className="min-h-screen bg-gradient-to-br from-accent-lime/10 via-secondary-white to-primary-sage/10">
+            <div className="max-w-7xl mx-auto px-4 py-12">
+              {/* Header Section */}
+              <div className="text-center mb-12 animate-slide-up">
+                <div className="inline-flex items-center space-x-2 bg-accent-lime/10 px-4 py-2 rounded-full mb-4">
+                  <span className="text-2xl animate-bounce-gentle">👥</span>
+                  <span className="text-accent-lime font-medium">Community</span>
+                </div>
+                <h1 className="text-4xl md:text-5xl font-heading font-bold text-text-dark mb-4">
+                  Connect &
+                  <span className="bg-gradient-to-r from-accent-lime to-primary-sage bg-clip-text text-transparent"> Share</span>
+                </h1>
+                <p className="text-xl text-text-light max-w-2xl mx-auto">
+                  Join a supportive community of health-conscious individuals
+                </p>
+              </div>
+              <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
+                <CommunityForum userPlan={userPlan} />
+              </div>
+            </div>
           </div>
         )
 
       case 'activity':
         return (
-          <div className="py-12">
-            <ActivityTracker userPlan={userPlan} />
+          <div className="min-h-screen bg-gradient-to-br from-warning/10 via-secondary-white to-accent-orange/10">
+            <div className="max-w-7xl mx-auto px-4 py-12">
+              {/* Header Section */}
+              <div className="text-center mb-12 animate-slide-up">
+                <div className="inline-flex items-center space-x-2 bg-warning/10 px-4 py-2 rounded-full mb-4">
+                  <span className="text-2xl animate-bounce-gentle">🏃‍♀️</span>
+                  <span className="text-warning font-medium">Activity Tracker</span>
+                </div>
+                <h1 className="text-4xl md:text-5xl font-heading font-bold text-text-dark mb-4">
+                  Stay
+                  <span className="bg-gradient-to-r from-warning to-accent-orange bg-clip-text text-transparent"> Active</span>
+                </h1>
+                <p className="text-xl text-text-light max-w-2xl mx-auto">
+                  Monitor your physical activity and fitness goals
+                </p>
+              </div>
+              <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
+                <ActivityTracker userPlan={userPlan} />
+              </div>
+            </div>
           </div>
         )
 
       case 'profile':
         return (
-          <div className="py-12">
-            <UserProfile userPlan={userPlan} />
+          <div className="min-h-screen bg-gradient-to-br from-accent-coral/10 via-secondary-white to-primary-teal/10">
+            <div className="max-w-7xl mx-auto px-4 py-12">
+              {/* Header Section */}
+              <div className="text-center mb-12 animate-slide-up">
+                <div className="inline-flex items-center space-x-2 bg-accent-coral/10 px-4 py-2 rounded-full mb-4">
+                  <span className="text-2xl animate-bounce-gentle">👤</span>
+                  <span className="text-accent-coral font-medium">Your Profile</span>
+                </div>
+                <h1 className="text-4xl md:text-5xl font-heading font-bold text-text-dark mb-4">
+                  Personal
+                  <span className="bg-gradient-to-r from-accent-coral to-primary-teal bg-clip-text text-transparent"> Settings</span>
+                </h1>
+                <p className="text-xl text-text-light max-w-2xl mx-auto">
+                  Manage your account, preferences, and nutrition goals
+                </p>
+              </div>
+              <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
+                <UserProfile userPlan={userPlan} />
+              </div>
+            </div>
           </div>
         )
       
