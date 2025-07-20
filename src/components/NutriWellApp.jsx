@@ -24,17 +24,31 @@ export const NutriWellApp = () => {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
 
   const navigation = [
-    { label: 'Home', href: '#home', active: currentPage === 'home' },
-    { label: 'Get Plan', href: '#onboarding', active: currentPage === 'onboarding' },
-    { label: 'Meal Planning', href: '#meal-planning', active: currentPage === 'meal-planning' },
-    { label: 'Recipe Builder', href: '#recipes', active: currentPage === 'recipes' },
-    { label: 'Grocery Lists', href: '#grocery', active: currentPage === 'grocery' },
-    { label: 'Nutrition Tracker', href: '#tracker', active: currentPage === 'tracker' },
-    { label: 'Dashboard', href: '#dashboard', active: currentPage === 'dashboard' },
-    { label: 'Learn', href: '#education', active: currentPage === 'education' },
-    { label: 'Community', href: '#community', active: currentPage === 'community' },
-    { label: 'Activity', href: '#activity', active: currentPage === 'activity' },
-    { label: 'Profile', href: '#profile', active: currentPage === 'profile' }
+    { label: 'Home', href: '#home', active: currentPage === 'home', onClick: () => handleNavigation('home') },
+    { label: 'Get Plan', href: '#onboarding', active: currentPage === 'onboarding', onClick: () => handleNavigation('onboarding') },
+    { 
+      label: 'Meal Planning', 
+      href: '#meal-planning', 
+      active: ['meal-planning', 'recipes', 'grocery'].includes(currentPage),
+      onClick: () => handleNavigation('meal-planning'),
+      dropdown: [
+        { label: 'Weekly Planner', onClick: () => handleNavigation('meal-planning') },
+        { label: 'Recipe Builder', onClick: () => handleNavigation('recipes') },
+        { label: 'Grocery Lists', onClick: () => handleNavigation('grocery') }
+      ]
+    },
+    { label: 'Nutrition Tracker', href: '#tracker', active: currentPage === 'tracker', onClick: () => handleNavigation('tracker') },
+    { label: 'Dashboard', href: '#dashboard', active: currentPage === 'dashboard', onClick: () => handleNavigation('dashboard') },
+    { label: 'Profile', href: '#profile', active: currentPage === 'profile', onClick: () => handleNavigation('profile') },
+    {
+      label: 'More',
+      active: ['education', 'community', 'activity'].includes(currentPage),
+      dropdown: [
+        { label: 'Learn', onClick: () => handleNavigation('education') },
+        { label: 'Community', onClick: () => handleNavigation('community') },
+        { label: 'Activity', onClick: () => handleNavigation('activity') }
+      ]
+    }
   ]
 
   const handleNavigation = (page) => {
@@ -98,36 +112,142 @@ export const NutriWellApp = () => {
               </div>
               
               {userPlan === 'free' ? (
-                // Free version - redirect to grocery list generator
-                <div className="text-center">
-                  <Card className="max-w-2xl mx-auto">
-                    <CardContent className="p-8">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                        Meal Planning Available in Premium
-                      </h3>
-                      <p className="text-gray-600 mb-6">
-                        Get access to weekly meal planning, drag-and-drop calendar, 
-                        and custom recipe scheduling with our Premium plan.
-                      </p>
-                      <div className="space-y-4">
-                        <Button 
-                          variant="primary" 
-                          size="large"
-                          onClick={() => setShowUpgradeModal(true)}
-                        >
-                          Upgrade to Premium - $29/month
-                        </Button>
-                        <div className="text-sm text-gray-500">
-                          Or try our <button 
-                            onClick={() => setCurrentPage('grocery')}
-                            className="text-primary-teal hover:underline"
-                          >
-                            free meal plan generator
-                          </button>
-                        </div>
+                // Enhanced Free version with engaging visual upgrade section
+                <div className="min-h-screen bg-gradient-to-br from-secondary-mint via-secondary-white to-secondary-peach">
+                  <div className="max-w-6xl mx-auto px-4 py-12">
+                    
+                    {/* Header Section */}
+                    <div className="text-center mb-12 animate-slide-up">
+                      <div className="inline-flex items-center space-x-2 bg-accent-coral/10 px-4 py-2 rounded-full mb-4">
+                        <span className="text-2xl animate-bounce-gentle">🍽️</span>
+                        <span className="text-accent-coral font-medium">Meal Planning Hub</span>
                       </div>
-                    </CardContent>
-                  </Card>
+                      <h1 className="text-4xl md:text-5xl font-heading font-bold text-text-dark mb-4">
+                        Plan Your Perfect Week
+                      </h1>
+                      <p className="text-xl text-text-light max-w-2xl mx-auto">
+                        Transform your nutrition journey with intelligent meal planning
+                      </p>
+                    </div>
+
+                    {/* Feature Preview Grid */}
+                    <div className="grid md:grid-cols-3 gap-6 mb-12">
+                      <div className="group hover:scale-105 transition-transform duration-300">
+                        <Card className="h-full bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl">
+                          <CardContent className="p-6 text-center">
+                            <div className="w-16 h-16 bg-gradient-to-r from-primary-sage to-primary-teal rounded-full flex items-center justify-center mx-auto mb-4 group-hover:animate-pulse-slow">
+                              <span className="text-2xl">📅</span>
+                            </div>
+                            <h3 className="font-heading font-bold text-lg mb-2">Weekly Calendar</h3>
+                            <p className="text-text-light text-sm">Drag & drop meal planning with smart scheduling</p>
+                          </CardContent>
+                        </Card>
+                      </div>
+                      
+                      <div className="group hover:scale-105 transition-transform duration-300">
+                        <Card className="h-full bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl">
+                          <CardContent className="p-6 text-center">
+                            <div className="w-16 h-16 bg-gradient-to-r from-accent-coral to-accent-orange rounded-full flex items-center justify-center mx-auto mb-4 group-hover:animate-pulse-slow">
+                              <span className="text-2xl">🤖</span>
+                            </div>
+                            <h3 className="font-heading font-bold text-lg mb-2">AI Suggestions</h3>
+                            <p className="text-text-light text-sm">Personalized meal recommendations based on your goals</p>
+                          </CardContent>
+                        </Card>
+                      </div>
+                      
+                      <div className="group hover:scale-105 transition-transform duration-300">
+                        <Card className="h-full bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl">
+                          <CardContent className="p-6 text-center">
+                            <div className="w-16 h-16 bg-gradient-to-r from-accent-golden to-accent-lime rounded-full flex items-center justify-center mx-auto mb-4 group-hover:animate-pulse-slow">
+                              <span className="text-2xl">📊</span>
+                            </div>
+                            <h3 className="font-heading font-bold text-lg mb-2">Nutrition Tracking</h3>
+                            <p className="text-text-light text-sm">Automatic macro calculations and progress monitoring</p>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
+
+                    {/* Premium Upgrade Section */}
+                    <div className="relative overflow-hidden">
+                      <Card className="bg-gradient-to-r from-primary-sage via-primary-teal to-accent-coral p-8 md:p-12 border-0 shadow-2xl animate-gradient bg-[length:400%_400%]">
+                        <div className="relative z-10">
+                          <div className="grid lg:grid-cols-2 gap-8 items-center">
+                            {/* Left side - Content */}
+                            <div className="text-white">
+                              <div className="flex items-center space-x-2 mb-4">
+                                <span className="text-3xl animate-float">✨</span>
+                                <Badge className="bg-white/20 text-white border-white/30">Premium Feature</Badge>
+                              </div>
+                              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+                                Unlock Your Full Potential
+                              </h2>
+                              <p className="text-white/90 text-lg mb-6">
+                                Join thousands who've transformed their nutrition with our premium meal planning tools.
+                              </p>
+                              
+                              <ul className="space-y-3 mb-8">
+                                {[
+                                  "🗓️ Interactive weekly meal calendar",
+                                  "🎯 AI-powered nutrition optimization", 
+                                  "🛒 Auto-generated shopping lists",
+                                  "👨‍🍳 500+ chef-created recipes",
+                                  "📱 Mobile app & offline access"
+                                ].map((feature, index) => (
+                                  <li key={index} className="flex items-center space-x-2 text-white/95 animate-slide-right" style={{animationDelay: `${index * 0.1}s`}}>
+                                    <span>{feature}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                              
+                              <div className="flex flex-col sm:flex-row gap-4">
+                                <Button 
+                                  size="large"
+                                  onClick={() => setShowUpgradeModal(true)}
+                                  className="bg-white text-primary-teal hover:bg-white/90 font-bold text-lg px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                                >
+                                  Start Premium - $29/mo
+                                </Button>
+                                <button 
+                                  onClick={() => setCurrentPage('grocery')}
+                                  className="text-white/90 hover:text-white underline underline-offset-4 transition-colors"
+                                >
+                                  Try free meal generator →
+                                </button>
+                              </div>
+                            </div>
+                            
+                            {/* Right side - Visual mockup */}
+                            <div className="relative">
+                              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                                <div className="text-white/80 text-sm mb-4">📅 Your Weekly Plan Preview</div>
+                                <div className="grid grid-cols-7 gap-1 mb-4">
+                                  {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, i) => (
+                                    <div key={i} className="text-center text-white/70 text-xs py-2">{day}</div>
+                                  ))}
+                                </div>
+                                <div className="space-y-2">
+                                  {['🥗 Caesar Salad', '🍝 Pasta Primavera', '🥘 Buddha Bowl'].map((meal, i) => (
+                                    <div key={i} className="bg-white/20 rounded-lg p-2 text-white/90 text-sm animate-pulse-slow" style={{animationDelay: `${i * 0.3}s`}}>
+                                      {meal}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              
+                              {/* Floating elements */}
+                              <div className="absolute -top-4 -right-4 w-8 h-8 bg-accent-orange rounded-full animate-bounce-gentle"></div>
+                              <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-accent-lime rounded-full animate-float"></div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Background decoration */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-y-1"></div>
+                      </Card>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <WeeklyMealPlanner />
@@ -195,45 +315,173 @@ export const NutriWellApp = () => {
       default:
         return (
           <div>
-            {/* Hero Section */}
-            <section className="relative bg-gradient-to-br from-primary-sage/20 via-secondary-white to-primary-teal/20 py-20">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center animate-fade-in">
-                  <h1 className="font-heading text-5xl md:text-6xl font-bold text-text-dark mb-6">
-                    Your Complete Nutrition
-                    <span className="bg-gradient-to-r from-primary-teal to-accent-coral bg-clip-text text-transparent"> Planning Platform</span>
-                  </h1>
-                  <p className="text-xl text-text-light max-w-3xl mx-auto mb-8">
-                    From personalized meal plans to grocery lists and recipe building - 
-                    everything you need for healthy eating in one place.
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button 
-                      variant="primary" 
-                      size="large" 
-                      className="bg-gradient-to-r from-primary-teal to-primary-sage hover:from-primary-sage hover:to-primary-teal"
-                      onClick={() => setCurrentPage('onboarding')}
-                    >
-                      Get Your Free Plan
-                    </Button>
-                    <Button 
-                      variant="secondary" 
-                      size="large"
-                      onClick={() => setCurrentPage('recipes')}
-                    >
-                      Try Recipe Builder
-                    </Button>
+            {/* Enhanced Hero Section */}
+            <section className="relative min-h-screen bg-gradient-to-br from-secondary-mint via-secondary-white to-secondary-peach overflow-hidden">
+              {/* Animated background elements */}
+              <div className="absolute inset-0">
+                <div className="absolute top-20 left-10 w-20 h-20 bg-accent-coral/20 rounded-full animate-float"></div>
+                <div className="absolute top-40 right-16 w-16 h-16 bg-primary-sage/30 rounded-full animate-bounce-gentle"></div>
+                <div className="absolute bottom-40 left-20 w-12 h-12 bg-accent-golden/25 rounded-full animate-pulse-slow"></div>
+                <div className="absolute bottom-20 right-10 w-24 h-24 bg-primary-teal/20 rounded-full animate-float"></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-primary-sage/10 to-accent-coral/10 rounded-full blur-3xl animate-pulse-slow"></div>
+              </div>
+
+              <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
+                <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+                  
+                  {/* Left side - Main content */}
+                  <div className="text-center lg:text-left">
+                    <div className="animate-slide-up">
+                      <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-accent-coral/20 to-primary-sage/20 px-4 py-2 rounded-full mb-6">
+                        <span className="text-2xl animate-wiggle">🌟</span>
+                        <span className="text-primary-teal font-semibold">AI-Powered Nutrition</span>
+                      </div>
+                      
+                      <h1 className="font-heading text-6xl md:text-7xl font-bold text-text-dark mb-6 leading-tight">
+                        Transform Your
+                        <br />
+                        <span className="bg-gradient-to-r from-primary-teal via-accent-coral to-accent-golden bg-clip-text text-transparent animate-gradient bg-[length:400%_400%]">
+                          Nutrition Journey
+                        </span>
+                      </h1>
+                      
+                      <p className="text-xl md:text-2xl text-text-light max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed">
+                        From personalized meal plans to smart grocery lists — everything you need for 
+                        <span className="text-accent-coral font-semibold"> healthy eating</span> in one intelligent platform.
+                      </p>
+                      
+                      {/* Stats */}
+                      <div className="flex flex-wrap justify-center lg:justify-start gap-8 mb-8">
+                        <div className="text-center animate-slide-right" style={{animationDelay: '0.2s'}}>
+                          <div className="text-3xl font-bold text-primary-teal">50k+</div>
+                          <div className="text-sm text-text-light">Happy Users</div>
+                        </div>
+                        <div className="text-center animate-slide-right" style={{animationDelay: '0.4s'}}>
+                          <div className="text-3xl font-bold text-accent-coral">500+</div>
+                          <div className="text-sm text-text-light">Recipes</div>
+                        </div>
+                        <div className="text-center animate-slide-right" style={{animationDelay: '0.6s'}}>
+                          <div className="text-3xl font-bold text-accent-golden">95%</div>
+                          <div className="text-sm text-text-light">Success Rate</div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
+                        <Button 
+                          size="large" 
+                          className="bg-gradient-to-r from-primary-teal to-accent-coral hover:from-accent-coral hover:to-primary-teal text-white font-bold text-lg px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                          onClick={() => setCurrentPage('onboarding')}
+                        >
+                          <span className="flex items-center space-x-2">
+                            <span>Start Free Plan</span>
+                            <span className="text-xl">🚀</span>
+                          </span>
+                        </Button>
+                        <Button 
+                          variant="secondary" 
+                          size="large"
+                          className="border-2 border-primary-sage text-primary-sage hover:bg-primary-sage hover:text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300"
+                          onClick={() => setCurrentPage('recipes')}
+                        >
+                          Explore Recipes →
+                        </Button>
+                      </div>
+                      
+                      {/* Trust indicators */}
+                      <div className="flex items-center justify-center lg:justify-start space-x-4 text-sm text-text-light">
+                        <span className="flex items-center space-x-1">
+                          <span className="text-yellow-400">⭐⭐⭐⭐⭐</span>
+                          <span>4.9/5 rating</span>
+                        </span>
+                        <span>•</span>
+                        <span>No credit card required</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Right side - Visual elements */}
+                  <div className="relative">
+                    <div className="animate-slide-left">
+                      {/* Main dashboard mockup */}
+                      <div className="relative bg-white rounded-3xl shadow-2xl p-6 border border-gray-100">
+                        <div className="flex items-center space-x-2 mb-4">
+                          <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+                          <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                          <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                        </div>
+                        
+                        <div className="text-sm text-gray-600 mb-4">📊 Your Nutrition Dashboard</div>
+                        
+                        {/* Progress rings */}
+                        <div className="grid grid-cols-3 gap-4 mb-6">
+                          <div className="text-center">
+                            <div className="w-16 h-16 bg-gradient-to-r from-primary-sage to-accent-lime rounded-full flex items-center justify-center mx-auto mb-2 animate-pulse-slow">
+                              <span className="text-white font-bold text-sm">85%</span>
+                            </div>
+                            <div className="text-xs text-gray-600">Protein</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="w-16 h-16 bg-gradient-to-r from-accent-coral to-accent-orange rounded-full flex items-center justify-center mx-auto mb-2 animate-pulse-slow" style={{animationDelay: '0.2s'}}>
+                              <span className="text-white font-bold text-sm">92%</span>
+                            </div>
+                            <div className="text-xs text-gray-600">Carbs</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="w-16 h-16 bg-gradient-to-r from-primary-teal to-accent-golden rounded-full flex items-center justify-center mx-auto mb-2 animate-pulse-slow" style={{animationDelay: '0.4s'}}>
+                              <span className="text-white font-bold text-sm">78%</span>
+                            </div>
+                            <div className="text-xs text-gray-600">Fats</div>
+                          </div>
+                        </div>
+                        
+                        {/* Meal cards */}
+                        <div className="space-y-3">
+                          {[
+                            { meal: '🥗 Garden Salad', time: '12:30 PM', cals: '245 cal' },
+                            { meal: '🍗 Grilled Chicken', time: '7:00 PM', cals: '380 cal' },
+                            { meal: '🥤 Green Smoothie', time: '3:00 PM', cals: '180 cal' }
+                          ].map((item, i) => (
+                            <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl animate-slide-up" style={{animationDelay: `${0.6 + i * 0.2}s`}}>
+                              <div className="flex items-center space-x-3">
+                                <span className="text-lg">{item.meal.split(' ')[0]}</span>
+                                <div>
+                                  <div className="text-sm font-medium">{item.meal.substring(2)}</div>
+                                  <div className="text-xs text-gray-500">{item.time}</div>
+                                </div>
+                              </div>
+                              <Badge className="bg-primary-sage/10 text-primary-sage">{item.cals}</Badge>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      {/* Floating cards */}
+                      <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-lg p-4 border border-gray-100 animate-float">
+                        <div className="text-xs text-gray-600 mb-1">Weekly Goal</div>
+                        <div className="text-lg font-bold text-primary-teal">🎯 87% Complete</div>
+                      </div>
+                      
+                      <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-lg p-4 border border-gray-100 animate-bounce-gentle">
+                        <div className="text-xs text-gray-600 mb-1">Next Meal</div>
+                        <div className="text-sm font-bold text-accent-coral">🍎 Apple & Nuts</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* Features Section */}
-            <section className="py-20">
+            {/* Enhanced Features Section */}
+            <section className="py-20 bg-gradient-to-b from-secondary-white to-secondary-mint/30">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                  <h2 className="font-heading text-4xl font-bold text-text-dark mb-4">
-                    Everything You Need for Healthy Eating
+                <div className="text-center mb-16 animate-slide-up">
+                  <div className="inline-flex items-center space-x-2 bg-accent-coral/10 px-4 py-2 rounded-full mb-6">
+                    <span className="text-2xl animate-bounce-gentle">🚀</span>
+                    <span className="text-accent-coral font-medium">Powerful Features</span>
+                  </div>
+                  <h2 className="font-heading text-4xl md:text-5xl font-bold text-text-dark mb-4">
+                    Everything You Need for
+                    <span className="bg-gradient-to-r from-primary-teal to-accent-coral bg-clip-text text-transparent"> Healthy Eating</span>
                   </h2>
                   <p className="text-xl text-text-light max-w-2xl mx-auto">
                     Complete nutrition planning tools designed for busy lifestyles
@@ -241,50 +489,130 @@ export const NutriWellApp = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                  <FeatureCard
-                    icon={
-                      <svg className="w-8 h-8 text-primary-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                      </svg>
-                    }
-                    title="Personalized Plans"
-                    description="Get customized meal plans based on your goals, preferences, and lifestyle"
-                    onClick={() => setCurrentPage('onboarding')}
-                  />
+                  {/* Enhanced Feature Cards */}
+                  <div className="group hover:scale-105 transition-all duration-300 animate-slide-up" style={{animationDelay: '0.1s'}}>
+                    <Card className="h-full bg-white border-0 shadow-lg hover:shadow-2xl transition-all duration-300 rounded-2xl overflow-hidden group-hover:bg-gradient-to-br group-hover:from-primary-teal/5 group-hover:to-accent-coral/5">
+                      <CardContent className="p-6 text-center">
+                        <div className="w-16 h-16 bg-gradient-to-r from-primary-teal to-primary-teal-light rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:animate-pulse-slow group-hover:scale-110 transition-transform duration-300">
+                          <span className="text-3xl">📋</span>
+                        </div>
+                        <h3 className="font-heading font-bold text-lg mb-3 text-text-dark group-hover:text-primary-teal transition-colors">
+                          Personalized Plans
+                        </h3>
+                        <p className="text-text-light text-sm leading-relaxed mb-4">
+                          Get customized meal plans based on your goals, preferences, and lifestyle
+                        </p>
+                        <Button 
+                          variant="secondary" 
+                          size="small"
+                          className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-primary-teal/10 text-primary-teal hover:bg-primary-teal hover:text-white"
+                          onClick={() => setCurrentPage('onboarding')}
+                        >
+                          Try Now →
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </div>
                   
-                  <FeatureCard
-                    icon={
-                      <svg className="w-8 h-8 text-primary-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a4 4 0 118 0v4M8 19l8-8M8 19H5a2 2 0 01-2-2v-6a2 2 0 012-2h3m5 8h7a2 2 0 002-2v-6a2 2 0 00-2-2h-7m-5-4v2m0 0V9a2 2 0 012-2h2a2 2 0 012 2v2M7 7h10" />
-                      </svg>
-                    }
-                    title="Recipe Builder"
-                    description="Create custom recipes with automatic nutrition calculations and ingredient database"
-                    onClick={() => setCurrentPage('recipes')}
-                  />
+                  <div className="group hover:scale-105 transition-all duration-300 animate-slide-up" style={{animationDelay: '0.2s'}}>
+                    <Card className="h-full bg-white border-0 shadow-lg hover:shadow-2xl transition-all duration-300 rounded-2xl overflow-hidden group-hover:bg-gradient-to-br group-hover:from-primary-sage/5 group-hover:to-accent-lime/5">
+                      <CardContent className="p-6 text-center">
+                        <div className="w-16 h-16 bg-gradient-to-r from-primary-sage to-accent-lime rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:animate-pulse-slow group-hover:scale-110 transition-transform duration-300">
+                          <span className="text-3xl">👨‍🍳</span>
+                        </div>
+                        <h3 className="font-heading font-bold text-lg mb-3 text-text-dark group-hover:text-primary-sage transition-colors">
+                          Recipe Builder
+                        </h3>
+                        <p className="text-text-light text-sm leading-relaxed mb-4">
+                          Create custom recipes with automatic nutrition calculations and ingredient database
+                        </p>
+                        <Button 
+                          variant="secondary" 
+                          size="small"
+                          className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-primary-sage/10 text-primary-sage hover:bg-primary-sage hover:text-white"
+                          onClick={() => setCurrentPage('recipes')}
+                        >
+                          Build Recipe →
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </div>
                   
-                  <FeatureCard
-                    icon={
-                      <svg className="w-8 h-8 text-accent-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12H3m18 0l-3-3m3 3l-3 3" />
-                      </svg>
-                    }
-                    title="Smart Grocery Lists"
-                    description="Organized shopping lists categorized by food groups with print functionality"
-                    onClick={() => setCurrentPage('grocery')}
-                  />
+                  <div className="group hover:scale-105 transition-all duration-300 animate-slide-up" style={{animationDelay: '0.3s'}}>
+                    <Card className="h-full bg-white border-0 shadow-lg hover:shadow-2xl transition-all duration-300 rounded-2xl overflow-hidden group-hover:bg-gradient-to-br group-hover:from-accent-coral/5 group-hover:to-accent-orange/5">
+                      <CardContent className="p-6 text-center">
+                        <div className="w-16 h-16 bg-gradient-to-r from-accent-coral to-accent-orange rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:animate-pulse-slow group-hover:scale-110 transition-transform duration-300">
+                          <span className="text-3xl">🛒</span>
+                        </div>
+                        <h3 className="font-heading font-bold text-lg mb-3 text-text-dark group-hover:text-accent-coral transition-colors">
+                          Smart Grocery Lists
+                        </h3>
+                        <p className="text-text-light text-sm leading-relaxed mb-4">
+                          Organized shopping lists categorized by food groups with print functionality
+                        </p>
+                        <Button 
+                          variant="secondary" 
+                          size="small"
+                          className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-accent-coral/10 text-accent-coral hover:bg-accent-coral hover:text-white"
+                          onClick={() => setCurrentPage('grocery')}
+                        >
+                          Generate List →
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </div>
                   
-                  <FeatureCard
-                    icon={
-                      <svg className="w-8 h-8 text-accent-golden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a4 4 0 118 0v4M8 19l8-8M8 19H5a2 2 0 01-2-2v-6a2 2 0 012-2h3m5 8h7a2 2 0 002-2v-6a2 2 0 00-2-2h-7m-5-4v2m0 0V9a2 2 0 012-2h2a2 2 0 012 2v2M7 7h10" />
-                      </svg>
-                    }
-                    title="Weekly Planning"
-                    description="Calendar-based meal planning with drag-and-drop functionality (Premium)"
-                    onClick={() => setCurrentPage('meal-planning')}
-                  />
+                  <div className="group hover:scale-105 transition-all duration-300 animate-slide-up" style={{animationDelay: '0.4s'}}>
+                    <Card className="h-full bg-white border-0 shadow-lg hover:shadow-2xl transition-all duration-300 rounded-2xl overflow-hidden group-hover:bg-gradient-to-br group-hover:from-accent-golden/5 group-hover:to-accent-lime/5">
+                      <CardContent className="p-6 text-center relative">
+                        <Badge className="absolute top-2 right-2 bg-accent-golden text-white text-xs px-2 py-1">Premium</Badge>
+                        <div className="w-16 h-16 bg-gradient-to-r from-accent-golden to-accent-lime rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:animate-pulse-slow group-hover:scale-110 transition-transform duration-300">
+                          <span className="text-3xl">📅</span>
+                        </div>
+                        <h3 className="font-heading font-bold text-lg mb-3 text-text-dark group-hover:text-accent-golden transition-colors">
+                          Weekly Planning
+                        </h3>
+                        <p className="text-text-light text-sm leading-relaxed mb-4">
+                          Calendar-based meal planning with drag-and-drop functionality
+                        </p>
+                        <Button 
+                          variant="secondary" 
+                          size="small"
+                          className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-accent-golden/10 text-accent-golden hover:bg-accent-golden hover:text-white"
+                          onClick={() => setCurrentPage('meal-planning')}
+                        >
+                          Plan Week →
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+                
+                {/* Additional features grid */}
+                <div className="mt-16 grid md:grid-cols-3 gap-8 animate-slide-up" style={{animationDelay: '0.5s'}}>
+                  <div className="text-center group hover:scale-105 transition-transform duration-300">
+                    <div className="w-12 h-12 bg-gradient-to-r from-info to-primary-teal rounded-full flex items-center justify-center mx-auto mb-4 group-hover:animate-bounce-gentle">
+                      <span className="text-white text-xl">📊</span>
+                    </div>
+                    <h4 className="font-semibold text-text-dark mb-2">Nutrition Tracking</h4>
+                    <p className="text-sm text-text-light">Monitor your daily nutrition goals with detailed analytics</p>
+                  </div>
+                  
+                  <div className="text-center group hover:scale-105 transition-transform duration-300">
+                    <div className="w-12 h-12 bg-gradient-to-r from-success to-primary-sage rounded-full flex items-center justify-center mx-auto mb-4 group-hover:animate-bounce-gentle">
+                      <span className="text-white text-xl">🤖</span>
+                    </div>
+                    <h4 className="font-semibold text-text-dark mb-2">AI Recommendations</h4>
+                    <p className="text-sm text-text-light">Smart suggestions based on your preferences and goals</p>
+                  </div>
+                  
+                  <div className="text-center group hover:scale-105 transition-transform duration-300">
+                    <div className="w-12 h-12 bg-gradient-to-r from-warning to-accent-golden rounded-full flex items-center justify-center mx-auto mb-4 group-hover:animate-bounce-gentle">
+                      <span className="text-white text-xl">📱</span>
+                    </div>
+                    <h4 className="font-semibold text-text-dark mb-2">Mobile Ready</h4>
+                    <p className="text-sm text-text-light">Access your plans anywhere with our responsive design</p>
+                  </div>
                 </div>
               </div>
             </section>
