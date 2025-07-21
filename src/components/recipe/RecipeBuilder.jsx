@@ -175,7 +175,6 @@ export const RecipeBuilder = ({ className = '', userPlan = 'free' }) => {
                 label="Recipe Name"
                 value={recipe.name}
                 onChange={(e) => setRecipe(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Enter recipe name..."
                 required
               />
               <NumberInput

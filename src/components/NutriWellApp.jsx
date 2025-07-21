@@ -952,6 +952,7 @@ export const NutriWellApp = () => {
           onClick: () => handleNavigation(item.href.replace('#', ''))
         }))}
         onAuthAction={handleAuthAction}
+        onLogoClick={() => handleNavigation('home')}
         userProfile={userPlan === 'premium' ? { name: 'John Doe', avatar: '/avatar.jpg' } : null}
       />
 

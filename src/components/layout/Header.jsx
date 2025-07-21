@@ -6,6 +6,7 @@ export const Header = ({
   navigation = [],
   userProfile = null,
   onAuthAction,
+  onLogoClick,
   className = ''
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -26,14 +27,18 @@ export const Header = ({
           <div className="flex items-center justify-start">
             <div className="flex-shrink-0">
               {logo || (
-                <div className="flex items-center space-x-2">
-                  <div className="w-10 h-10 bg-gradient-to-r from-primary-sage to-primary-teal rounded-xl flex items-center justify-center shadow-lg">
+                <button 
+                  onClick={onLogoClick}
+                  className="flex items-center space-x-2 hover:scale-105 transition-transform duration-200 cursor-pointer group"
+                  aria-label="Go to home page"
+                >
+                  <div className="w-10 h-10 bg-gradient-to-r from-primary-sage to-primary-teal rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-200">
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
                   </div>
-                  <span className="font-heading font-bold text-xl bg-gradient-to-r from-primary-teal to-accent-coral bg-clip-text text-transparent">NutriWell</span>
-                </div>
+                  <span className="font-heading font-bold text-xl bg-gradient-to-r from-primary-teal to-accent-coral bg-clip-text text-transparent group-hover:from-accent-coral group-hover:to-primary-sage transition-colors duration-200">NutriWell</span>
+                </button>
               )}
             </div>
           </div>
