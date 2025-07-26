@@ -15,6 +15,7 @@ import { EducationalHub } from './education/EducationalHub'
 import { CommunityForum } from './community/CommunityForum'
 import { ActivityTracker } from './activity/ActivityTracker'
 import { UserProfile } from './profile/UserProfile'
+import NutritionWizard from './nutrition/NutritionWizard'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Badge } from './ui/badge'
@@ -54,6 +55,7 @@ export const NutriWellApp = () => {
 
   const navigation = [
     { label: 'Home', href: '#home', active: currentPage === 'home', onClick: () => handleNavigation('home') },
+    { label: 'Nutrition Calculator', href: '#nutrition-wizard', active: currentPage === 'nutrition-wizard', onClick: () => handleNavigation('nutrition-wizard') },
     { label: 'Get Plan', href: '#onboarding', active: currentPage === 'onboarding', onClick: () => handleNavigation('onboarding') },
     { 
       label: 'Meal Planning', 
@@ -432,6 +434,9 @@ export const NutriWellApp = () => {
           </div>
         )
 
+      case 'nutrition-wizard':
+        return <NutritionWizard />
+
       case 'dashboard':
         // Redirect to auth if not authenticated
         if (!isAuthenticated) {
@@ -641,11 +646,20 @@ export const NutriWellApp = () => {
                       <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
                         <Button 
                           size="large" 
+                          className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold text-lg px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                          onClick={() => setCurrentPage('nutrition-wizard')}
+                        >
+                          <span className="flex items-center space-x-2">
+                            <span>🎯 Get Your Plan (60s)</span>
+                          </span>
+                        </Button>
+                        <Button 
+                          size="large" 
                           className="bg-gradient-to-r from-primary-teal to-accent-coral hover:from-accent-coral hover:to-primary-teal text-white font-bold text-lg px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                           onClick={() => setCurrentPage('onboarding')}
                         >
                           <span className="flex items-center space-x-2">
-                            <span>Start Free Plan</span>
+                            <span>Full Plan</span>
                             <span className="text-xl">🚀</span>
                           </span>
                         </Button>
