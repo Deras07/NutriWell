@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { useAuth } from '../providers/PrivyProvider'
+import { AuthScreen } from './auth/AuthScreen'
+import { AuthenticatedOnboarding } from './auth/AuthenticatedOnboarding'
 import { Header } from './layout/Header'
 import { Footer } from './layout/Footer'
 import { OnboardingFlow } from './onboarding/OnboardingFlow'
@@ -15,13 +18,39 @@ import { UserProfile } from './profile/UserProfile'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Badge } from './ui/badge'
-import { FeatureCard } from './ui/card'
 
 export const NutriWellApp = () => {
+  const { 
+    isAuthenticated, 
+    dbUser, 
+    ready, 
+    loading,
+    isPremium,
+    logout,
+    login
+  } = useAuth()
+  
   const [currentPage, setCurrentPage] = useState('home')
-  const [userPlan, setUserPlan] = useState('free') // 'free' or 'premium'
   const [onboardingData, setOnboardingData] = useState(null)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [forceUpdate, setForceUpdate] = useState(0)
+
+  // Show loading screen while auth is initializing
+  if (!ready || loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary-sage/10 via-secondary-white to-accent-coral/10 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-teal mx-auto mb-4"></div>
+          <p className="text-text-light">Loading NutriWell...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // No global auth checks - handle authentication per page
+
+  // Get user plan from database
+  const userPlan = dbUser?.subscription_tier || 'free'
 
   const navigation = [
     { label: 'Home', href: '#home', active: currentPage === 'home', onClick: () => handleNavigation('home') },
@@ -39,7 +68,6 @@ export const NutriWellApp = () => {
     },
     { label: 'Nutrition Tracker', href: '#tracker', active: currentPage === 'tracker', onClick: () => handleNavigation('tracker') },
     { label: 'Dashboard', href: '#dashboard', active: currentPage === 'dashboard', onClick: () => handleNavigation('dashboard') },
-    { label: 'Profile', href: '#profile', active: currentPage === 'profile', onClick: () => handleNavigation('profile') },
     {
       label: 'More',
       active: ['education', 'community', 'activity'].includes(currentPage),
@@ -55,11 +83,26 @@ export const NutriWellApp = () => {
     setCurrentPage(page)
   }
 
-  const handleAuthAction = (action) => {
+  const handleAuthAction = async (action) => {
+    console.log('🟡 NutriWellApp: handleAuthAction called with action:', action)
+    
     if (action === 'signup') {
+      console.log('🟡 NutriWellApp: Navigating to onboarding for signup')
       setCurrentPage('onboarding')
+    } else if (action === 'logout') {
+      console.log('🟡 NutriWellApp: Calling logout')
+      logout()
+    } else if (action === 'login') {
+      try {
+        console.log('🟡 NutriWellApp: Starting login process...')
+        await login()
+        console.log('🟡 NutriWellApp: Login completed successfully')
+      } catch (error) {
+        console.error('🟡 NutriWellApp: Login error:', error)
+        alert('Sign-in failed. Please try again.')
+      }
     } else {
-      console.log(`Auth action: ${action}`)
+      console.log(`🟡 NutriWellApp: Unknown auth action: ${action}`)
     }
   }
 
@@ -69,12 +112,26 @@ export const NutriWellApp = () => {
   }
 
   const handleGetFullPlan = () => {
-    setShowUpgradeModal(true)
+    if (isPremium) {
+      setCurrentPage('meal-planning')
+    } else {
+      setShowUpgradeModal(true)
+    }
+  }
+
+  const handlePlanUpdate = (planData) => {
+    // Handle meal plan updates
+    console.log('Meal plan updated:', planData)
   }
 
   const renderPage = () => {
     switch (currentPage) {
       case 'onboarding':
+        // Require authentication to track free users
+        if (!isAuthenticated) {
+          return <AuthScreen />
+        }
+        
         return (
           <div className="min-h-screen bg-gradient-to-br from-primary-sage/10 via-secondary-white to-accent-coral/10">
             <div className="max-w-7xl mx-auto px-4 py-12">
@@ -108,7 +165,7 @@ export const NutriWellApp = () => {
               {/* Header Section */}
               <div className="text-center mb-12 animate-slide-up">
                 <div className="inline-flex items-center space-x-2 bg-accent-golden/10 px-4 py-2 rounded-full mb-4">
-                  <span className="text-2xl animate-bounce-gentle">🎉</span>
+                  <span className="text-2xl animate-bounce-gentle">✨</span>
                   <span className="text-accent-golden font-medium">Your Plan Ready</span>
                 </div>
                 <h1 className="text-4xl md:text-5xl font-heading font-bold text-text-dark mb-4">
@@ -140,7 +197,7 @@ export const NutriWellApp = () => {
                 <p className="text-xl text-gray-600">
                   Plan your meals for the week ahead
                 </p>
-                {userPlan === 'free' && (
+                {!isPremium && (
                   <div className="mt-4">
                     <Badge variant="warning" size="large">
                       Free Plan: Basic meal planning only
@@ -149,7 +206,7 @@ export const NutriWellApp = () => {
                 )}
               </div>
               
-              {userPlan === 'free' ? (
+              {!isPremium ? (
                 // Enhanced Free version with engaging visual upgrade section
                 <div className="min-h-screen bg-gradient-to-br from-secondary-mint via-secondary-white to-secondary-peach">
                   <div className="max-w-6xl mx-auto px-4 py-12">
@@ -288,7 +345,7 @@ export const NutriWellApp = () => {
                   </div>
                 </div>
               ) : (
-                <WeeklyMealPlanner />
+                <WeeklyMealPlanner onPlanUpdate={handlePlanUpdate} />
               )}
             </div>
           </div>
@@ -376,6 +433,33 @@ export const NutriWellApp = () => {
         )
 
       case 'dashboard':
+        // Redirect to auth if not authenticated
+        if (!isAuthenticated) {
+          return <AuthScreen />
+        }
+        
+        // Show onboarding if not completed
+        console.log('Dashboard - checking onboarding status:', { 
+          dbUser: dbUser ? { 
+            id: dbUser.id, 
+            onboarding_completed: dbUser.onboarding_completed,
+            onboarding_step: dbUser.onboarding_step 
+          } : null 
+        })
+        
+        if (dbUser && !dbUser.onboarding_completed) {
+          console.log('Dashboard - showing onboarding form')
+          return (
+            <AuthenticatedOnboarding 
+              onComplete={() => {
+                console.log('Dashboard - onboarding completed, forcing re-render')
+                setForceUpdate(prev => prev + 1)
+                setTimeout(() => setCurrentPage('dashboard'), 100)
+              }}
+            />
+          )
+        }
+        
         return (
           <div className="min-h-screen bg-gradient-to-br from-accent-golden/10 via-secondary-white to-primary-sage/10 overflow-hidden relative">
             {/* Floating background elements */}
@@ -482,29 +566,23 @@ export const NutriWellApp = () => {
         )
 
       case 'profile':
-        return (
-          <div className="min-h-screen bg-gradient-to-br from-accent-coral/10 via-secondary-white to-primary-teal/10">
-            <div className="max-w-7xl mx-auto px-4 py-12">
-              {/* Header Section */}
-              <div className="text-center mb-12 animate-slide-up">
-                <div className="inline-flex items-center space-x-2 bg-accent-coral/10 px-4 py-2 rounded-full mb-4">
-                  <span className="text-2xl animate-bounce-gentle">👤</span>
-                  <span className="text-accent-coral font-medium">Your Profile</span>
-                </div>
-                <h1 className="text-4xl md:text-5xl font-heading font-bold text-text-dark mb-4">
-                  Personal
-                  <span className="bg-gradient-to-r from-accent-coral to-primary-teal bg-clip-text text-transparent"> Settings</span>
-                </h1>
-                <p className="text-xl text-text-light max-w-2xl mx-auto">
-                  Manage your account, preferences, and nutrition goals
-                </p>
-              </div>
-              <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
-                <UserProfile userPlan={userPlan} />
-              </div>
-            </div>
-          </div>
-        )
+        // Redirect to auth if not authenticated
+        if (!isAuthenticated) {
+          return <AuthScreen />
+        }
+        
+        // Show onboarding if not completed
+        if (dbUser && !dbUser.onboarding_completed) {
+          return (
+            <AuthenticatedOnboarding 
+              onComplete={() => {
+                setCurrentPage('profile')
+              }}
+            />
+          )
+        }
+        
+        return <UserProfile userPlan={userPlan} dbUser={dbUser} />
       
       default:
         return (
@@ -953,7 +1031,12 @@ export const NutriWellApp = () => {
         }))}
         onAuthAction={handleAuthAction}
         onLogoClick={() => handleNavigation('home')}
-        userProfile={userPlan === 'premium' ? { name: 'John Doe', avatar: '/avatar.jpg' } : null}
+        onNavigate={handleNavigation}
+        userProfile={dbUser ? { 
+          name: dbUser.display_name || dbUser.email || 'User', 
+          avatar: dbUser.avatar_url,
+          plan: userPlan 
+        } : null}
       />
 
       <main>
@@ -1018,9 +1101,9 @@ export const NutriWellApp = () => {
                   variant="primary" 
                   className="w-full bg-gradient-to-r from-primary-teal to-primary-sage"
                   onClick={() => {
-                    setUserPlan('premium')
+                    // In a real app, this would integrate with a payment system
+                    alert('Premium upgrade coming soon! 🎉')
                     setShowUpgradeModal(false)
-                    alert('Welcome to Premium! 🎉')
                   }}
                 >
                   Start Premium Trial - $29/month
@@ -1039,4 +1122,4 @@ export const NutriWellApp = () => {
       )}
     </div>
   )
-} 
+}

@@ -172,7 +172,7 @@ export const ActivityTracker = ({ userPlan = 'free' }) => {
   }
 
   const AddActivityModal = () => {
-    if (!showAddModal) return null
+    if (!showAddModal) {return null}
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -270,7 +270,7 @@ export const ActivityTracker = ({ userPlan = 'free' }) => {
   }
 
   const UpgradeModal = () => {
-    if (!showUpgradeModal) return null
+    if (!showUpgradeModal) {return null}
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">

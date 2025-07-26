@@ -219,8 +219,8 @@ export const MacroProgressBars = ({ protein, carbs, fat, goals, className = '' }
   const getPercentage = (current, goal) => Math.min((current / goal) * 100, 100)
   const getColor = (current, goal) => {
     const percentage = (current / goal) * 100
-    if (percentage >= 90 && percentage <= 110) return 'bg-green-500'
-    if (percentage >= 80 && percentage <= 120) return 'bg-yellow-500'
+    if (percentage >= 90 && percentage <= 110) {return 'bg-green-500'}
+    if (percentage >= 80 && percentage <= 120) {return 'bg-yellow-500'}
     return 'bg-red-500'
   }
 

@@ -83,7 +83,7 @@ export const NutritionTracker = ({ userPlan = 'free' }) => {
 
   // Add custom food
   const addCustomFood = () => {
-    if (!customFood.name || !customFood.calories) return;
+    if (!customFood.name || !customFood.calories) {return;}
     
     const food = {
       name: customFood.name,
@@ -330,7 +330,7 @@ export const NutritionTracker = ({ userPlan = 'free' }) => {
                 <div className="space-y-4">
                   {mealCategories.map(meal => {
                     const mealFoods = dailyLog.filter(entry => entry.meal === meal.id);
-                    if (mealFoods.length === 0) return null;
+                    if (mealFoods.length === 0) {return null;}
                     
                     const mealTotals = mealFoods.reduce((totals, entry) => ({
                       calories: totals.calories + entry.calories,

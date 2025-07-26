@@ -4,6 +4,8 @@ import { Button } from '../ui/button'
 import { Input, NumberInput } from '../ui/input'
 import { Select } from '../ui/select'
 import { Badge } from '../ui/badge'
+import { usePersistentForm, DataRecoveryNotification } from '../../hooks/usePersistentState.jsx'
+import { AutoSaveStatus, AdvancedSaveStatus } from '../ui/AutoSaveStatus'
 
 // Mock ingredient database (100 basic foods for free version)
 const BASIC_INGREDIENTS = [
@@ -39,7 +41,17 @@ const BASIC_INGREDIENTS = [
 ]
 
 export const RecipeBuilder = ({ className = '', userPlan = 'free' }) => {
-  const [recipe, setRecipe] = useState({
+  // Use persistent form state with auto-save
+  const {
+    data: recipe,
+    updateField: updateRecipe,
+    isDirty,
+    lastSaved,
+    saveError,
+    saveNow,
+    hasRecoverableData,
+    clearSaved
+  } = usePersistentForm('recipe-builder', {
     name: '',
     servings: 4,
     ingredients: [],
@@ -55,6 +67,7 @@ export const RecipeBuilder = ({ className = '', userPlan = 'free' }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false)
   const [savedRecipes, setSavedRecipes] = useState([])
+  const [showRecovery, setShowRecovery] = useState(hasRecoverableData() && recipe.name === '')
   
   // Free version limit: 3 recipes per month
   const FREE_RECIPE_LIMIT = 3
@@ -65,7 +78,7 @@ export const RecipeBuilder = ({ className = '', userPlan = 'free' }) => {
   )
 
   const addIngredient = () => {
-    if (!currentIngredient.ingredient || currentIngredient.quantity <= 0) return
+    if (!currentIngredient.ingredient || currentIngredient.quantity <= 0) {return}
 
     const newIngredient = {
       ...currentIngredient,
@@ -162,9 +175,38 @@ export const RecipeBuilder = ({ className = '', userPlan = 'free' }) => {
         )}
       </div>
 
+      {/* Data Recovery Notification */}
+      {showRecovery && (
+        <DataRecoveryNotification
+          hasRecoverableData={true}
+          onRecover={() => setShowRecovery(false)}
+          onStartFresh={() => {
+            clearSaved()
+            setShowRecovery(false)
+          }}
+        />
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Recipe Builder */}
         <div className="lg:col-span-2 space-y-6">
+          {/* Auto-save Status */}
+          <AdvancedSaveStatus
+            isDirty={isDirty}
+            lastSaved={lastSaved}
+            saveError={saveError}
+            onRetry={saveNow}
+            onForceRefresh={() => {
+              const dataStr = JSON.stringify(recipe, null, 2)
+              const dataBlob = new Blob([dataStr], { type: 'application/json' })
+              const url = URL.createObjectURL(dataBlob)
+              const link = document.createElement('a')
+              link.href = url
+              link.download = `recipe-backup-${Date.now()}.json`
+              link.click()
+            }}
+            className="mb-4"
+          />
           {/* Recipe Info */}
           <Card>
             <CardHeader>
@@ -174,13 +216,13 @@ export const RecipeBuilder = ({ className = '', userPlan = 'free' }) => {
               <Input
                 label="Recipe Name"
                 value={recipe.name}
-                onChange={(e) => setRecipe(prev => ({ ...prev, name: e.target.value }))}
+                onChange={(e) => updateRecipe('name', e.target.value)}
                 required
               />
               <NumberInput
                 label="Number of Servings"
                 value={recipe.servings}
-                onChange={(value) => setRecipe(prev => ({ ...prev, servings: value }))}
+                onChange={(value) => updateRecipe('servings', value)}
                 min={1}
                 max={20}
               />
@@ -194,7 +236,7 @@ export const RecipeBuilder = ({ className = '', userPlan = 'free' }) => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="md:col-span-2">
+                <div className="md:col-span-2 relative">
                   <Input
                     label="Search Ingredients"
                     value={searchTerm}
@@ -204,7 +246,7 @@ export const RecipeBuilder = ({ className = '', userPlan = 'free' }) => {
                   
                   {/* Ingredient Suggestions */}
                   {searchTerm && (
-                    <div className="mt-2 max-h-40 overflow-y-auto border border-gray-200 rounded-lg">
+                    <div className="absolute top-full left-0 right-0 z-10 mt-1 max-h-40 overflow-y-auto border border-gray-200 rounded-lg bg-white shadow-lg">
                       {filteredIngredients.slice(0, 5).map((ingredient) => (
                         <button
                           key={ingredient.id}
@@ -212,7 +254,7 @@ export const RecipeBuilder = ({ className = '', userPlan = 'free' }) => {
                             setCurrentIngredient(prev => ({ ...prev, ingredient }))
                             setSearchTerm(ingredient.name)
                           }}
-                          className="w-full text-left px-3 py-2 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                          className="w-full text-left px-3 py-2 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 focus:outline-none focus:bg-gray-50"
                         >
                           <div className="font-medium">{ingredient.name}</div>
                           <div className="text-sm text-gray-500">{ingredient.category} • {ingredient.calories} cal/100g</div>
