@@ -235,9 +235,9 @@ const NutritionWizard = () => {
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8">
         <motion.div 
-          className="p-6 bg-featureMint rounded-xl cursor-pointer group"
+          className="p-6 bg-featureMint rounded-xl cursor-pointer group overflow-hidden min-h-[140px] flex flex-col items-center justify-center text-center"
           whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -248,7 +248,7 @@ const NutritionWizard = () => {
           <p className="text-sm text-gray-600">Science-based formulas for accurate results</p>
         </motion.div>
         <motion.div 
-          className="p-6 bg-featureLavender rounded-xl cursor-pointer group"
+          className="p-6 bg-featureLavender rounded-xl cursor-pointer group overflow-hidden min-h-[140px] flex flex-col items-center justify-center text-center"
           whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -259,7 +259,7 @@ const NutritionWizard = () => {
           <p className="text-sm text-gray-600">Customized to your goals and lifestyle</p>
         </motion.div>
         <motion.div 
-          className="p-6 bg-featurePeach rounded-xl cursor-pointer group"
+          className="p-6 bg-featurePeach rounded-xl cursor-pointer group overflow-hidden min-h-[140px] flex flex-col items-center justify-center text-center"
           whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -287,7 +287,7 @@ const NutritionWizard = () => {
         <p className="text-gray-600 animate-slide-up" style={{animationDelay: '0.1s'}}>We'll use this information to calculate your personalized nutrition needs.</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
         <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
           <FloatingInput
             label="Age"
@@ -358,24 +358,27 @@ const NutritionWizard = () => {
         </div>
 
         <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Goal</label>
-          <div className="grid grid-cols-3 gap-3">
+          <label className="block text-sm font-semibold text-gray-700 mb-4">What's Your Primary Goal?</label>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-3 max-h-64 overflow-y-auto p-1">
             {[
-              { value: 'lose', label: 'Lose Weight', emoji: '📉' },
-              { value: 'maintain', label: 'Maintain Weight', emoji: '⚖️' },
-              { value: 'gain', label: 'Gain Weight', emoji: '📈' }
+              { value: 'lose', label: 'Lose Weight', emoji: '📉', color: 'from-red-50 to-red-100 border-red-200 hover:border-red-300' },
+              { value: 'maintain', label: 'Maintain Weight', emoji: '⚖️', color: 'from-green-50 to-green-100 border-green-200 hover:border-green-300' },
+              { value: 'gain', label: 'Gain Weight', emoji: '📈', color: 'from-blue-50 to-blue-100 border-blue-200 hover:border-blue-300' },
+              { value: 'muscle', label: 'Build Muscle', emoji: '💪', color: 'from-purple-50 to-purple-100 border-purple-200 hover:border-purple-300' },
+              { value: 'energy', label: 'Improve Energy', emoji: '⚡', color: 'from-yellow-50 to-yellow-100 border-yellow-200 hover:border-yellow-300' },
+              { value: 'health', label: 'Overall Health', emoji: '🌟', color: 'from-teal-50 to-teal-100 border-teal-200 hover:border-teal-300' }
             ].map(goal => (
               <button
                 key={goal.value}
                 onClick={() => updateFormData('goal', goal.value)}
-                className={`p-4 rounded-lg border-2 transition-all ${
+                className={`p-4 rounded-xl border-2 transition-all duration-200 hover:scale-105 hover:shadow-md bg-gradient-to-br ${
                   formData.goal === goal.value 
-                    ? 'border-blue-500 bg-blue-50 text-blue-700' 
-                    : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-brandStart bg-gradient-to-br from-brandStart/10 to-brandEnd/10 shadow-lg scale-105' 
+                    : goal.color
                 }`}
               >
-                <div className="text-2xl mb-1">{goal.emoji}</div>
-                <div className="font-medium text-sm">{goal.label}</div>
+                <div className="text-2xl mb-2">{goal.emoji}</div>
+                <div className="font-semibold text-sm text-gray-800">{goal.label}</div>
               </button>
             ))}
           </div>
@@ -498,8 +501,14 @@ const NutritionWizard = () => {
             <Button variant="secondary">
               <Share2 className="w-4 h-4 mr-2" /> Share
             </Button>
-            <Button onClick={nextStep}>
-              Learn More <ChevronRight className="w-4 h-4 ml-2" />
+            <Button 
+              onClick={nextStep}
+              className="bg-gradient-to-r from-brandStart to-brandEnd hover:from-brandEnd hover:to-brandStart text-white font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 group"
+            >
+              <span className="bg-gradient-to-r from-white to-white bg-clip-text group-hover:from-yellow-200 group-hover:to-white transition-all duration-300">
+                Learn More
+              </span>
+              <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
             </Button>
           </div>
         </div>
@@ -509,7 +518,9 @@ const NutritionWizard = () => {
     // Step 3: Educational Content & Tips
     <div className="max-w-4xl mx-auto">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-2">Learn More About Nutrition</h2>
+        <h2 className="text-3xl font-semibold bg-gradient-to-r from-brandStart to-brandEnd bg-clip-text text-transparent mb-4 group-hover:from-brandEnd group-hover:to-brandStart transition-all duration-300">
+          Learn More About Nutrition
+        </h2>
         <p className="text-lg text-gray-600">
           Understanding your numbers is just the beginning. Here's everything you need to succeed.
         </p>

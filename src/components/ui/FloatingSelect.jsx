@@ -54,7 +54,7 @@ const FloatingSelect = ({
       <label
         htmlFor={name}
         className={`
-          absolute left-4 transition-all duration-200 ease-out pointer-events-none
+          absolute left-4 transition-all duration-200 ease-out pointer-events-none z-10
           ${shouldFloat
             ? 'top-2 text-xs font-semibold text-brandStart transform scale-95'
             : 'top-1/2 -translate-y-1/2 text-base text-gray-500'
