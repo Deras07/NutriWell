@@ -4,6 +4,7 @@ import { Button } from '../ui/button'
 import { Card } from '../ui/card'
 import FloatingInput from '../ui/FloatingInput'
 import FloatingSelect from '../ui/FloatingSelect'
+import ComingSoonFeatures from '../ui/ComingSoonFeatures'
 import { ChevronLeft, ChevronRight, Calculator, Target, TrendingUp, Download, Share2, ChevronDown, ChevronUp, BookOpen, Lightbulb, Utensils, Loader2 } from 'lucide-react'
 
 const NutritionWizard = () => {
@@ -756,6 +757,17 @@ const NutritionWizard = () => {
           {steps[currentStep]}
         </motion.div>
       </AnimatePresence>
+      
+      {/* Coming Soon Features - Show after completing at least step 2 */}
+      {currentStep >= 2 && (
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          <ComingSoonFeatures />
+        </motion.div>
+      )}
     </div>
   )
 }

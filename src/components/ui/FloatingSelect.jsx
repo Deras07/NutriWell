@@ -29,19 +29,19 @@ const FloatingSelect = ({
         onFocus={handleFocus}
         onBlur={handleBlur}
         className={`
-          w-full px-4 py-3 border-2 rounded-xl transition-all duration-200 ease-out
+          w-full px-4 border-2 rounded-xl transition-all duration-200 ease-out
           focus:outline-none focus:ring-0 appearance-none cursor-pointer
           ${shouldFloat 
-            ? 'border-brandStart focus:border-brandEnd pt-6 pb-2' 
-            : 'border-gray-300 focus:border-brandStart'
+            ? 'border-brandStart focus:border-brandEnd pt-6 pb-2 text-gray-900' 
+            : 'border-gray-300 focus:border-brandStart py-3 text-gray-500'
           }
-          bg-white text-gray-900 text-base
+          bg-white text-base
           hover:border-brandMid
         `}
         {...props}
       >
         <option value="" disabled hidden>
-          {placeholder}
+          {shouldFloat ? '' : placeholder}
         </option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -54,10 +54,10 @@ const FloatingSelect = ({
       <label
         htmlFor={name}
         className={`
-          absolute left-4 transition-all duration-200 ease-out pointer-events-none z-10
+          absolute left-4 transition-all duration-200 ease-out pointer-events-none z-20 bg-white px-1
           ${shouldFloat
-            ? 'top-2 text-xs font-semibold text-brandStart transform scale-95'
-            : 'top-1/2 -translate-y-1/2 text-base text-gray-500'
+            ? 'top-1 text-xs font-semibold text-brandStart transform scale-95'
+            : 'top-1/2 -translate-y-1/2 text-base text-gray-500 bg-transparent px-0'
           }
         `}
       >
