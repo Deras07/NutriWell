@@ -17,6 +17,7 @@ const NutritionWizard = () => {
   })
   const [results, setResults] = useState(null)
   const [expandedSections, setExpandedSections] = useState({})
+  const [isCalculating, setIsCalculating] = useState(false)
 
   // Toggle accordion sections
   const toggleSection = (sectionId) => {
@@ -94,7 +95,12 @@ const NutritionWizard = () => {
   }
 
   // Process form and calculate results
-  const calculateResults = () => {
+  const calculateResults = async () => {
+    setIsCalculating(true)
+    
+    // Add a slight delay to show loading state
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    
     const bmr = Math.round(calculateBMR())
     const dailyCalories = calculateDailyCalories()
     const targetCalories = calculateTargetCalories()
@@ -109,6 +115,7 @@ const NutritionWizard = () => {
     }
 
     setResults(resultsData)
+    setIsCalculating(false)
     nextStep()
   }
 
@@ -213,33 +220,33 @@ const NutritionWizard = () => {
   // Step components
   const steps = [
     // Step 0: Welcome Screen
-    <div className="text-center max-w-2xl mx-auto">
+    <div className="text-center max-w-2xl mx-auto animate-fade-in">
       <div className="mb-8">
-        <div className="text-6xl mb-4">🎯</div>
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">
+        <div className="text-6xl mb-4 animate-bounce-gentle">🎯</div>
+        <h1 className="text-4xl font-bold text-gray-800 mb-4 animate-slide-up">
           Your Personalized Nutrition Guide
         </h1>
-        <p className="text-xl text-gray-600 mb-2">
+        <p className="text-xl text-gray-600 mb-2 animate-slide-up" style={{animationDelay: '0.1s'}}>
           We'll help you find your personalized nutrition needs — in under 60 seconds.
         </p>
-        <p className="text-lg text-gray-500">
+        <p className="text-lg text-gray-500 animate-slide-up" style={{animationDelay: '0.2s'}}>
           Get your daily calorie needs, macro targets, and personalized recommendations.
         </p>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl">
-          <Calculator className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+        <div className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl animate-slide-up hover:scale-105 transition-transform duration-300" style={{animationDelay: '0.3s'}}>
+          <Calculator className="w-8 h-8 text-blue-600 mx-auto mb-3 animate-pulse-slow" />
           <h3 className="font-semibold text-gray-800 mb-2">Precise Calculations</h3>
           <p className="text-sm text-gray-600">Science-based formulas for accurate results</p>
         </div>
-        <div className="p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-xl">
-          <Target className="w-8 h-8 text-green-600 mx-auto mb-3" />
+        <div className="p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-xl animate-slide-up hover:scale-105 transition-transform duration-300" style={{animationDelay: '0.4s'}}>
+          <Target className="w-8 h-8 text-green-600 mx-auto mb-3 animate-pulse-slow" />
           <h3 className="font-semibold text-gray-800 mb-2">Personal Targets</h3>
           <p className="text-sm text-gray-600">Customized to your goals and lifestyle</p>
         </div>
-        <div className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl">
-          <TrendingUp className="w-8 h-8 text-purple-600 mx-auto mb-3" />
+        <div className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl animate-slide-up hover:scale-105 transition-transform duration-300" style={{animationDelay: '0.5s'}}>
+          <TrendingUp className="w-8 h-8 text-purple-600 mx-auto mb-3 animate-pulse-slow" />
           <h3 className="font-semibold text-gray-800 mb-2">Easy to Follow</h3>
           <p className="text-sm text-gray-600">Simple, actionable recommendations</p>
         </div>
@@ -251,14 +258,14 @@ const NutritionWizard = () => {
     </div>,
 
     // Step 1: User Input Form
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto animate-fade-in">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-2">Tell Us About Yourself</h2>
-        <p className="text-gray-600">We'll use this information to calculate your personalized nutrition needs.</p>
+        <h2 className="text-3xl font-bold text-gray-800 mb-2 animate-slide-up">Tell Us About Yourself</h2>
+        <p className="text-gray-600 animate-slide-up" style={{animationDelay: '0.1s'}}>We'll use this information to calculate your personalized nutrition needs.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
+        <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
           <Input
             label="Age"
             type="number"
@@ -268,11 +275,11 @@ const NutritionWizard = () => {
             error=""
             helpText=""
             onValidate={() => {}}
-            className="w-full"
+            className="w-full transition-all duration-200 focus-within:scale-105"
           />
         </div>
 
-        <div>
+        <div className="animate-slide-up" style={{animationDelay: '0.3s'}}>
           <Select
             label="Gender"
             value={formData.gender}
@@ -284,10 +291,11 @@ const NutritionWizard = () => {
             ]}
             error=""
             helpText=""
+            className="transition-all duration-200 focus-within:scale-105"
           />
         </div>
 
-        <div>
+        <div className="animate-slide-up" style={{animationDelay: '0.4s'}}>
           <Input
             label="Height (cm)"
             type="number"
@@ -297,11 +305,11 @@ const NutritionWizard = () => {
             error=""
             helpText=""
             onValidate={() => {}}
-            className="w-full"
+            className="w-full transition-all duration-200 focus-within:scale-105"
           />
         </div>
 
-        <div>
+        <div className="animate-slide-up" style={{animationDelay: '0.5s'}}>
           <Input
             label="Weight (kg)"
             type="number"
@@ -311,7 +319,7 @@ const NutritionWizard = () => {
             error=""
             helpText=""
             onValidate={() => {}}
-            className="w-full"
+            className="w-full transition-all duration-200 focus-within:scale-105"
           />
         </div>
 
@@ -364,9 +372,11 @@ const NutritionWizard = () => {
         </Button>
         <Button 
           onClick={calculateResults}
-          disabled={!formData.age || !formData.gender || !formData.height || !formData.weight || !formData.activityLevel || !formData.goal}
+          disabled={!formData.age || !formData.gender || !formData.height || !formData.weight || !formData.activityLevel || !formData.goal || isCalculating}
+          loading={isCalculating}
         >
-          Calculate Results <ChevronRight className="w-4 h-4 ml-2" />
+          {isCalculating ? 'Calculating...' : 'Calculate Results'} 
+          {!isCalculating && <ChevronRight className="w-4 h-4 ml-2" />}
         </Button>
       </div>
     </div>,
