@@ -8,27 +8,38 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Primary Colors - More vibrant sage and teal
+        // New vibrant brand palette
+        brandStart: '#37c8b4',  // teal
+        brandEnd: '#fd818b',    // coral-pink
+        brandMid: '#8fe4c5',    // pastel green
+        muted: '#f5f7fa',       // light background
+        
+        // Feature card colors
+        featureMint: '#8fe4c5',    // green-mint
+        featureLavender: '#e8e9ff', // lavender
+        featurePeach: '#fff5e8',    // peach
+        
+        // Primary Colors - Updated with brand colors
         primary: {
-          sage: '#6DB96D',     // More vibrant green
-          teal: '#4F9DA6',     // Deeper, more saturated teal
-          'sage-light': '#8FBC8F',
-          'sage-dark': '#5A9A5A',
-          'teal-light': '#7BB3BC', 
-          'teal-dark': '#3E7E85',
+          sage: '#8fe4c5',     // Brand mid (pastel green)
+          teal: '#37c8b4',     // Brand start (teal)
+          'sage-light': '#b7efcc',
+          'sage-dark': '#6db991',
+          'teal-light': '#5dd3c2', 
+          'teal-dark': '#2ba896',
         },
         // Secondary Colors  
         secondary: {
           cream: '#FFF8E7',    // Warmer cream
           white: '#FAFAFA',
-          peach: '#FFE5D4',    // New peachy secondary
-          mint: '#E8F5E8',     // Soft mint for backgrounds
+          peach: '#fff5e8',    // Updated to feature peach
+          mint: '#f0faf0',     // Soft mint for backgrounds
         },
-        // Accent Colors - More vibrant corals and oranges
+        // Accent Colors - Updated with brand colors
         accent: {
-          coral: '#FF6B6B',    // More vibrant coral
-          'coral-light': '#FF8E8E',
-          'coral-dark': '#E55555',
+          coral: '#fd818b',    // Brand end (coral-pink)
+          'coral-light': '#feb3ba',
+          'coral-dark': '#f4535e',
           golden: '#FFA726',   // More orange-toned gold
           orange: '#FF8C42',   // New energetic orange
           lime: '#8BC34A',     // Fresh lime accent

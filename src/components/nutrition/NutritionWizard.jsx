@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '../ui/button'
 import { Card } from '../ui/card'
-import { Input } from '../ui/input'
-import { Select } from '../ui/select'
-import { ChevronLeft, ChevronRight, Calculator, Target, TrendingUp, Download, Share2, ChevronDown, ChevronUp, BookOpen, Lightbulb, Utensils } from 'lucide-react'
+import FloatingInput from '../ui/FloatingInput'
+import FloatingSelect from '../ui/FloatingSelect'
+import { ChevronLeft, ChevronRight, Calculator, Target, TrendingUp, Download, Share2, ChevronDown, ChevronUp, BookOpen, Lightbulb, Utensils, Loader2 } from 'lucide-react'
 
 const NutritionWizard = () => {
   const [currentStep, setCurrentStep] = useState(0)
@@ -223,7 +224,7 @@ const NutritionWizard = () => {
     <div className="text-center max-w-2xl mx-auto animate-fade-in">
       <div className="mb-8">
         <div className="text-6xl mb-4 animate-bounce-gentle">🎯</div>
-        <h1 className="text-4xl font-bold text-gray-800 mb-4 animate-slide-up">
+        <h1 className="text-4xl font-semibold text-gray-800 mb-4 animate-slide-up">
           Your Personalized Nutrition Guide
         </h1>
         <p className="text-xl text-gray-600 mb-2 animate-slide-up" style={{animationDelay: '0.1s'}}>
@@ -234,25 +235,47 @@ const NutritionWizard = () => {
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl animate-slide-up hover:scale-105 transition-transform duration-300" style={{animationDelay: '0.3s'}}>
-          <Calculator className="w-8 h-8 text-blue-600 mx-auto mb-3 animate-pulse-slow" />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <motion.div 
+          className="p-6 bg-featureMint rounded-xl cursor-pointer group"
+          whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.3 }}
+        >
+          <Calculator className="w-8 h-8 text-brandStart mx-auto mb-3 group-hover:scale-110 transition-transform duration-200" />
           <h3 className="font-semibold text-gray-800 mb-2">Precise Calculations</h3>
           <p className="text-sm text-gray-600">Science-based formulas for accurate results</p>
-        </div>
-        <div className="p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-xl animate-slide-up hover:scale-105 transition-transform duration-300" style={{animationDelay: '0.4s'}}>
-          <Target className="w-8 h-8 text-green-600 mx-auto mb-3 animate-pulse-slow" />
+        </motion.div>
+        <motion.div 
+          className="p-6 bg-featureLavender rounded-xl cursor-pointer group"
+          whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.3 }}
+        >
+          <Target className="w-8 h-8 text-brandStart mx-auto mb-3 group-hover:scale-110 transition-transform duration-200" />
           <h3 className="font-semibold text-gray-800 mb-2">Personal Targets</h3>
           <p className="text-sm text-gray-600">Customized to your goals and lifestyle</p>
-        </div>
-        <div className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl animate-slide-up hover:scale-105 transition-transform duration-300" style={{animationDelay: '0.5s'}}>
-          <TrendingUp className="w-8 h-8 text-purple-600 mx-auto mb-3 animate-pulse-slow" />
+        </motion.div>
+        <motion.div 
+          className="p-6 bg-featurePeach rounded-xl cursor-pointer group"
+          whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.3 }}
+        >
+          <TrendingUp className="w-8 h-8 text-brandStart mx-auto mb-3 group-hover:scale-110 transition-transform duration-200" />
           <h3 className="font-semibold text-gray-800 mb-2">Easy to Follow</h3>
           <p className="text-sm text-gray-600">Simple, actionable recommendations</p>
-        </div>
+        </motion.div>
       </div>
 
-      <Button onClick={nextStep} size="large" className="px-8 py-3">
+      <Button 
+        onClick={nextStep} 
+        size="large" 
+        className="bg-gradient-to-r from-brandStart to-brandEnd hover:from-brandEnd hover:to-brandStart text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+      >
         Get Started <ChevronRight className="w-5 h-5 ml-2" />
       </Button>
     </div>,
@@ -260,28 +283,27 @@ const NutritionWizard = () => {
     // Step 1: User Input Form
     <div className="max-w-2xl mx-auto animate-fade-in">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-2 animate-slide-up">Tell Us About Yourself</h2>
+        <h2 className="text-3xl font-semibold text-gray-800 mb-2 animate-slide-up">Tell Us About Yourself</h2>
         <p className="text-gray-600 animate-slide-up" style={{animationDelay: '0.1s'}}>We'll use this information to calculate your personalized nutrition needs.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-8">
         <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
-          <Input
+          <FloatingInput
             label="Age"
+            name="age"
             type="number"
             placeholder="25"
             value={formData.age}
             onChange={(e) => updateFormData('age', e.target.value)}
-            error=""
-            helpText=""
-            onValidate={() => {}}
-            className="w-full transition-all duration-200 focus-within:scale-105"
+            className="transition-all duration-200 hover:scale-105"
           />
         </div>
 
         <div className="animate-slide-up" style={{animationDelay: '0.3s'}}>
-          <Select
+          <FloatingSelect
             label="Gender"
+            name="gender"
             value={formData.gender}
             onChange={(value) => updateFormData('gender', value)}
             placeholder="Select gender"
@@ -289,43 +311,38 @@ const NutritionWizard = () => {
               { value: 'male', label: 'Male' },
               { value: 'female', label: 'Female' }
             ]}
-            error=""
-            helpText=""
-            className="transition-all duration-200 focus-within:scale-105"
+            className="transition-all duration-200 hover:scale-105"
           />
         </div>
 
         <div className="animate-slide-up" style={{animationDelay: '0.4s'}}>
-          <Input
+          <FloatingInput
             label="Height (cm)"
+            name="height"
             type="number"
             placeholder="175"
             value={formData.height}
             onChange={(e) => updateFormData('height', e.target.value)}
-            error=""
-            helpText=""
-            onValidate={() => {}}
-            className="w-full transition-all duration-200 focus-within:scale-105"
+            className="transition-all duration-200 hover:scale-105"
           />
         </div>
 
         <div className="animate-slide-up" style={{animationDelay: '0.5s'}}>
-          <Input
+          <FloatingInput
             label="Weight (kg)"
+            name="weight"
             type="number"
             placeholder="70"
             value={formData.weight}
             onChange={(e) => updateFormData('weight', e.target.value)}
-            error=""
-            helpText=""
-            onValidate={() => {}}
-            className="w-full transition-all duration-200 focus-within:scale-105"
+            className="transition-all duration-200 hover:scale-105"
           />
         </div>
 
         <div className="md:col-span-2">
-          <Select
+          <FloatingSelect
             label="Activity Level"
+            name="activityLevel"
             value={formData.activityLevel}
             onChange={(value) => updateFormData('activityLevel', value)}
             placeholder="Select your activity level"
@@ -336,8 +353,7 @@ const NutritionWizard = () => {
               { value: 'active', label: 'Active (hard exercise 6-7 days/week)' },
               { value: 'very_active', label: 'Very Active (very hard exercise, physical job)' }
             ]}
-            error=""
-            helpText=""
+            className="transition-all duration-200 hover:scale-105"
           />
         </div>
 
@@ -373,10 +389,19 @@ const NutritionWizard = () => {
         <Button 
           onClick={calculateResults}
           disabled={!formData.age || !formData.gender || !formData.height || !formData.weight || !formData.activityLevel || !formData.goal || isCalculating}
-          loading={isCalculating}
+          className="bg-gradient-to-r from-brandStart to-brandEnd hover:from-brandEnd hover:to-brandStart text-white font-semibold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isCalculating ? 'Calculating...' : 'Calculate Results'} 
-          {!isCalculating && <ChevronRight className="w-4 h-4 ml-2" />}
+          {isCalculating ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Calculating...
+            </>
+          ) : (
+            <>
+              Calculate Results 
+              <ChevronRight className="w-4 h-4 ml-2" />
+            </>
+          )}
         </Button>
       </div>
     </div>,
@@ -683,28 +708,43 @@ const NutritionWizard = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-muted via-white to-featurePeach py-8 px-4">
       {/* Progress Indicator */}
-      <div className="max-w-4xl mx-auto mb-8">
-        <div className="flex items-center justify-center space-x-2">
-          {[0, 1, 2, 3].map(step => (
-            <div
+      <div className="max-w-2xl mx-auto mb-8">
+        <div className="flex items-center justify-center space-x-4">
+          {[0, 1, 2, 3].map((step) => (
+            <motion.div
               key={step}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                step <= currentStep ? 'bg-blue-500' : 'bg-gray-200'
-              }`}
+              initial={{ scale: 0.8 }}
+              animate={{ 
+                scale: step <= currentStep ? 1.2 : 0.8,
+                backgroundColor: step <= currentStep ? '#37c8b4' : '#e5e7eb'
+              }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="w-3 h-3 rounded-full"
             />
           ))}
         </div>
-        <div className="text-center mt-2 text-sm text-gray-500">
-          Step {currentStep + 1} of 4
+        <div className="text-center mt-4">
+          <span className="text-sm font-semibold text-gray-600">
+            Step {currentStep + 1} of 4
+          </span>
         </div>
       </div>
 
       {/* Current Step Content */}
-      <div className="max-w-6xl mx-auto">
-        {steps[currentStep]}
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentStep}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className="max-w-2xl mx-auto"
+        >
+          {steps[currentStep]}
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }
