@@ -167,9 +167,28 @@ const ComingSoonFeatures = () => {
 
     setIsSubmitting(true)
     
-    // Simple validation
-    if (!formData.name.trim() || !formData.email.trim() || !formData.email.includes('@')) {
-      setToastMessage('Please enter a valid name and email address.')
+    // Enhanced validation
+    const trimmedName = formData.name.trim()
+    const trimmedEmail = formData.email.trim().toLowerCase()
+    
+    if (!trimmedName) {
+      setToastMessage('Please enter your name.')
+      setShowToast(true)
+      setIsSubmitting(false)
+      return
+    }
+    
+    if (!trimmedEmail) {
+      setToastMessage('Please enter your email address.')
+      setShowToast(true)
+      setIsSubmitting(false)
+      return
+    }
+    
+    // More robust email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(trimmedEmail)) {
+      setToastMessage('Please enter a valid email address.')
       setShowToast(true)
       setIsSubmitting(false)
       return
@@ -180,18 +199,19 @@ const ComingSoonFeatures = () => {
 
     // Save to localStorage (in production, this would be an API call)
     const waitlistUsers = JSON.parse(localStorage.getItem('nutriwell-waitlist') || '[]')
-    const newUser = {
-      name: formData.name.trim(),
-      email: formData.email.trim(),
-      timestamp: Date.now()
-    }
     
-    // Check if email already exists
-    if (waitlistUsers.some(user => user.email === newUser.email)) {
-      setToastMessage('This email is already on the waitlist!')
+    // Check if email already exists (case-insensitive)
+    if (waitlistUsers.some(user => user.email.toLowerCase() === trimmedEmail)) {
+      setToastMessage('This email is already on the waitlist.')
       setShowToast(true)
       setIsSubmitting(false)
       return
+    }
+    
+    const newUser = {
+      name: trimmedName,
+      email: trimmedEmail,
+      timestamp: Date.now()
     }
 
     waitlistUsers.push(newUser)
@@ -361,9 +381,29 @@ const ComingSoonFeatures = () => {
               <p className="text-gray-600 text-sm">
                 Join our insider group — first 80 users get exclusive previews
                 {waitlistCount > 0 && (
-                  <span className="block mt-1 text-brandStart font-semibold">
-                    {waitlistCount}/80 spots filled
-                  </span>
+                  <div className="mt-2 space-y-2">
+                    <span className={`block font-semibold text-sm ${
+                      waitlistCount >= 70 ? 'text-orange-600' : 
+                      waitlistCount >= 50 ? 'text-amber-600' : 
+                      'text-brandStart'
+                    }`}>
+                      {waitlistCount}/80 spots filled
+                      {waitlistCount >= 70 && ' • Almost full!'}
+                      {waitlistCount >= 75 && ' • Hurry up!'}
+                    </span>
+                    
+                    {/* Progress bar */}
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          waitlistCount >= 70 ? 'bg-orange-500' : 
+                          waitlistCount >= 50 ? 'bg-amber-500' : 
+                          'bg-gradient-to-r from-brandStart to-brandEnd'
+                        }`}
+                        style={{ width: `${Math.min((waitlistCount / 80) * 100, 100)}%` }}
+                      />
+                    </div>
+                  </div>
                 )}
               </p>
             </div>
