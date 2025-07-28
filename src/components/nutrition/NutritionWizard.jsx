@@ -292,37 +292,37 @@ const NutritionWizard = () => {
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8">
         <motion.div 
-          className="p-6 bg-featureMint rounded-xl cursor-pointer group overflow-hidden min-h-[140px] flex flex-col items-center justify-center text-center"
+          className="p-4 bg-featureMint rounded-xl cursor-pointer group overflow-visible min-h-[160px] flex flex-col items-center justify-center text-center"
           whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.3 }}
         >
           <Calculator className="w-8 h-8 text-brandStart mx-auto mb-3 group-hover:scale-110 transition-transform duration-200" />
-          <h3 className="font-semibold text-gray-800 mb-2">Precise Calculations</h3>
-          <p className="text-sm text-gray-600">Science-based formulas for accurate results</p>
+          <h3 className="font-semibold text-gray-800 mb-2 leading-tight">Precise Calculations</h3>
+          <p className="text-sm md:text-base text-gray-600 leading-relaxed break-words">Science-based formulas for accurate results</p>
         </motion.div>
         <motion.div 
-          className="p-6 bg-featureLavender rounded-xl cursor-pointer group overflow-hidden min-h-[140px] flex flex-col items-center justify-center text-center"
+          className="p-4 bg-featureLavender rounded-xl cursor-pointer group overflow-visible min-h-[160px] flex flex-col items-center justify-center text-center"
           whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.3 }}
         >
           <Target className="w-8 h-8 text-brandStart mx-auto mb-3 group-hover:scale-110 transition-transform duration-200" />
-          <h3 className="font-semibold text-gray-800 mb-2">Personal Targets</h3>
-          <p className="text-sm text-gray-600">Customized to your goals and lifestyle</p>
+          <h3 className="font-semibold text-gray-800 mb-2 leading-tight">Personal Targets</h3>
+          <p className="text-sm md:text-base text-gray-600 leading-relaxed break-words">Customized to your goals and lifestyle</p>
         </motion.div>
         <motion.div 
-          className="p-6 bg-featurePeach rounded-xl cursor-pointer group overflow-hidden min-h-[140px] flex flex-col items-center justify-center text-center"
+          className="p-4 bg-featurePeach rounded-xl cursor-pointer group overflow-visible min-h-[160px] flex flex-col items-center justify-center text-center"
           whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.3 }}
         >
           <TrendingUp className="w-8 h-8 text-brandStart mx-auto mb-3 group-hover:scale-110 transition-transform duration-200" />
-          <h3 className="font-semibold text-gray-800 mb-2">Easy to Follow</h3>
-          <p className="text-sm text-gray-600">Simple, actionable recommendations</p>
+          <h3 className="font-semibold text-gray-800 mb-2 leading-tight">Easy to Follow</h3>
+          <p className="text-sm md:text-base text-gray-600 leading-relaxed break-words">Simple, actionable recommendations</p>
         </motion.div>
       </div>
 
