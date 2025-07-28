@@ -292,37 +292,37 @@ const NutritionWizard = () => {
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8">
         <motion.div 
-          className="p-6 bg-featureMint rounded-xl cursor-pointer group overflow-hidden min-h-[180px] flex flex-col items-center justify-center text-center border border-transparent hover:border-brandStart/20 transition-all duration-300"
+          className="p-6 bg-featureMint rounded-xl cursor-pointer group overflow-hidden min-h-[200px] flex flex-col items-center justify-center text-center border border-transparent hover:border-brandStart/20 transition-all duration-300"
           whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.3 }}
         >
           <Calculator className="w-8 h-8 text-brandStart mx-auto mb-4 group-hover:scale-110 transition-transform duration-200" />
-          <h3 className="font-semibold text-gray-800 mb-3 leading-tight text-base">Precise Calculations</h3>
-          <p className="text-sm text-gray-600 leading-relaxed max-w-full px-2">Science-based formulas for accurate results</p>
+          <h3 className="font-semibold text-gray-800 mb-3 leading-tight text-base max-w-[90%] mx-auto">Precise Calculations</h3>
+          <p className="text-sm text-gray-600 leading-relaxed max-w-[90%] mx-auto">Science-based formulas for accurate results</p>
         </motion.div>
         <motion.div 
-          className="p-6 bg-featureLavender rounded-xl cursor-pointer group overflow-hidden min-h-[180px] flex flex-col items-center justify-center text-center border border-transparent hover:border-brandStart/20 transition-all duration-300"
+          className="p-6 bg-featureLavender rounded-xl cursor-pointer group overflow-hidden min-h-[200px] flex flex-col items-center justify-center text-center border border-transparent hover:border-brandStart/20 transition-all duration-300"
           whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.3 }}
         >
           <Target className="w-8 h-8 text-brandStart mx-auto mb-4 group-hover:scale-110 transition-transform duration-200" />
-          <h3 className="font-semibold text-gray-800 mb-3 leading-tight text-base">Personal Targets</h3>
-          <p className="text-sm text-gray-600 leading-relaxed max-w-full px-2">Customized to your goals and lifestyle</p>
+          <h3 className="font-semibold text-gray-800 mb-3 leading-tight text-base max-w-[90%] mx-auto">Personal Targets</h3>
+          <p className="text-sm text-gray-600 leading-relaxed max-w-[90%] mx-auto">Customized to your goals and lifestyle</p>
         </motion.div>
         <motion.div 
-          className="p-6 bg-featurePeach rounded-xl cursor-pointer group overflow-hidden min-h-[180px] flex flex-col items-center justify-center text-center border border-transparent hover:border-brandStart/20 transition-all duration-300"
+          className="p-6 bg-featurePeach rounded-xl cursor-pointer group overflow-hidden min-h-[200px] flex flex-col items-center justify-center text-center border border-transparent hover:border-brandStart/20 transition-all duration-300"
           whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.3 }}
         >
           <TrendingUp className="w-8 h-8 text-brandStart mx-auto mb-4 group-hover:scale-110 transition-transform duration-200" />
-          <h3 className="font-semibold text-gray-800 mb-3 leading-tight text-base">Easy to Follow</h3>
-          <p className="text-sm text-gray-600 leading-relaxed max-w-full px-2">Simple, actionable recommendations</p>
+          <h3 className="font-semibold text-gray-800 mb-3 leading-tight text-base max-w-[90%] mx-auto">Easy to Follow</h3>
+          <p className="text-sm text-gray-600 leading-relaxed max-w-[90%] mx-auto">Simple, actionable recommendations</p>
         </motion.div>
       </div>
 
@@ -360,8 +360,8 @@ const NutritionWizard = () => {
         <p className="text-gray-600">We'll use this information to calculate your personalized nutrition needs.</p>
       </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="animate-slide-up mb-4" style={{animationDelay: '0.2s'}}>
           <FloatingInput
             label="Age"
             name="age"
@@ -373,7 +373,7 @@ const NutritionWizard = () => {
           />
         </div>
 
-        <div className="animate-slide-up" style={{animationDelay: '0.3s'}}>
+        <div className="animate-slide-up mb-4" style={{animationDelay: '0.3s'}}>
           <FloatingSelect
             label="Gender"
             name="gender"
@@ -384,11 +384,11 @@ const NutritionWizard = () => {
               { value: 'male', label: 'Male' },
               { value: 'female', label: 'Female' }
             ]}
-            className="transition-all duration-200 hover:scale-105"
+            className="transition-all duration-200 hover:scale-105 mb-2"
           />
         </div>
 
-        <div className="animate-slide-up" style={{animationDelay: '0.4s'}}>
+        <div className="animate-slide-up mb-4" style={{animationDelay: '0.4s'}}>
           <FloatingInput
             label="Height (cm)"
             name="height"
@@ -400,7 +400,7 @@ const NutritionWizard = () => {
           />
         </div>
 
-        <div className="animate-slide-up" style={{animationDelay: '0.5s'}}>
+        <div className="animate-slide-up mb-4" style={{animationDelay: '0.5s'}}>
           <FloatingInput
             label="Weight (kg)"
             name="weight"
@@ -412,7 +412,7 @@ const NutritionWizard = () => {
           />
         </div>
 
-        <div className="md:col-span-2">
+        <div className="md:col-span-2 mb-6">
           <FloatingSelect
             label="Activity Level"
             name="activityLevel"
@@ -426,7 +426,7 @@ const NutritionWizard = () => {
               { value: 'active', label: 'Active (hard exercise 6-7 days/week)' },
               { value: 'very_active', label: 'Very Active (very hard exercise, physical job)' }
             ]}
-            className="transition-all duration-200 hover:scale-105"
+            className="transition-all duration-200 hover:scale-105 mb-2"
           />
         </div>
 
