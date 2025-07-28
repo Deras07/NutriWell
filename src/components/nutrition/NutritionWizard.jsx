@@ -5,7 +5,7 @@ import { Card } from '../ui/card'
 import FloatingInput from '../ui/FloatingInput'
 import FloatingSelect from '../ui/FloatingSelect'
 import ComingSoonFeatures from '../ui/ComingSoonFeatures'
-import { ChevronLeft, ChevronRight, Calculator, Target, TrendingUp, Download, Share2, ChevronDown, ChevronUp, BookOpen, Lightbulb, Utensils, Loader2 } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Calculator, Target, TrendingUp, Download, Share2, ChevronDown, ChevronUp, BookOpen, Lightbulb, Utensils, Loader2, Zap, Brain, Heart, RefreshCw, Save } from 'lucide-react'
 
 const NutritionWizard = () => {
   const [currentStep, setCurrentStep] = useState(0)
@@ -222,18 +222,72 @@ const NutritionWizard = () => {
   // Step components
   const steps = [
     // Step 0: Welcome Screen
-    <div className="text-center max-w-2xl mx-auto animate-fade-in">
+    <motion.div 
+      className="text-center max-w-2xl mx-auto rounded-2xl backdrop-blur-md bg-white/95 p-8 shadow-xl"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
       <div className="mb-8">
-        <div className="text-6xl mb-4 animate-bounce-gentle">🎯</div>
-        <h1 className="text-4xl font-semibold text-gray-800 mb-4 animate-slide-up">
-          Your Personalized Nutrition Guide
-        </h1>
-        <p className="text-xl text-gray-600 mb-2 animate-slide-up" style={{animationDelay: '0.1s'}}>
+        <div className="flex items-center justify-center mb-4">
+          <div className="text-6xl mr-2 animate-bounce-gentle">🎯</div>
+          <motion.div
+            className="text-2xl"
+            animate={{ 
+              rotate: [0, 10, -10, 0],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{ 
+              duration: 2, 
+              repeat: Infinity, 
+              repeatDelay: 3,
+              ease: "easeInOut"
+            }}
+          >
+            ✨
+          </motion.div>
+        </div>
+        <motion.h1 
+          className="text-4xl font-semibold mb-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <span className="bg-gradient-to-r from-brandStart to-brandEnd bg-clip-text text-transparent">
+            Your Personalized Nutrition Guide
+          </span>
+        </motion.h1>
+        
+        <motion.div
+          className="mb-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          <p className="text-lg font-medium text-brandStart mb-2">
+            What you'll get:
+          </p>
+          <p className="text-lg text-gray-600">
+            Science-backed <span className="bg-gradient-to-r from-brandStart to-brandEnd bg-clip-text text-transparent font-semibold">daily needs</span>, personalized to your goals.
+          </p>
+        </motion.div>
+        
+        <motion.p 
+          className="text-xl text-gray-600 mb-2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+        >
           We'll help you find your personalized nutrition needs — in under 60 seconds.
-        </p>
-        <p className="text-lg text-gray-500 animate-slide-up" style={{animationDelay: '0.2s'}}>
-          Get your daily calorie needs, macro targets, and personalized recommendations.
-        </p>
+        </motion.p>
+        <motion.p 
+          className="text-lg text-gray-500"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          Get your <span className="bg-gradient-to-r from-brandStart to-brandEnd bg-clip-text text-transparent font-semibold">calorie needs</span>, <span className="bg-gradient-to-r from-brandStart to-brandEnd bg-clip-text text-transparent font-semibold">macro targets</span>, and personalized recommendations.
+        </motion.p>
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8">
@@ -272,23 +326,41 @@ const NutritionWizard = () => {
         </motion.div>
       </div>
 
-      <Button 
-        onClick={nextStep} 
-        size="large" 
-        className="bg-gradient-to-r from-brandStart to-brandEnd hover:from-brandEnd hover:to-brandStart text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+      <motion.button
+        onClick={nextStep}
+        className="bg-gradient-to-r from-brandStart to-brandEnd hover:from-brandEnd hover:to-brandStart text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 text-lg"
+        whileHover={{ scale: 1.05, y: -2 }}
+        whileTap={{ scale: 0.95 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.5 }}
       >
         Get Started <ChevronRight className="w-5 h-5 ml-2" />
-      </Button>
-    </div>,
+      </motion.button>
+    </motion.div>,
 
     // Step 1: User Input Form
-    <div className="max-w-2xl mx-auto animate-fade-in">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-2 animate-slide-up">Tell Us About Yourself</h2>
-        <p className="text-gray-600 animate-slide-up" style={{animationDelay: '0.1s'}}>We'll use this information to calculate your personalized nutrition needs.</p>
-      </div>
+    <motion.div 
+      className="max-w-2xl mx-auto rounded-2xl backdrop-blur-md bg-white/95 p-8 shadow-xl"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
+      <motion.div 
+        className="text-center mb-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-semibold mb-2">
+          <span className="bg-gradient-to-r from-brandStart to-brandEnd bg-clip-text text-transparent">
+            Tell Us About Yourself
+          </span>
+        </h2>
+        <p className="text-gray-600">We'll use this information to calculate your personalized nutrition needs.</p>
+      </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4">
         <div className="animate-slide-up" style={{animationDelay: '0.2s'}}>
           <FloatingInput
             label="Age"
@@ -387,13 +459,20 @@ const NutritionWizard = () => {
       </div>
 
       <div className="flex justify-between mt-8">
-        <Button variant="tertiary" onClick={prevStep}>
+        <motion.button
+          onClick={prevStep}
+          className="flex items-center px-6 py-3 text-gray-600 hover:text-brandStart transition-colors duration-200 font-medium"
+          whileHover={{ x: -3 }}
+          whileTap={{ scale: 0.95 }}
+        >
           <ChevronLeft className="w-4 h-4 mr-2" /> Back
-        </Button>
-        <Button 
+        </motion.button>
+        <motion.button
           onClick={calculateResults}
           disabled={!formData.age || !formData.gender || !formData.height || !formData.weight || !formData.activityLevel || !formData.goal || isCalculating}
           className="bg-gradient-to-r from-brandStart to-brandEnd hover:from-brandEnd hover:to-brandStart text-white font-semibold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          whileHover={{ scale: 1.05, y: -2 }}
+          whileTap={{ scale: 0.95 }}
         >
           {isCalculating ? (
             <>
@@ -406,59 +485,117 @@ const NutritionWizard = () => {
               <ChevronRight className="w-4 h-4 ml-2" />
             </>
           )}
-        </Button>
+        </motion.button>
       </div>
-    </div>,
+    </motion.div>,
 
     // Step 2: Results Display
     results && (
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">Your Personalized Results</h2>
+      <motion.div 
+        className="max-w-4xl mx-auto rounded-2xl backdrop-blur-md bg-white/95 p-8 shadow-xl"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+      >
+        <motion.div 
+          className="text-center mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <h2 className="text-3xl font-semibold mb-2">
+            <span className="bg-gradient-to-r from-brandStart to-brandEnd bg-clip-text text-transparent">
+              Your Personalized Results
+            </span>
+          </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             {results.personalSummary}
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Key Numbers */}
-          <div className="space-y-4">
-            <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+          <motion.div 
+            className="space-y-4"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            <motion.div
+              className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 rounded-2xl border-2 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 ease-out"
+              whileHover={{ y: -4 }}
+            >
               <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold text-blue-800">Daily Calorie Target</h3>
-                  <p className="text-sm text-blue-600">For your {formData.goal} goal</p>
+                <div className="flex items-center">
+                  <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mr-4">
+                    <Zap className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-blue-800">⚡️ Daily Calorie Target</h3>
+                    <p className="text-sm text-blue-600">For your {formData.goal} goal</p>
+                  </div>
                 </div>
-                <div className="text-3xl font-bold text-blue-700">
-                  {results.targetCalories}
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-blue-700">
+                    {results.targetCalories}
+                  </div>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-200 text-blue-800">
+                    Target
+                  </span>
                 </div>
               </div>
-            </Card>
+            </motion.div>
 
-            <Card className="p-6 bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+            <motion.div
+              className="p-6 bg-gradient-to-br from-green-50 to-green-100 border-green-200 rounded-2xl border-2 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 ease-out"
+              whileHover={{ y: -4 }}
+            >
               <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold text-green-800">BMR (Base Metabolic Rate)</h3>
-                  <p className="text-sm text-green-600">Calories burned at rest</p>
+                <div className="flex items-center">
+                  <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mr-4">
+                    <Brain className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-green-800">🧠 BMR (Base Metabolic Rate)</h3>
+                    <p className="text-sm text-green-600">Calories burned at rest</p>
+                  </div>
                 </div>
-                <div className="text-3xl font-bold text-green-700">
-                  {results.bmr}
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-green-700">
+                    {results.bmr}
+                  </div>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-200 text-green-800">
+                    Base Rate
+                  </span>
                 </div>
               </div>
-            </Card>
+            </motion.div>
 
-            <Card className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+            <motion.div
+              className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 rounded-2xl border-2 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 ease-out"
+              whileHover={{ y: -4 }}
+            >
               <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold text-purple-800">Daily Energy Expenditure</h3>
-                  <p className="text-sm text-purple-600">Including activity</p>
+                <div className="flex items-center">
+                  <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mr-4">
+                    <Heart className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-purple-800">🥗 Daily Energy Expenditure</h3>
+                    <p className="text-sm text-purple-600">Including activity</p>
+                  </div>
                 </div>
-                <div className="text-3xl font-bold text-purple-700">
-                  {results.dailyCalories}
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-purple-700">
+                    {results.dailyCalories}
+                  </div>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-200 text-purple-800">
+                    Total
+                  </span>
                 </div>
               </div>
-            </Card>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Macro Chart */}
           <div className="bg-white rounded-xl p-6 border">
@@ -490,42 +627,75 @@ const NutritionWizard = () => {
           </div>
         </div>
 
-        <div className="flex justify-between items-center">
-          <Button variant="tertiary" onClick={prevStep}>
+        <motion.div 
+          className="flex justify-between items-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+        >
+          <motion.button
+            onClick={prevStep}
+            className="flex items-center px-6 py-3 text-gray-600 hover:text-brandStart transition-colors duration-200 font-medium"
+            whileHover={{ x: -3 }}
+            whileTap={{ scale: 0.95 }}
+          >
             <ChevronLeft className="w-4 h-4 mr-2" /> Back
-          </Button>
+          </motion.button>
           
           <div className="flex gap-3">
-            <Button variant="secondary">
-              <Download className="w-4 h-4 mr-2" /> Download Results
-            </Button>
-            <Button variant="secondary">
-              <Share2 className="w-4 h-4 mr-2" /> Share
-            </Button>
-            <Button 
+            <motion.button
+              onClick={() => setCurrentStep(0)}
+              className="flex items-center px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-colors duration-200"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <RefreshCw className="w-4 h-4 mr-2" /> Start Over
+            </motion.button>
+            <motion.button
+              className="flex items-center px-6 py-3 bg-green-100 hover:bg-green-200 text-green-700 font-medium rounded-xl transition-colors duration-200"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Save className="w-4 h-4 mr-2" /> Save My Plan
+            </motion.button>
+            <motion.button
               onClick={nextStep}
-              className="bg-gradient-to-r from-brandStart to-brandEnd hover:from-brandEnd hover:to-brandStart text-white font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 group"
+              className="bg-gradient-to-r from-brandStart to-brandEnd hover:from-brandEnd hover:to-brandStart text-white font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
             >
               <span className="bg-gradient-to-r from-white to-white bg-clip-text group-hover:from-yellow-200 group-hover:to-white transition-all duration-300">
                 Learn More
               </span>
               <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-            </Button>
+            </motion.button>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     ),
 
     // Step 3: Educational Content & Tips
-    <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-semibold bg-gradient-to-r from-brandStart to-brandEnd bg-clip-text text-transparent mb-4 group-hover:from-brandEnd group-hover:to-brandStart transition-all duration-300">
-          Learn More About Nutrition
+    <motion.div 
+      className="max-w-4xl mx-auto rounded-2xl backdrop-blur-md bg-white/95 p-8 shadow-xl"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
+      <motion.div 
+        className="text-center mb-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-semibold mb-4">
+          <span className="bg-gradient-to-r from-brandStart to-brandEnd bg-clip-text text-transparent">
+            Learn More About Nutrition
+          </span>
         </h2>
         <p className="text-lg text-gray-600">
           Understanding your numbers is just the beginning. Here's everything you need to succeed.
         </p>
-      </div>
+      </motion.div>
 
       {/* Quick Tips Section */}
       <div className="mb-8">
@@ -716,13 +886,18 @@ const NutritionWizard = () => {
           </Button>
         </div>
       </div>
-    </div>
+    </motion.div>
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-muted via-white to-featurePeach py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-muted via-white to-featurePeach py-10 px-6">
       {/* Progress Indicator */}
-      <div className="max-w-2xl mx-auto mb-8">
+      <motion.div 
+        className="max-w-2xl mx-auto mb-8"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="flex items-center justify-center space-x-4">
           {[0, 1, 2, 3].map((step) => (
             <motion.div
@@ -742,7 +917,7 @@ const NutritionWizard = () => {
             Step {currentStep + 1} of 4
           </span>
         </div>
-      </div>
+      </motion.div>
 
       {/* Current Step Content */}
       <AnimatePresence mode="wait">
@@ -752,7 +927,7 @@ const NutritionWizard = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          className="max-w-2xl mx-auto"
+          className="max-w-2xl mx-auto px-6"
         >
           {steps[currentStep]}
         </motion.div>
