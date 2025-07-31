@@ -35,14 +35,14 @@ const FloatingSelect = ({
           bg-white text-base relative
           ${shouldFloat 
             ? 'border-brandStart focus:border-brandEnd pt-6 pb-2 text-gray-900' 
-            : 'border-gray-300 focus:border-brandStart py-3 text-gray-500'
+            : 'border-gray-300 focus:border-brandStart py-3 text-transparent'
           }
           hover:border-brandMid
         `}
         {...props}
       >
         <option value="" disabled hidden>
-          {shouldFloat ? '' : placeholder}
+          {placeholder}
         </option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -57,8 +57,8 @@ const FloatingSelect = ({
         className={`
           absolute left-4 pointer-events-none transition-all duration-200 ease-out
           ${shouldFloat
-            ? 'top-1.5 text-xs font-medium text-brandStart bg-white px-1'
-            : 'top-1/2 -translate-y-1/2 text-base text-gray-500'
+            ? 'top-1.5 text-xs font-medium text-brandStart bg-white px-1 z-10'
+            : 'top-1/2 -translate-y-1/2 text-base text-gray-500 z-10'
           }
         `}
       >
