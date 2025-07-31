@@ -384,7 +384,7 @@ const NutritionWizard = () => {
               { value: 'male', label: 'Male' },
               { value: 'female', label: 'Female' }
             ]}
-            className="transition-all duration-200 hover:scale-105 mb-2"
+            className="transition-all duration-200 hover:scale-105"
           />
         </div>
 
@@ -426,7 +426,7 @@ const NutritionWizard = () => {
               { value: 'active', label: 'Active (hard exercise 6-7 days/week)' },
               { value: 'very_active', label: 'Very Active (very hard exercise, physical job)' }
             ]}
-            className="transition-all duration-200 hover:scale-105 mb-2"
+            className="transition-all duration-200 hover:scale-105"
           />
         </div>
 

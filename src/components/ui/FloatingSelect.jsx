@@ -20,9 +20,10 @@ const FloatingSelect = ({
   const handleBlur = () => setIsFocused(false)
 
   return (
-    <div className={`relative isolate ${className}`}>
+    <div className={`relative ${className}`}>
       {/* Select field */}
       <select
+        id={name}
         name={name}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -31,12 +32,11 @@ const FloatingSelect = ({
         className={`
           w-full px-4 border-2 rounded-xl transition-all duration-200 ease-out
           focus:outline-none focus:ring-0 appearance-none cursor-pointer
-          relative z-10
+          bg-white text-base relative
           ${shouldFloat 
-            ? 'border-brandStart focus:border-brandEnd pt-7 pb-3 text-gray-900' 
-            : 'border-gray-300 focus:border-brandStart py-4 text-gray-500'
+            ? 'border-brandStart focus:border-brandEnd pt-6 pb-2 text-gray-900' 
+            : 'border-gray-300 focus:border-brandStart py-3 text-gray-500'
           }
-          bg-white text-base
           hover:border-brandMid
         `}
         {...props}
@@ -55,10 +55,10 @@ const FloatingSelect = ({
       <label
         htmlFor={name}
         className={`
-          absolute left-3 transition-all duration-200 ease-out pointer-events-none z-30
+          absolute left-4 pointer-events-none transition-all duration-200 ease-out
           ${shouldFloat
-            ? 'top-2 text-xs font-semibold text-brandStart bg-white px-2 rounded'
-            : 'top-1/2 -translate-y-1/2 text-base text-gray-500 bg-transparent px-0'
+            ? 'top-1.5 text-xs font-medium text-brandStart bg-white px-1'
+            : 'top-1/2 -translate-y-1/2 text-base text-gray-500'
           }
         `}
       >
@@ -68,7 +68,7 @@ const FloatingSelect = ({
       {/* Dropdown arrow */}
       <ChevronDown 
         className={`
-          absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 pointer-events-none z-20
+          absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 pointer-events-none
           transition-colors duration-200
           ${isFocused ? 'text-brandStart' : 'text-gray-400'}
         `}
@@ -78,7 +78,7 @@ const FloatingSelect = ({
       <div 
         className={`
           absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-brandStart to-brandEnd
-          transition-all duration-200 ease-out z-10
+          transition-all duration-200 ease-out
           ${isFocused ? 'w-full' : 'w-0'}
         `}
       />
