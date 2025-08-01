@@ -6,6 +6,17 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    open: true
+    open: false
+  },
+  define: {
+    global: 'globalThis'
+  },
+  optimizeDeps: {
+    include: ['buffer']
+  },
+  resolve: {
+    alias: {
+      buffer: 'buffer'
+    }
   }
 }) 

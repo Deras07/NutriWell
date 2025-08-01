@@ -95,7 +95,9 @@ export const mealCategories = [
 
 // Search function for food database
 export const searchFoods = (query, limit = 10) => {
-  if (!query) return [];
+  if (!query) {
+    return [];
+  }
   
   const searchTerm = query.toLowerCase();
   return foodDatabase
