@@ -4,7 +4,7 @@ import { AuthScreen } from './auth/AuthScreen'
 import { Header } from './layout/Header'
 import { Footer } from './layout/Footer'
 import { UserProfile } from './profile/UserProfile'
-import NutritionWizard from './nutrition/NutritionWizard'
+import NuriAssistant from './ai/NuriAssistant'
 
 export const NutriWellApp = () => {
   const { 
@@ -63,10 +63,10 @@ export const NutriWellApp = () => {
           return <AuthScreen />
         }
         return <UserProfile userPlan={userPlan} dbUser={dbUser} />
-
+      
       case 'nutrition-wizard':
       default:
-        return <NutritionWizard />
+        return <NuriAssistant />
     }
   }
 
@@ -86,11 +86,11 @@ export const NutriWellApp = () => {
         onLogoClick={() => handleNavigation('nutrition-wizard')}
         onNavigate={handleNavigation}
       />
-      
+
       <main>
         {renderPage()}
       </main>
-      
+
       <Footer />
     </div>
   )
