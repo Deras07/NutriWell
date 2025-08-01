@@ -69,22 +69,50 @@ const NutritionWizard = () => {
   const calculateTargetCalories = () => {
     const dailyCalories = calculateDailyCalories()
     switch (formData.goal) {
-      case 'lose': return Math.round(dailyCalories - 500) // 1 lb/week loss
-      case 'maintain': return dailyCalories
-      case 'gain': return Math.round(dailyCalories + 500) // 1 lb/week gain
-      default: return dailyCalories
+      case 'lose': 
+        return Math.round(dailyCalories - 500) // 1 lb/week loss
+      case 'gain': 
+        return Math.round(dailyCalories + 500) // 1 lb/week gain
+      case 'muscle':
+        return Math.round(dailyCalories + 300) // Moderate surplus for muscle building
+      case 'maintain':
+      case 'energy':
+      case 'health':
+      default: 
+        return dailyCalories // Maintenance calories
     }
   }
 
-  // Calculate macronutrient targets
+  // Calculate macronutrient targets based on Health Canada & RDA guidelines
   const calculateMacros = () => {
     const targetCalories = calculateTargetCalories()
     
-    // Standard macro split (can be adjusted based on goals)
-    const proteinPercent = formData.goal === 'lose' ? 30 : 25
-    const fatPercent = 25
-    const carbPercent = 100 - proteinPercent - fatPercent
+    // Health Canada & RDA macro percentage breakdowns
+    let proteinPercent, carbPercent, fatPercent
+    
+    switch (formData.goal) {
+      case 'lose':
+        // Weight loss: Higher protein & fat, moderate carbs
+        proteinPercent = 30
+        carbPercent = 40
+        fatPercent = 30
+        break
+      case 'muscle':
+        // Muscle gain: High protein, moderate carbs, standard fat
+        proteinPercent = 30
+        carbPercent = 45
+        fatPercent = 25
+        break
+      default:
+        // General/maintenance (maintain, gain, energy, health)
+        proteinPercent = 25
+        carbPercent = 50
+        fatPercent = 25
+        break
+    }
 
+    // Calculate macro grams using standard calorie-per-gram values
+    // Protein = 4 kcal/g, Carbs = 4 kcal/g, Fats = 9 kcal/g
     const proteinGrams = Math.round((targetCalories * proteinPercent / 100) / 4)
     const fatGrams = Math.round((targetCalories * fatPercent / 100) / 9)
     const carbGrams = Math.round((targetCalories * carbPercent / 100) / 4)
@@ -135,10 +163,13 @@ const NutritionWizard = () => {
     const goalText = {
       lose: `To lose weight healthily, aim for ~${target} calories daily.`,
       maintain: `To maintain your current weight, aim for ~${target} calories daily.`,
-      gain: `To gain weight healthily, aim for ~${target} calories daily.`
+      gain: `To gain weight healthily, aim for ~${target} calories daily.`,
+      muscle: `To build muscle effectively, aim for ~${target} calories daily with adequate protein.`,
+      energy: `To improve your energy levels, aim for ~${target} calories daily with balanced nutrition.`,
+      health: `To optimize your overall health, aim for ~${target} calories daily with nutrient-dense foods.`
     }
 
-    return `At ${age} with a ${activityText[activityLevel]}, you burn approximately ${daily} calories per day. ${goalText[goal]}`
+    return `At ${age} with a ${activityText[activityLevel]}, you burn approximately ${daily} calories per day. ${goalText[goal] || goalText.maintain}`
   }
 
   // Macro Pie Chart Component
