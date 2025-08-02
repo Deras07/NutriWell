@@ -7,6 +7,10 @@ import FloatingSelect from '../ui/FloatingSelect'
 import DailyCheckIn from './DailyCheckIn'
 import HealthTipCard from './HealthTipCard'
 import { useNuriLogic } from '../../hooks/useNuriLogic'
+import { useAdaptiveTheme } from '../../hooks/useAdaptiveTheme'
+import AnimatedCard from '../ui/AnimatedCard'
+import TypingIndicator from '../ui/TypingIndicator'
+import ProgressRing from '../ui/ProgressRing'
 import { 
   ArrowRight, 
   ArrowLeft, 
@@ -29,7 +33,9 @@ const NuriAssistant = () => {
   const [showCheckIn, setShowCheckIn] = useState(false)
   const [showHealthTip, setShowHealthTip] = useState(false)
   const [userInput, setUserInput] = useState('')
-  const [conversation, setConversation] = useState<Array<{type: 'user' | 'nuri', message: string, timestamp: Date}>>([])
+  const [conversation, setConversation] = useState([])
+  const [isTyping, setIsTyping] = useState(false)
+  const [macroProgress, setMacroProgress] = useState({ protein: 65, carbs: 80, fats: 45 })
   
   const {
     nuriState,
@@ -43,6 +49,8 @@ const NuriAssistant = () => {
     updateNuriState
   } = useNuriLogic()
 
+  const { theme, timeOfDay, userMood, isDark, isStressed } = useAdaptiveTheme(nuriState.userMood)
+
   const [formData, setFormData] = useState({
     name: '',
     age: '',
@@ -55,44 +63,51 @@ const NuriAssistant = () => {
   const [results, setResults] = useState(null)
 
   // Handle user input and generate Nuri response
-  const handleUserInput = (input: string) => {
+  const handleUserInput = (input) => {
     if (!input.trim()) return
 
     // Add user message to conversation
-    const userMessage = { type: 'user' as const, message: input, timestamp: new Date() }
+    const userMessage = { type: 'user', message: input, timestamp: new Date() }
     setConversation(prev => [...prev, userMessage])
     setUserInput('')
 
-    // Generate Nuri's response
-    const response = generateResponse(input, {
-      macroData: results?.macros,
-      exerciseToday: false // This would come from user data
-    })
+    // Show typing indicator
+    setIsTyping(true)
 
-    // Add Nuri's response to conversation
-    const nuriMessage = { type: 'nuri' as const, message: response.message, timestamp: new Date() }
-    setConversation(prev => [...prev, nuriMessage])
+    // Simulate typing delay
+    setTimeout(() => {
+      // Generate Nuri's response
+      const response = generateResponse(input, {
+        macroData: results?.macros,
+        exerciseToday: false // This would come from user data
+      })
 
-    // Show health tip if available
-    if (response.healthTip) {
-      setShowHealthTip(true)
-    }
+      // Add Nuri's response to conversation
+      const nuriMessage = { type: 'nuri', message: response.message, timestamp: new Date() }
+      setConversation(prev => [...prev, nuriMessage])
+      setIsTyping(false)
 
-    // Show check-in if needed
-    if (response.shouldCheckIn) {
-      setShowCheckIn(true)
-    }
+      // Show health tip if available
+      if (response.healthTip) {
+        setShowHealthTip(true)
+      }
+
+      // Show check-in if needed
+      if (response.shouldCheckIn) {
+        setShowCheckIn(true)
+      }
+    }, 1500 + Math.random() * 1000) // Random delay for natural feel
   }
 
   // Handle daily check-in completion
-  const handleCheckInComplete = (mood: any, notes?: string) => {
+  const handleCheckInComplete = (mood, notes) => {
     const response = handleDailyCheckIn(mood, notes)
     setConversation(prev => [...prev, { type: 'nuri', message: response.message, timestamp: new Date() }])
     setShowCheckIn(false)
   }
 
   // Handle journal entry
-  const handleJournalEntry = (entry: string) => {
+  const handleJournalEntry = (entry) => {
     const response = processJournalEntry(entry)
     setConversation(prev => [...prev, { type: 'nuri', message: response.message, timestamp: new Date() }])
   }
@@ -257,26 +272,38 @@ const NuriAssistant = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
+    <div className={`min-h-screen bg-gradient-to-br ${theme.background} py-8 px-4 transition-all duration-1000`}>
       <div className="max-w-4xl mx-auto">
         
-        {/* Nuri Status Indicator */}
+        {/* Enhanced Nuri Status Indicator */}
         <motion.div 
           className="fixed top-8 left-8 z-50"
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.5, type: "spring" }}
         >
-          <div className="flex items-center gap-3 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg border border-gray-200">
-            <div className="relative">
-              <div className="w-3 h-3 bg-gradient-to-r from-green-400 to-blue-500 rounded-full animate-pulse"></div>
-              <div className="absolute inset-0 w-3 h-3 bg-gradient-to-r from-green-400 to-blue-500 rounded-full animate-ping opacity-75"></div>
+          <AnimatedCard 
+            className={`${theme.card} shadow-xl`}
+            shimmer={nuriState.proEnabled}
+            glow={isStressed}
+          >
+            <div className="flex items-center gap-3 px-4 py-2">
+              <div className="relative">
+                <div className={`w-3 h-3 bg-gradient-to-r ${theme.mood} rounded-full animate-pulse`}></div>
+                <div className={`absolute inset-0 w-3 h-3 bg-gradient-to-r ${theme.mood} rounded-full animate-ping opacity-75`}></div>
+              </div>
+              <span className={`text-sm font-medium ${theme.text}`}>
+                Nuri is here
+                {timeOfDay === 'morning' && ' 🌅'}
+                {timeOfDay === 'afternoon' && ' ☀️'}
+                {timeOfDay === 'evening' && ' 🌆'}
+                {timeOfDay === 'night' && ' 🌙'}
+              </span>
+              {nuriState.proEnabled && (
+                <Crown className="w-4 h-4 text-yellow-500 animate-pulse" />
+              )}
             </div>
-            <span className="text-sm font-medium text-gray-700">Nuri is here</span>
-            {nuriState.proEnabled && (
-              <Crown className="w-4 h-4 text-yellow-500" />
-            )}
-          </div>
+          </AnimatedCard>
         </motion.div>
 
         {/* Progress Indicator */}
@@ -304,105 +331,176 @@ const NuriAssistant = () => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Conversation Area */}
           <div className="flex-1 max-w-2xl">
-            <Card className="p-6 bg-white/95 backdrop-blur-sm shadow-xl border-0">
-              {/* Welcome Message */}
-              {conversation.length === 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-center mb-8"
-                >
-                  <div className="flex items-center justify-center gap-2 mb-4">
-                    <Sparkles className="w-6 h-6 text-blue-600" />
-                    <h2 className="text-2xl font-semibold text-gray-800">
-                      {currentPersonality.greeting}
-                    </h2>
-                  </div>
-                  <p className="text-gray-600">
-                    I'm here to support your health journey. How can I help you today?
-                  </p>
-                </motion.div>
-              )}
-
-              {/* Conversation History */}
-              <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
-                {conversation.map((message, index) => (
+            <AnimatedCard 
+              className={`${theme.card} shadow-xl`}
+              delay={0.2}
+              shimmer={nuriState.proEnabled}
+            >
+              <div className="p-6">
+                {/* Welcome Message */}
+                {conversation.length === 0 && (
                   <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: message.type === 'user' ? 20 : -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center mb-8"
                   >
-                    <div className={`max-w-xs lg:max-w-md p-3 rounded-2xl ${
-                      message.type === 'user' 
-                        ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white' 
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      <p className="text-sm">{message.message}</p>
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                      <Sparkles className={`w-6 h-6 ${theme.text.replace('text-', 'text-')}`} />
+                      <h2 className={`text-2xl font-semibold ${theme.text}`}>
+                        {currentPersonality.greeting}
+                      </h2>
                     </div>
+                    <p className="text-gray-600">
+                      I'm here to support your health journey. How can I help you today?
+                    </p>
                   </motion.div>
-                ))}
-              </div>
+                )}
 
-              {/* Input Area */}
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={userInput}
-                  onChange={(e) => setUserInput(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleUserInput(userInput)}
-                  placeholder="Tell Nuri how you're feeling..."
-                  className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-                <Button
-                  onClick={() => handleUserInput(userInput)}
-                  disabled={!userInput.trim()}
-                  className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                </Button>
+                {/* Conversation History */}
+                <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
+                  {conversation.map((message, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: message.type === 'user' ? 20 : -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      <AnimatedCard
+                        className={`max-w-xs lg:max-w-md p-3 rounded-2xl ${
+                          message.type === 'user' 
+                            ? `bg-gradient-to-r ${theme.primary} text-white` 
+                            : 'bg-gray-100 text-gray-800'
+                        }`}
+                        hover={false}
+                        delay={index * 0.1}
+                      >
+                        <p className="text-sm">{message.message}</p>
+                      </AnimatedCard>
+                    </motion.div>
+                  ))}
+                  
+                  {/* Typing Indicator */}
+                  <TypingIndicator isTyping={isTyping} theme={timeOfDay} />
+                </div>
+
+                {/* Enhanced Input Area */}
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={userInput}
+                    onChange={(e) => setUserInput(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleUserInput(userInput)}
+                    placeholder="Tell Nuri how you're feeling..."
+                    className={`flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 focus:border-transparent transition-all duration-300 ${
+                      theme.primary.includes('blue') ? 'focus:ring-blue-500' :
+                      theme.primary.includes('green') ? 'focus:ring-green-500' :
+                      theme.primary.includes('purple') ? 'focus:ring-purple-500' :
+                      'focus:ring-blue-500'
+                    }`}
+                  />
+                  <Button
+                    onClick={() => handleUserInput(userInput)}
+                    disabled={!userInput.trim()}
+                    className={`bg-gradient-to-r ${theme.primary} hover:opacity-90 text-white transition-all duration-300`}
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
-            </Card>
+            </AnimatedCard>
           </div>
 
-          {/* Sidebar */}
+          {/* Enhanced Sidebar */}
           <div className="w-full lg:w-80 space-y-6">
+            {/* Macro Progress Dashboard */}
+            <AnimatedCard 
+              className={`${theme.card} shadow-xl`}
+              delay={0.4}
+              shimmer={nuriState.proEnabled}
+            >
+              <div className="p-6">
+                <h3 className={`text-lg font-semibold ${theme.text} mb-4`}>
+                  Today's Progress
+                </h3>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <ProgressRing 
+                      progress={macroProgress.protein} 
+                      size={60} 
+                      color="red" 
+                      label="Protein"
+                    />
+                  </div>
+                  <div className="text-center">
+                    <ProgressRing 
+                      progress={macroProgress.carbs} 
+                      size={60} 
+                      color="yellow" 
+                      label="Carbs"
+                    />
+                  </div>
+                  <div className="text-center">
+                    <ProgressRing 
+                      progress={macroProgress.fats} 
+                      size={60} 
+                      color="purple" 
+                      label="Fats"
+                    />
+                  </div>
+                </div>
+              </div>
+            </AnimatedCard>
+
             {/* Daily Check-in */}
             {showCheckIn && (
-              <DailyCheckIn
-                onComplete={handleCheckInComplete}
-                onSkip={() => setShowCheckIn(false)}
-                streakDays={nuriState.streakDays}
-              />
+              <AnimatedCard 
+                className="shadow-xl"
+                delay={0.6}
+                glow={isStressed}
+              >
+                <DailyCheckIn
+                  onComplete={handleCheckInComplete}
+                  onSkip={() => setShowCheckIn(false)}
+                  streakDays={nuriState.streakDays}
+                />
+              </AnimatedCard>
             )}
 
             {/* Health Tip */}
             {showHealthTip && (
-              <HealthTipCard
-                tip={HEALTH_TIPS[0]}
-                onDismiss={() => setShowHealthTip(false)}
-              />
+              <AnimatedCard 
+                className="shadow-xl"
+                delay={0.8}
+                shimmer={nuriState.proEnabled}
+              >
+                <HealthTipCard
+                  tip={HEALTH_TIPS[0]}
+                  onDismiss={() => setShowHealthTip(false)}
+                />
+              </AnimatedCard>
             )}
 
-            {/* Pro Upgrade Suggestion */}
+            {/* Enhanced Pro Upgrade Suggestion */}
             {!nuriState.proEnabled && conversation.length > 2 && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+              <AnimatedCard 
+                className="shadow-xl"
+                delay={1.0}
+                shimmer={true}
+                glow={true}
               >
-                <Card className="p-6 bg-gradient-to-br from-yellow-50 to-amber-50 border-yellow-200">
+                <div className="p-6 bg-gradient-to-br from-yellow-50 to-amber-50 border-yellow-200 rounded-xl">
                   <div className="flex items-center gap-3 mb-3">
-                    <Crown className="w-5 h-5 text-yellow-600" />
+                    <Crown className="w-5 h-5 text-yellow-600 animate-pulse" />
                     <h4 className="font-semibold text-gray-800">Unlock Nuri Pro</h4>
                   </div>
                   <p className="text-sm text-gray-600 mb-3">
                     Get advanced features like mood tracking, journaling, and personalized insights.
                   </p>
-                  <Button className="w-full bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white">
+                  <Button className="w-full bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white transition-all duration-300">
                     Learn More
                   </Button>
-                </Card>
-              </motion.div>
+                </div>
+              </AnimatedCard>
             )}
           </div>
         </div>
