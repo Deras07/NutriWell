@@ -11,11 +11,7 @@ import {
   TrendingUp
 } from 'lucide-react'
 
-interface HealthTipCardProps {
-  tip: HealthTip
-  onDismiss?: () => void
-  className?: string
-}
+
 
 const categoryIcons = {
   nutrition: Heart,
@@ -41,7 +37,7 @@ const categoryIconColors = {
   general: 'text-green-600'
 }
 
-const HealthTipCard: React.FC<HealthTipCardProps> = ({ tip, onDismiss, className = '' }) => {
+const HealthTipCard = ({ tip, onDismiss, className = '' }) => {
   const Icon = categoryIcons[tip.category]
   const bgColor = categoryColors[tip.category]
   const iconColor = categoryIconColors[tip.category]

@@ -14,11 +14,7 @@ import {
   MessageCircle
 } from 'lucide-react'
 
-interface DailyCheckInProps {
-  onComplete: (mood: UserMood, notes?: string) => void
-  onSkip: () => void
-  streakDays?: number
-}
+
 
 const moodOptions = [
   { value: 'energetic' as UserMood, label: 'Energetic', icon: Zap, color: 'from-yellow-400 to-orange-500' },
@@ -30,12 +26,12 @@ const moodOptions = [
   { value: 'anxious' as UserMood, label: 'Anxious', icon: Heart, color: 'from-purple-400 to-violet-500' }
 ]
 
-const DailyCheckIn: React.FC<DailyCheckInProps> = ({ onComplete, onSkip, streakDays = 0 }) => {
-  const [selectedMood, setSelectedMood] = useState<UserMood | null>(null)
+const DailyCheckIn = ({ onComplete, onSkip, streakDays = 0 }) => {
+  const [selectedMood, setSelectedMood] = useState(null)
   const [notes, setNotes] = useState('')
   const [showNotes, setShowNotes] = useState(false)
 
-  const handleMoodSelect = (mood: UserMood) => {
+  const handleMoodSelect = (mood) => {
     setSelectedMood(mood)
     setShowNotes(true)
   }

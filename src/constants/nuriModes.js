@@ -1,14 +1,6 @@
-export type NuriMode = 'coach' | 'companion' | 'nerd' | 'default'
+export const NURI_MODES = {
 
-export interface NuriPersonality {
-  tone: 'empathetic' | 'encouraging' | 'analytical' | 'casual'
-  style: 'formal' | 'friendly' | 'technical' | 'relaxed'
-  emoji: string
-  greeting: string
-  responsePattern: 'question' | 'statement' | 'suggestion' | 'observation'
-}
-
-export const NURI_MODES: Record<NuriMode, NuriPersonality> = {
+export const NURI_MODES = {
   coach: {
     tone: 'encouraging',
     style: 'friendly',
@@ -39,15 +31,7 @@ export const NURI_MODES: Record<NuriMode, NuriPersonality> = {
   }
 }
 
-export type UserMood = 'energetic' | 'tired' | 'stressed' | 'happy' | 'neutral' | 'anxious' | 'motivated'
-
-export interface MoodResponse {
-  tone: string
-  suggestions: string[]
-  encouragement: string
-}
-
-export const MOOD_RESPONSES: Record<UserMood, MoodResponse> = {
+export const MOOD_RESPONSES = {
   energetic: {
     tone: 'excited',
     suggestions: ['Great time for a workout!', 'Try that new recipe you wanted to make'],
@@ -85,16 +69,7 @@ export const MOOD_RESPONSES: Record<UserMood, MoodResponse> = {
   }
 }
 
-export interface HealthTip {
-  id: string
-  category: 'nutrition' | 'exercise' | 'mindfulness' | 'sleep' | 'general'
-  title: string
-  content: string
-  mood?: UserMood[]
-  mode?: NuriMode[]
-}
-
-export const HEALTH_TIPS: HealthTip[] = [
+export const HEALTH_TIPS = [
   {
     id: 'hydration-001',
     category: 'nutrition',
@@ -132,15 +107,7 @@ export const HEALTH_TIPS: HealthTip[] = [
   }
 ]
 
-export interface ProFeature {
-  id: string
-  name: string
-  description: string
-  category: 'chronic' | 'menstrual' | 'allergies' | 'mood' | 'journaling' | 'insights'
-  enabled: boolean
-}
-
-export const PRO_FEATURES: ProFeature[] = [
+export const PRO_FEATURES = [
   {
     id: 'chronic-conditions',
     name: 'Chronic Condition Support',

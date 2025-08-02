@@ -1,35 +1,15 @@
 import { useState, useCallback, useMemo } from 'react'
 import { 
-  NuriMode, 
   NURI_MODES, 
-  UserMood, 
   MOOD_RESPONSES, 
-  HealthTip, 
   HEALTH_TIPS,
-  ProFeature,
   PRO_FEATURES
 } from '../constants/nuriModes'
 
-export interface NuriState {
-  currentMode: NuriMode
-  userMood: UserMood | null
-  dailyCheckIn: boolean
-  lastInteraction: Date
-  streakDays: number
-  proEnabled: boolean
-}
 
-export interface NuriResponse {
-  message: string
-  tone: string
-  suggestions?: string[]
-  healthTip?: HealthTip
-  shouldCheckIn: boolean
-  proFeature?: ProFeature
-}
 
 export const useNuriLogic = () => {
-  const [nuriState, setNuriState] = useState<NuriState>({
+  const [nuriState, setNuriState] = useState({
     currentMode: 'default',
     userMood: null,
     dailyCheckIn: false,
@@ -39,7 +19,7 @@ export const useNuriLogic = () => {
   })
 
   // Update Nuri's state
-  const updateNuriState = useCallback((updates: Partial<NuriState>) => {
+  const updateNuriState = useCallback((updates) => {
     setNuriState(prev => ({ ...prev, ...updates }))
   }, [])
 
@@ -49,7 +29,7 @@ export const useNuriLogic = () => {
   }, [nuriState.currentMode])
 
   // Simple mood parsing from text input
-  const parseMoodFromText = useCallback((text: string): UserMood | null => {
+  const parseMoodFromText = useCallback((text) => {
     const lowerText = text.toLowerCase()
     
     if (lowerText.includes('tired') || lowerText.includes('exhausted') || lowerText.includes('sleepy')) {
@@ -76,13 +56,9 @@ export const useNuriLogic = () => {
 
   // Generate adaptive response based on mood and mode
   const generateResponse = useCallback((
-    userInput: string, 
-    context?: { 
-      macroData?: any, 
-      lastMeal?: string, 
-      exerciseToday?: boolean 
-    }
-  ): NuriResponse => {
+    userInput, 
+    context
+  ) => {
     const mood = parseMoodFromText(userInput) || nuriState.userMood || 'neutral'
     const moodResponse = MOOD_RESPONSES[mood]
     const personality = currentPersonality
@@ -137,7 +113,7 @@ export const useNuriLogic = () => {
   }, [nuriState, currentPersonality, parseMoodFromText, updateNuriState])
 
   // Handle daily check-in
-  const handleDailyCheckIn = useCallback((mood: UserMood, notes?: string) => {
+  const handleDailyCheckIn = useCallback((mood, notes) => {
     updateNuriState({
       dailyCheckIn: true,
       userMood: mood,
@@ -155,7 +131,7 @@ export const useNuriLogic = () => {
   }, [nuriState.streakDays, updateNuriState])
 
   // Generate macro tracking insights
-  const generateMacroInsights = useCallback((macroData: any) => {
+  const generateMacroInsights = useCallback((macroData) => {
     const { protein, carbs, fats } = macroData
     
     let insight = "Looking at your nutrition today: "
@@ -186,7 +162,7 @@ export const useNuriLogic = () => {
   }, [])
 
   // Mock journaling functionality
-  const processJournalEntry = useCallback((entry: string) => {
+  const processJournalEntry = useCallback((entry) => {
     const mood = parseMoodFromText(entry)
     const sentiment = entry.length > 50 ? 'detailed' : 'brief'
     
@@ -211,7 +187,7 @@ export const useNuriLogic = () => {
   }, [parseMoodFromText])
 
   // Pro feature gating
-  const isProFeatureAvailable = useCallback((featureId: string) => {
+  const isProFeatureAvailable = useCallback((featureId) => {
     if (!nuriState.proEnabled) return false
     const feature = PRO_FEATURES.find(f => f.id === featureId)
     return feature?.enabled || false
