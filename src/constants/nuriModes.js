@@ -1,6 +1,4 @@
 export const NURI_MODES = {
-
-export const NURI_MODES = {
   coach: {
     tone: 'encouraging',
     style: 'friendly',

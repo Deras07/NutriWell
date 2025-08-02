@@ -17,13 +17,13 @@ import {
 
 
 const moodOptions = [
-  { value: 'energetic' as UserMood, label: 'Energetic', icon: Zap, color: 'from-yellow-400 to-orange-500' },
-  { value: 'happy' as UserMood, label: 'Happy', icon: Smile, color: 'from-green-400 to-emerald-500' },
-  { value: 'motivated' as UserMood, label: 'Motivated', icon: Activity, color: 'from-blue-400 to-indigo-500' },
-  { value: 'neutral' as UserMood, label: 'Neutral', icon: Meh, color: 'from-gray-400 to-slate-500' },
-  { value: 'tired' as UserMood, label: 'Tired', icon: Coffee, color: 'from-amber-400 to-yellow-500' },
-  { value: 'stressed' as UserMood, label: 'Stressed', icon: Frown, color: 'from-red-400 to-pink-500' },
-  { value: 'anxious' as UserMood, label: 'Anxious', icon: Heart, color: 'from-purple-400 to-violet-500' }
+  { value: 'energetic', label: 'Energetic', icon: Zap, color: 'from-yellow-400 to-orange-500' },
+  { value: 'happy', label: 'Happy', icon: Smile, color: 'from-green-400 to-emerald-500' },
+  { value: 'motivated', label: 'Motivated', icon: Activity, color: 'from-blue-400 to-indigo-500' },
+  { value: 'neutral', label: 'Neutral', icon: Meh, color: 'from-gray-400 to-slate-500' },
+  { value: 'tired', label: 'Tired', icon: Coffee, color: 'from-amber-400 to-yellow-500' },
+  { value: 'stressed', label: 'Stressed', icon: Frown, color: 'from-red-400 to-pink-500' },
+  { value: 'anxious', label: 'Anxious', icon: Heart, color: 'from-purple-400 to-violet-500' }
 ]
 
 const DailyCheckIn = ({ onComplete, onSkip, streakDays = 0 }) => {
