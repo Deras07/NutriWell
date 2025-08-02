@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Card } from '../ui/card'
 import { Button } from '../ui/button'
-import { UserMood, MOOD_RESPONSES } from '../../constants/nuriModes'
+import { MOOD_RESPONSES } from '../../constants/nuriModes'
 import { 
   Heart, 
   Zap, 

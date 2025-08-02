@@ -1,7 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Card } from '../ui/card'
-import { HealthTip } from '../../constants/nuriModes'
+// HealthTip type is defined inline - no import needed
 import { 
   Lightbulb, 
   Heart, 
