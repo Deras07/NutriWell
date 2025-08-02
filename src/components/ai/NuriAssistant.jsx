@@ -4,7 +4,9 @@ import { Button } from '../ui/button'
 import { Card } from '../ui/card'
 import FloatingInput from '../ui/FloatingInput'
 import FloatingSelect from '../ui/FloatingSelect'
-import NuriAvatar from './NuriAvatar'
+import DailyCheckIn from './DailyCheckIn'
+import HealthTipCard from './HealthTipCard'
+import { useNuriLogic } from '../../hooks/useNuriLogic'
 import { 
   ArrowRight, 
   ArrowLeft, 
@@ -15,13 +17,32 @@ import {
   Calculator,
   Download,
   Share2,
-  RefreshCw
+  RefreshCw,
+  MessageCircle,
+  Sparkles,
+  Crown
 } from 'lucide-react'
 
 const NuriAssistant = () => {
   const [currentStep, setCurrentStep] = useState(0)
   const [isCalculating, setIsCalculating] = useState(false)
-  const [nuriMood, setNuriMood] = useState('friendly')
+  const [showCheckIn, setShowCheckIn] = useState(false)
+  const [showHealthTip, setShowHealthTip] = useState(false)
+  const [userInput, setUserInput] = useState('')
+  const [conversation, setConversation] = useState<Array<{type: 'user' | 'nuri', message: string, timestamp: Date}>>([])
+  
+  const {
+    nuriState,
+    currentPersonality,
+    generateResponse,
+    handleDailyCheckIn,
+    generateMacroInsights,
+    processJournalEntry,
+    isProFeatureAvailable,
+    getProUpgradeSuggestions,
+    updateNuriState
+  } = useNuriLogic()
+
   const [formData, setFormData] = useState({
     name: '',
     age: '',
@@ -33,44 +54,48 @@ const NuriAssistant = () => {
   })
   const [results, setResults] = useState(null)
 
-  // Nuri's conversation messages for each step
-  const nuriMessages = [
-    {
-      text: "Hi there! I'm Nuri, your personal nutrition assistant. 🌟",
-      subtext: "Let's create a personalized nutrition plan that fits your lifestyle perfectly!",
-      mood: "excited"
-    },
-    {
-      text: `Nice to meet you${formData.name ? `, ${formData.name}` : ''}! What's your name?`,
-      subtext: "I'd love to get to know you better so I can create the perfect plan for you.",
-      mood: "friendly"
-    },
-    {
-      text: `Great ${formData.name}! Now, could you tell me a bit about yourself?`,
-      subtext: "I need some basic information to calculate your unique nutritional needs.",
-      mood: "thinking"
-    },
-    {
-      text: "Perfect! How active would you say you are?",
-      subtext: "This helps me understand how many calories your body burns daily.",
-      mood: "friendly"
-    },
-    {
-      text: "Almost there! What's your main health goal right now?",
-      subtext: "Whether it's losing weight, building muscle, or just staying healthy - I've got you covered!",
-      mood: "excited"
-    },
-    {
-      text: "Fantastic! Let me crunch the numbers and create your personalized plan...",
-      subtext: "Using science-backed formulas to calculate your perfect nutrition targets.",
-      mood: "thinking"
-    },
-    {
-      text: `Here's your personalized nutrition plan, ${formData.name}!`,
-      subtext: "These recommendations are tailored specifically for your goals and lifestyle.",
-      mood: "excited"
+  // Handle user input and generate Nuri response
+  const handleUserInput = (input: string) => {
+    if (!input.trim()) return
+
+    // Add user message to conversation
+    const userMessage = { type: 'user' as const, message: input, timestamp: new Date() }
+    setConversation(prev => [...prev, userMessage])
+    setUserInput('')
+
+    // Generate Nuri's response
+    const response = generateResponse(input, {
+      macroData: results?.macros,
+      exerciseToday: false // This would come from user data
+    })
+
+    // Add Nuri's response to conversation
+    const nuriMessage = { type: 'nuri' as const, message: response.message, timestamp: new Date() }
+    setConversation(prev => [...prev, nuriMessage])
+
+    // Show health tip if available
+    if (response.healthTip) {
+      setShowHealthTip(true)
     }
-  ]
+
+    // Show check-in if needed
+    if (response.shouldCheckIn) {
+      setShowCheckIn(true)
+    }
+  }
+
+  // Handle daily check-in completion
+  const handleCheckInComplete = (mood: any, notes?: string) => {
+    const response = handleDailyCheckIn(mood, notes)
+    setConversation(prev => [...prev, { type: 'nuri', message: response.message, timestamp: new Date() }])
+    setShowCheckIn(false)
+  }
+
+  // Handle journal entry
+  const handleJournalEntry = (entry: string) => {
+    const response = processJournalEntry(entry)
+    setConversation(prev => [...prev, { type: 'nuri', message: response.message, timestamp: new Date() }])
+  }
 
   // Step navigation
   const nextStep = () => {
@@ -86,13 +111,6 @@ const NuriAssistant = () => {
   const updateFormData = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
-
-  // Update Nuri's mood based on current step
-  useEffect(() => {
-    if (nuriMessages[currentStep]) {
-      setNuriMood(nuriMessages[currentStep].mood)
-    }
-  }, [currentStep])
 
   // All calculation logic preserved from original NutritionWizard
   const calculateBMR = () => {
@@ -242,14 +260,23 @@ const NuriAssistant = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
         
-        {/* Nuri Avatar - Fixed Position */}
+        {/* Nuri Status Indicator */}
         <motion.div 
           className="fixed top-8 left-8 z-50"
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.5, type: "spring" }}
         >
-          <NuriAvatar size="lg" mood={nuriMood} animate={true} />
+          <div className="flex items-center gap-3 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg border border-gray-200">
+            <div className="relative">
+              <div className="w-3 h-3 bg-gradient-to-r from-green-400 to-blue-500 rounded-full animate-pulse"></div>
+              <div className="absolute inset-0 w-3 h-3 bg-gradient-to-r from-green-400 to-blue-500 rounded-full animate-ping opacity-75"></div>
+            </div>
+            <span className="text-sm font-medium text-gray-700">Nuri is here</span>
+            {nuriState.proEnabled && (
+              <Crown className="w-4 h-4 text-yellow-500" />
+            )}
+          </div>
         </motion.div>
 
         {/* Progress Indicator */}
@@ -274,19 +301,111 @@ const NuriAssistant = () => {
         </div>
 
         {/* Main Content */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentStep}
-            variants={containerVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            transition={{ duration: 0.3 }}
-            className="flex justify-center"
-          >
-            {renderStepContent()}
-          </motion.div>
-        </AnimatePresence>
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Conversation Area */}
+          <div className="flex-1 max-w-2xl">
+            <Card className="p-6 bg-white/95 backdrop-blur-sm shadow-xl border-0">
+              {/* Welcome Message */}
+              {conversation.length === 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-center mb-8"
+                >
+                  <div className="flex items-center justify-center gap-2 mb-4">
+                    <Sparkles className="w-6 h-6 text-blue-600" />
+                    <h2 className="text-2xl font-semibold text-gray-800">
+                      {currentPersonality.greeting}
+                    </h2>
+                  </div>
+                  <p className="text-gray-600">
+                    I'm here to support your health journey. How can I help you today?
+                  </p>
+                </motion.div>
+              )}
+
+              {/* Conversation History */}
+              <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
+                {conversation.map((message, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: message.type === 'user' ? 20 : -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div className={`max-w-xs lg:max-w-md p-3 rounded-2xl ${
+                      message.type === 'user' 
+                        ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white' 
+                        : 'bg-gray-100 text-gray-800'
+                    }`}>
+                      <p className="text-sm">{message.message}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Input Area */}
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={userInput}
+                  onChange={(e) => setUserInput(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleUserInput(userInput)}
+                  placeholder="Tell Nuri how you're feeling..."
+                  className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <Button
+                  onClick={() => handleUserInput(userInput)}
+                  disabled={!userInput.trim()}
+                  className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                </Button>
+              </div>
+            </Card>
+          </div>
+
+          {/* Sidebar */}
+          <div className="w-full lg:w-80 space-y-6">
+            {/* Daily Check-in */}
+            {showCheckIn && (
+              <DailyCheckIn
+                onComplete={handleCheckInComplete}
+                onSkip={() => setShowCheckIn(false)}
+                streakDays={nuriState.streakDays}
+              />
+            )}
+
+            {/* Health Tip */}
+            {showHealthTip && (
+              <HealthTipCard
+                tip={HEALTH_TIPS[0]}
+                onDismiss={() => setShowHealthTip(false)}
+              />
+            )}
+
+            {/* Pro Upgrade Suggestion */}
+            {!nuriState.proEnabled && conversation.length > 2 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <Card className="p-6 bg-gradient-to-br from-yellow-50 to-amber-50 border-yellow-200">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Crown className="w-5 h-5 text-yellow-600" />
+                    <h4 className="font-semibold text-gray-800">Unlock Nuri Pro</h4>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-3">
+                    Get advanced features like mood tracking, journaling, and personalized insights.
+                  </p>
+                  <Button className="w-full bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white">
+                    Learn More
+                  </Button>
+                </Card>
+              </motion.div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )
