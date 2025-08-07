@@ -14,6 +14,121 @@ const NuriAssistant = () => {
   const [nuriExpression, setNuriExpression] = useState('happy')
   const [isBlinking, setIsBlinking] = useState(false)
 
+  // Conversational onboarding flow state
+  const [onboardingData, setOnboardingData] = useState({
+    age: '',
+    biologicalSex: '',
+    height: '',
+    weight: '',
+    mainGoal: '',
+    activityLevel: '',
+    eatingStyle: [],
+    mealsPerDay: '',
+    waterIntake: '',
+    allergies: '',
+    digestion: ''
+  })
+  const [currentQuestion, setCurrentQuestion] = useState(0)
+  const [showThinkingAnimation, setShowThinkingAnimation] = useState(false)
+  const [onboardingComplete, setOnboardingComplete] = useState(false)
+
+  // Onboarding questions flow
+  const onboardingQuestions = [
+    {
+      id: 'welcome',
+      type: 'welcome',
+      message: "Hey there, ☀️ I'm Nuri — your nutrition buddy! I'll guide you to discover what your body really needs 🌱 Ready for your free health blueprint?",
+      options: ['Yes!']
+    },
+    {
+      id: 'intro',
+      type: 'message',
+      message: "Awesome! We'll keep it simple and fun. Just a few quick questions to unlock your personalized results 🧠🍎"
+    },
+    {
+      id: 'age',
+      type: 'input',
+      message: "How old are you? (This helps me understand your energy needs 🧬)",
+      field: 'age',
+      placeholder: 'Enter your age'
+    },
+    {
+      id: 'biologicalSex',
+      type: 'select',
+      message: "And what's your biological sex or hormonal profile? (Just choosing one helps tailor your results!)",
+      field: 'biologicalSex',
+      options: ['Female', 'Male', 'Intersex', 'Prefer not to say', 'Custom']
+    },
+    {
+      id: 'height',
+      type: 'input',
+      message: "Great! Now, how tall are you in cm or feet/inches?",
+      field: 'height',
+      placeholder: 'e.g., 170 cm or 5\'7"'
+    },
+    {
+      id: 'weight',
+      type: 'input',
+      message: "What's your current weight?",
+      field: 'weight',
+      placeholder: 'e.g., 70 kg or 154 lbs'
+    },
+    {
+      id: 'mainGoal',
+      type: 'select',
+      message: "Let's align this with your goals 🌟 What's your main focus right now?",
+      field: 'mainGoal',
+      options: ['Lose fat', 'Build muscle', 'Maintain health', 'Improve energy', 'Heal chronic issues']
+    },
+    {
+      id: 'activityLevel',
+      type: 'select',
+      message: "How active are you on most days?",
+      field: 'activityLevel',
+      options: ['Sedentary', 'Lightly Active', 'Moderately Active', 'Very Active', 'Athlete']
+    },
+    {
+      id: 'eatingStyle',
+      type: 'multiSelect',
+      message: "Do you currently follow any of these eating styles?",
+      field: 'eatingStyle',
+      options: ['Vegetarian', 'Vegan', 'Keto', 'Intermittent Fasting', 'I just eat normally']
+    },
+    {
+      id: 'mealsPerDay',
+      type: 'select',
+      message: "How often do you eat per day, on average?",
+      field: 'mealsPerDay',
+      options: ['2 meals', '3 meals', '3+ snacks', 'I skip meals sometimes']
+    },
+    {
+      id: 'waterIntake',
+      type: 'select',
+      message: "How much water do you drink daily?",
+      field: 'waterIntake',
+      options: ['<1L', '1–2L', '2–3L', '>3L', 'Not sure']
+    },
+    {
+      id: 'allergies',
+      type: 'input',
+      message: "Any allergies or foods you avoid?",
+      field: 'allergies',
+      placeholder: 'e.g., nuts, dairy, gluten, or "none"'
+    },
+    {
+      id: 'digestion',
+      type: 'select',
+      message: "How's your digestion usually?",
+      field: 'digestion',
+      options: ['Smooth', 'Sometimes bloated', 'Constipation', 'Loose stools', 'No idea']
+    },
+    {
+      id: 'processing',
+      type: 'processing',
+      message: "Perfect! I've crunched the numbers and matched it to real health science 🔬 Give me 3 seconds… 🚀"
+    }
+  ]
+
   // Track cursor for eye movement
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -50,6 +165,60 @@ const NuriAssistant = () => {
     setUserMood(mood)
     setShowEmojiCards(false)
     setChatStarted(true)
+  }
+
+  // Onboarding flow handlers
+  const handleOnboardingStart = () => {
+    setShowOnboarding(true)
+    setCurrentQuestion(0)
+    setOnboardingComplete(false)
+  }
+
+  const handleOnboardingAnswer = (answer) => {
+    const currentQ = onboardingQuestions[currentQuestion]
+    
+    if (currentQ.type === 'multiSelect') {
+      const currentValues = onboardingData[currentQ.field] || []
+      const newValues = currentValues.includes(answer) 
+        ? currentValues.filter(item => item !== answer)
+        : [...currentValues, answer]
+      
+      setOnboardingData(prev => ({
+        ...prev,
+        [currentQ.field]: newValues
+      }))
+    } else {
+      setOnboardingData(prev => ({
+        ...prev,
+        [currentQ.field]: answer
+      }))
+    }
+
+    // Move to next question
+    setTimeout(() => {
+      if (currentQuestion < onboardingQuestions.length - 1) {
+        setCurrentQuestion(prev => prev + 1)
+      } else {
+        // Processing animation
+        setShowThinkingAnimation(true)
+        setTimeout(() => {
+          setOnboardingComplete(true)
+          setShowThinkingAnimation(false)
+        }, 3000)
+      }
+    }, 500)
+  }
+
+  const handleInputSubmit = (value) => {
+    handleOnboardingAnswer(value)
+  }
+
+  const getCurrentQuestion = () => {
+    return onboardingQuestions[currentQuestion]
+  }
+
+  const getProgressPercentage = () => {
+    return ((currentQuestion + 1) / onboardingQuestions.length) * 100
   }
 
   const emojiCards = [
@@ -279,7 +448,7 @@ const NuriAssistant = () => {
         ))}
       </div>
 
-      {/* Onboarding Flow */}
+      {/* Conversational Onboarding Flow */}
       <AnimatePresence>
         {showOnboarding && (
           <motion.div 
@@ -288,39 +457,200 @@ const NuriAssistant = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className="bg-white/20 backdrop-blur-md rounded-3xl p-8 max-w-md w-full border border-white/30">
-              <div className="text-center mb-6">
-                <div className="text-4xl mb-4">{onboardingSteps[onboardingStep].icon}</div>
-                <h2 className="text-2xl font-bold text-white mb-2">{onboardingSteps[onboardingStep].title}</h2>
-                <p className="text-white/80 text-lg">{onboardingSteps[onboardingStep].description}</p>
-              </div>
-              
-              {/* Progress indicator */}
-              <div className="flex justify-center mb-6">
-                {onboardingSteps.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`w-3 h-3 rounded-full mx-1 ${
-                      index <= onboardingStep ? 'bg-green-400' : 'bg-white/30'
-                    }`}
+            <div className="bg-white/20 backdrop-blur-md rounded-3xl p-8 max-w-lg w-full border border-white/30">
+              {/* Progress Bar */}
+              <div className="mb-6">
+                <div className="flex justify-between text-sm text-white/70 mb-2">
+                  <span>Step {currentQuestion + 1} of {onboardingQuestions.length}</span>
+                  <span>{Math.round(getProgressPercentage())}%</span>
+                </div>
+                <div className="w-full bg-white/20 rounded-full h-2">
+                  <motion.div 
+                    className="bg-gradient-to-r from-green-400 to-teal-500 h-2 rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${getProgressPercentage()}%` }}
+                    transition={{ duration: 0.5 }}
                   />
-                ))}
+                </div>
               </div>
-              
-              <div className="flex gap-4">
-                <button
-                  onClick={handleOnboardingSkip}
-                  className="flex-1 px-4 py-3 text-white/70 hover:text-white transition-colors"
-                >
-                  Skip
-                </button>
-                <button
-                  onClick={handleOnboardingNext}
-                  className="flex-1 bg-gradient-to-r from-green-400 to-teal-500 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all duration-300"
-                >
-                  {onboardingStep === onboardingSteps.length - 1 ? 'Get Started' : 'Next'}
-                </button>
-              </div>
+
+              {/* Nuri Chat Bubble */}
+              <motion.div 
+                className="flex items-start gap-4 mb-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                {/* Nuri Avatar */}
+                <div className="relative">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-teal-500 rounded-full flex items-center justify-center text-white text-xl">
+                    🌱
+                  </div>
+                  <div className="absolute inset-0 rounded-full border-2 border-green-300/50 animate-pulse"></div>
+                </div>
+                
+                {/* Chat Message */}
+                <div className="flex-1">
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
+                    <p className="text-gray-800 text-lg leading-relaxed">
+                      {getCurrentQuestion()?.message}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* User Response Options */}
+              <AnimatePresence mode="wait">
+                {getCurrentQuestion()?.type === 'welcome' && (
+                  <motion.div
+                    key="welcome"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="flex justify-center"
+                  >
+                    <button
+                      onClick={() => handleOnboardingAnswer('Yes!')}
+                      className="bg-gradient-to-r from-green-400 to-teal-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:scale-105 transition-all duration-300 shadow-lg"
+                    >
+                      Yes!
+                    </button>
+                  </motion.div>
+                )}
+
+                {getCurrentQuestion()?.type === 'message' && (
+                  <motion.div
+                    key="message"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="flex justify-center"
+                  >
+                    <button
+                      onClick={() => handleOnboardingAnswer('Continue')}
+                      className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-6 py-3 rounded-full font-semibold hover:scale-105 transition-all duration-300"
+                    >
+                      Continue
+                    </button>
+                  </motion.div>
+                )}
+
+                {getCurrentQuestion()?.type === 'input' && (
+                  <motion.div
+                    key="input"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="space-y-4"
+                  >
+                    <input
+                      type="text"
+                      placeholder={getCurrentQuestion()?.placeholder}
+                      className="w-full px-4 py-3 bg-white/80 backdrop-blur-sm rounded-xl border border-white/50 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-400"
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          handleInputSubmit(e.target.value)
+                          e.target.value = ''
+                        }
+                      }}
+                    />
+                    <button
+                      onClick={() => {
+                        const input = document.querySelector('input[type="text"]')
+                        if (input?.value) {
+                          handleInputSubmit(input.value)
+                          input.value = ''
+                        }
+                      }}
+                      className="w-full bg-gradient-to-r from-green-400 to-teal-500 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-all duration-300"
+                    >
+                      Next
+                    </button>
+                  </motion.div>
+                )}
+
+                {getCurrentQuestion()?.type === 'select' && (
+                  <motion.div
+                    key="select"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="space-y-3"
+                  >
+                    {getCurrentQuestion()?.options?.map((option, index) => (
+                      <motion.button
+                        key={option}
+                        onClick={() => handleOnboardingAnswer(option)}
+                        className="w-full bg-white/80 backdrop-blur-sm rounded-xl p-4 text-left text-gray-800 hover:bg-white/90 transition-all duration-300 border border-white/50"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        {option}
+                      </motion.button>
+                    ))}
+                  </motion.div>
+                )}
+
+                {getCurrentQuestion()?.type === 'multiSelect' && (
+                  <motion.div
+                    key="multiSelect"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="space-y-3"
+                  >
+                    {getCurrentQuestion()?.options?.map((option, index) => (
+                      <motion.button
+                        key={option}
+                        onClick={() => handleOnboardingAnswer(option)}
+                        className={`w-full backdrop-blur-sm rounded-xl p-4 text-left transition-all duration-300 border ${
+                          (onboardingData[getCurrentQuestion()?.field] || []).includes(option)
+                            ? 'bg-green-400/80 text-white border-green-300'
+                            : 'bg-white/80 text-gray-800 border-white/50 hover:bg-white/90'
+                        }`}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        {option}
+                        {(onboardingData[getCurrentQuestion()?.field] || []).includes(option) && (
+                          <span className="float-right">✓</span>
+                        )}
+                      </motion.button>
+                    ))}
+                    <button
+                      onClick={() => handleOnboardingAnswer('Continue')}
+                      className="w-full bg-gradient-to-r from-green-400 to-teal-500 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-all duration-300 mt-4"
+                    >
+                      Continue
+                    </button>
+                  </motion.div>
+                )}
+
+                {getCurrentQuestion()?.type === 'processing' && (
+                  <motion.div
+                    key="processing"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="text-center"
+                  >
+                    <div className="flex justify-center mb-4">
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                        className="w-12 h-12 border-4 border-green-400 border-t-transparent rounded-full"
+                      />
+                    </div>
+                    <p className="text-white/80 text-lg">Processing your personalized results...</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
         )}
@@ -347,14 +677,14 @@ const NuriAssistant = () => {
         {/* Right Floating Onboarding Button */}
         <div className="fixed top-16 right-6 z-50">
           <motion.button
-            onClick={() => setShowOnboarding(true)}
+            onClick={handleOnboardingStart}
             className="bg-white/20 backdrop-blur-md rounded-2xl px-4 py-2 shadow-lg border border-white/30 text-white font-medium hover:scale-105 transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
           >
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-yellow-300" />
-              <span>Get Started</span>
+              <span>Start Chat with Nuri</span>
             </div>
           </motion.button>
         </div>
