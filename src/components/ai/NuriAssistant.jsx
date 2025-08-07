@@ -37,6 +37,12 @@ const NuriAssistant = () => {
   const [currentResultSection, setCurrentResultSection] = useState(0)
   const [resultsData, setResultsData] = useState(null)
 
+  // Premium upsell state
+  const [showPremiumUpsell, setShowPremiumUpsell] = useState(false)
+  const [currentPremiumStep, setCurrentPremiumStep] = useState(0)
+  const [showSneakPeek, setShowSneakPeek] = useState(false)
+  const [premiumChoice, setPremiumChoice] = useState(null)
+
   // Onboarding questions flow
   const onboardingQuestions = [
     {
@@ -321,6 +327,60 @@ const NuriAssistant = () => {
     }
   ]
 
+  // Premium benefits with Nuri's scripted messages
+  const premiumBenefits = [
+    {
+      id: 'micronutrients',
+      title: '🔬 Micronutrient Analysis',
+      icon: '🔬',
+      nuriMessage: "Discover your unique needs for vitamins like D, B12, and iron — based on science from the NIH & Health Canada!",
+      description: "Personalized vitamin and mineral recommendations",
+      visual: 'radar-chart',
+      tooltip: "Low in magnesium? Let's fix that.",
+      backedBy: "NIH & Health Canada"
+    },
+    {
+      id: 'hormonal',
+      title: '🤰 Hormonal Health Tracking',
+      icon: '🤰',
+      nuriMessage: "Optimize your cycle, stress hormones, and thyroid-supportive nutrients — especially important if you're managing energy or weight.",
+      description: "Cycle-aware nutrition and hormone optimization",
+      visual: 'hormone-chart',
+      tooltip: "Add cycle data for deeper analysis",
+      backedBy: "PHAC & NIH"
+    },
+    {
+      id: 'inflammation',
+      title: '🧬 Inflammation & Gut Insights',
+      icon: '🧬',
+      nuriMessage: "Gut health affects everything. Let's check foods that may be causing inflammation — and find swaps that soothe.",
+      description: "Inflammation-trigger identification and gut health",
+      visual: 'gut-chart',
+      tooltip: "Log gut symptoms for advanced results",
+      backedBy: "NHS & CDC"
+    },
+    {
+      id: 'meal-planning',
+      title: '🍱 Smart Meal Planning',
+      icon: '🍱',
+      nuriMessage: "Premium gives you daily meal guides that adjust with your lifestyle — and support your unique macros, goals, and sensitivities.",
+      description: "Adaptive meal plans with lifestyle integration",
+      visual: 'meal-carousel',
+      tooltip: "Vegetarian mode, Anti-inflammatory, Quick meals",
+      backedBy: "USDA MyPlate & Health Canada"
+    },
+    {
+      id: 'adaptive',
+      title: '🔁 Adaptive Health Engine',
+      icon: '🔁',
+      nuriMessage: "Your body changes — Premium adapts. Whether you slept 4 hours or crushed a workout, we update your daily needs in real time.",
+      description: "Real-time nutrition adjustments based on daily factors",
+      visual: 'gauge-recalc',
+      tooltip: "Auto-adjusts based on sleep, activity, stress and hydration",
+      backedBy: "Real-time health data integration"
+    }
+  ]
+
   const emojiCards = [
     { emoji: "😴", label: "Terrible", value: "terrible" },
     { emoji: "😐", label: "Not great", value: "not-great" },
@@ -443,6 +503,36 @@ const NuriAssistant = () => {
         </div>
       </div>
     )
+  }
+
+  // Premium upsell handlers
+  const handlePremiumIntro = () => {
+    setShowPremiumUpsell(true)
+    setCurrentPremiumStep(0)
+  }
+
+  const handlePremiumChoice = (choice) => {
+    setPremiumChoice(choice)
+    if (choice === 'sneak-peek') {
+      setShowSneakPeek(true)
+    } else {
+      // Handle direct upgrade
+      console.log('User chose direct upgrade')
+    }
+  }
+
+  const handleNextPremiumStep = () => {
+    if (currentPremiumStep < premiumBenefits.length - 1) {
+      setCurrentPremiumStep(prev => prev + 1)
+    } else {
+      // Show decision modal
+      setCurrentPremiumStep('decision')
+    }
+  }
+
+  const handleSneakPeekComplete = () => {
+    setShowSneakPeek(false)
+    setCurrentPremiumStep('decision')
   }
 
   return (
@@ -1128,6 +1218,7 @@ const NuriAssistant = () => {
                     </div>
                   </div>
                   <motion.button
+                    onClick={handlePremiumIntro}
                     className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-all duration-300 shadow-lg"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -1136,6 +1227,305 @@ const NuriAssistant = () => {
                   </motion.button>
                 </div>
               </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Premium Upsell Interface */}
+      <AnimatePresence>
+        {showPremiumUpsell && (
+          <motion.div 
+            className="fixed inset-0 z-50 flex items-center justify-center p-6 overflow-y-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="bg-white/20 backdrop-blur-md rounded-3xl p-8 max-w-4xl w-full border border-white/30 max-h-[90vh] overflow-y-auto">
+              {/* Premium Intro */}
+              {currentPremiumStep === 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-center"
+                >
+                  <div className="flex items-center justify-center mb-6">
+                    <div className="relative">
+                      <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white text-2xl">
+                        🌱
+                      </div>
+                      <div className="absolute inset-0 rounded-full border-2 border-purple-300/50 animate-pulse"></div>
+                    </div>
+                  </div>
+                  
+                  <motion.h1 
+                    className="text-4xl font-bold text-white mb-6"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    💡 What Premium Unlocks for You
+                  </motion.h1>
+                  
+                  <motion.div 
+                    className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 mb-8"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    <p className="text-gray-800 text-xl leading-relaxed">
+                      Hey there! You've already got an amazing foundation. But your health deserves the full story — tailored just for YOU!
+                    </p>
+                  </motion.div>
+
+                  <motion.button
+                    onClick={handleNextPremiumStep}
+                    className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-all duration-300 shadow-lg"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Discover Premium Benefits ✨
+                  </motion.button>
+                </motion.div>
+              )}
+
+              {/* Premium Benefits Walkthrough */}
+              {typeof currentPremiumStep === 'number' && currentPremiumStep > 0 && currentPremiumStep < premiumBenefits.length && (
+                <motion.div
+                  key={currentPremiumStep}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  className="space-y-6"
+                >
+                  {/* Progress Indicator */}
+                  <div className="flex justify-center mb-6">
+                    <div className="flex space-x-2">
+                      {premiumBenefits.map((_, index) => (
+                        <div
+                          key={index}
+                          className={`w-3 h-3 rounded-full ${
+                            index <= currentPremiumStep ? 'bg-purple-400' : 'bg-white/30'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Current Benefit */}
+                  <div className="text-center mb-8">
+                    <div className="text-6xl mb-4">{premiumBenefits[currentPremiumStep].icon}</div>
+                    <h2 className="text-3xl font-bold text-white mb-4">{premiumBenefits[currentPremiumStep].title}</h2>
+                  </div>
+
+                  {/* Nuri Message */}
+                  <div className="flex items-start gap-4 mb-8">
+                    <div className="relative">
+                      <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white text-lg">
+                        🌱
+                      </div>
+                      <div className="absolute inset-0 rounded-full border-2 border-purple-300/50 animate-pulse"></div>
+                    </div>
+                    <div className="flex-1">
+                      <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6">
+                        <p className="text-gray-800 text-lg leading-relaxed">
+                          {premiumBenefits[currentPremiumStep].nuriMessage}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Visual Representation */}
+                  <div className="bg-white/10 rounded-2xl p-6 mb-6">
+                    <div className="text-center">
+                      <div className="text-4xl mb-4">📊</div>
+                      <h3 className="text-white font-semibold text-xl mb-2">
+                        {premiumBenefits[currentPremiumStep].description}
+                      </h3>
+                      <p className="text-white/70 text-sm">
+                        {premiumBenefits[currentPremiumStep].tooltip}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Trust Signals */}
+                  <div className="bg-gradient-to-r from-blue-500/20 to-green-500/20 rounded-xl p-4 mb-6">
+                    <div className="flex items-center justify-center gap-4">
+                      <div className="text-white/80 text-sm">Backed by:</div>
+                      <div className="text-white font-medium">{premiumBenefits[currentPremiumStep].backedBy}</div>
+                    </div>
+                  </div>
+
+                  {/* Navigation */}
+                  <div className="flex justify-between">
+                    <button
+                      onClick={() => setCurrentPremiumStep(prev => Math.max(0, prev - 1))}
+                      className="px-6 py-3 text-white/70 hover:text-white transition-colors"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      onClick={handleNextPremiumStep}
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full font-semibold hover:scale-105 transition-all duration-300"
+                    >
+                      {currentPremiumStep === premiumBenefits.length - 1 ? 'See Options' : 'Next'}
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Decision Modal */}
+              {currentPremiumStep === 'decision' && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center space-y-8"
+                >
+                  <div className="mb-8">
+                    <h2 className="text-3xl font-bold text-white mb-4">Choose Your Path 🌟</h2>
+                    <p className="text-white/80 text-lg">
+                      Backed by leading public health sources like Health Canada, NIH, CDC, and USDA.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Option A: Direct Upgrade */}
+                    <motion.div
+                      className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl p-6 border border-purple-300/30"
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className="text-4xl mb-4">🔓</div>
+                      <h3 className="text-2xl font-bold text-white mb-4">Unlock My Full Blueprint</h3>
+                      <p className="text-white/80 mb-6">
+                        Get complete access to all premium features and personalized insights.
+                      </p>
+                      <button
+                        onClick={() => handlePremiumChoice('upgrade')}
+                        className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-4 rounded-full font-bold text-lg hover:scale-105 transition-all duration-300 shadow-lg"
+                      >
+                        Start Premium – 7 Days Free
+                      </button>
+                      <p className="text-white/60 text-sm mt-3">Cancel anytime. No risk. All insight.</p>
+                    </motion.div>
+
+                    {/* Option B: Sneak Peek */}
+                    <motion.div
+                      className="bg-gradient-to-r from-blue-500/20 to-teal-500/20 rounded-2xl p-6 border border-blue-300/30"
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className="text-4xl mb-4">👀</div>
+                      <h3 className="text-2xl font-bold text-white mb-4">Show Me a Sneak Peek First</h3>
+                      <p className="text-white/80 mb-6">
+                        Preview premium insights with sample data to see what you're missing.
+                      </p>
+                      <button
+                        onClick={() => handlePremiumChoice('sneak-peek')}
+                        className="w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white px-6 py-4 rounded-full font-bold text-lg hover:scale-105 transition-all duration-300 shadow-lg"
+                      >
+                        Preview Premium Insights
+                      </button>
+                      <p className="text-white/60 text-sm mt-3">See what you're missing, then decide.</p>
+                    </motion.div>
+                  </div>
+
+                  {/* Trust Logos */}
+                  <div className="flex justify-center items-center gap-6 mt-8">
+                    <div className="text-white/40 text-sm">Trusted by:</div>
+                    <div className="flex gap-4">
+                      <div className="text-white/40 text-xs">Health Canada</div>
+                      <div className="text-white/40 text-xs">NIH</div>
+                      <div className="text-white/40 text-xs">CDC</div>
+                      <div className="text-white/40 text-xs">USDA</div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Sneak Peek Modal */}
+      <AnimatePresence>
+        {showSneakPeek && (
+          <motion.div 
+            className="fixed inset-0 z-50 flex items-center justify-center p-6 overflow-y-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="bg-white/20 backdrop-blur-md rounded-3xl p-8 max-w-4xl w-full border border-white/30 max-h-[90vh] overflow-y-auto">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-white mb-4">🔬 Sneak Peek: Micronutrient Analysis</h2>
+                <p className="text-white/80 text-lg">
+                  Here's what Premium insights look like for your unique profile
+                </p>
+              </div>
+
+              {/* Blurred Content Preview */}
+              <div className="space-y-6">
+                <div className="bg-white/10 rounded-2xl p-6">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="text-3xl">🔬</div>
+                    <div>
+                      <h3 className="text-white font-semibold text-xl">Your Vitamin D Status</h3>
+                      <p className="text-white/70">Based on your location and lifestyle</p>
+                    </div>
+                  </div>
+                  <div className="relative">
+                    <div className="bg-gradient-to-r from-red-400 to-yellow-400 h-4 rounded-full mb-2">
+                      <div className="bg-gradient-to-r from-yellow-400 to-green-400 h-4 rounded-full w-3/4"></div>
+                    </div>
+                    <div className="flex justify-between text-white/70 text-sm">
+                      <span>Low</span>
+                      <span>Optimal</span>
+                      <span>High</span>
+                    </div>
+                  </div>
+                  <div className="mt-4 p-4 bg-yellow-400/20 rounded-xl">
+                    <p className="text-white text-sm">
+                      💡 <strong>Premium Insight:</strong> Your vitamin D levels are suboptimal. 
+                      Consider adding fatty fish 2x/week and 15 minutes of sun exposure daily.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-white/10 rounded-2xl p-6">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="text-3xl">🧬</div>
+                    <div>
+                      <h3 className="text-white font-semibold text-xl">Inflammation Triggers</h3>
+                      <p className="text-white/70">Foods that may cause inflammation for you</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-red-400/20 rounded-lg p-3 text-center">
+                      <div className="text-red-400 font-medium">Avoid</div>
+                      <div className="text-white/70 text-sm">Processed meats</div>
+                    </div>
+                    <div className="bg-green-400/20 rounded-lg p-3 text-center">
+                      <div className="text-green-400 font-medium">Great for you</div>
+                      <div className="text-white/70 text-sm">Salmon, berries</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl p-6 border border-purple-300/30">
+                  <h3 className="text-white font-bold text-xl mb-4">✨ This is just a preview!</h3>
+                  <p className="text-white/90 mb-6">
+                    Premium gives you 47+ more insights like this, plus real-time adjustments 
+                    based on your daily health data.
+                  </p>
+                  <button
+                    onClick={handleSneakPeekComplete}
+                    className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-all duration-300 shadow-lg"
+                  >
+                    Unlock Full Premium Access
+                  </button>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}
