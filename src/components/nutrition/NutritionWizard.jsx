@@ -88,9 +88,6 @@ const NutritionWizard = () => {
     const targetCalories = calculateTargetCalories()
     
     // Health Canada & RDA macro percentage breakdowns
-    // Weight Loss: P30% C40% F30% - Higher protein for muscle preservation
-    // Muscle Gain: P30% C45% F25% - High protein with adequate carbs for training
-    // General/Maintenance: P25% C50% F25% - Balanced approach for health
     let proteinPercent, carbPercent, fatPercent
     
     switch (formData.goal) {

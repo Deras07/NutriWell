@@ -1,12 +1,13 @@
+import React from 'react'
+import NuriAssistant from './src/components/ai/NuriAssistant'
+// import { AuthProvider } from './src/providers/PrivyProvider'
 import './App.css'
-import { NutriWellApp } from './src/components/NutriWellApp'
-import { AuthProvider } from './src/providers/PrivyProvider'
 
 function App() {
   return (
-    <AuthProvider>
-      <NutriWellApp />
-    </AuthProvider>
+    // <AuthProvider>
+      <NuriAssistant />
+    // </AuthProvider>
   )
 }
 

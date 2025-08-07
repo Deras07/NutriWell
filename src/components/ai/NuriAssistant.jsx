@@ -1,850 +1,968 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Button } from '../ui/button'
-import { Card } from '../ui/card'
-import FloatingInput from '../ui/FloatingInput'
-import FloatingSelect from '../ui/FloatingSelect'
-import DailyCheckIn from './DailyCheckIn'
-import HealthTipCard from './HealthTipCard'
-import { useNuriLogic } from '../../hooks/useNuriLogic'
-import { useAdaptiveTheme } from '../../hooks/useAdaptiveTheme'
-import AnimatedCard from '../ui/AnimatedCard'
-import TypingIndicator from '../ui/TypingIndicator'
-import ProgressRing from '../ui/ProgressRing'
-import { 
-  ArrowRight, 
-  ArrowLeft, 
-  Heart, 
-  Zap, 
-  Target, 
-  TrendingUp,
-  Calculator,
-  Download,
-  Share2,
-  RefreshCw,
-  MessageCircle,
-  Sparkles,
-  Crown
-} from 'lucide-react'
+import { ChevronRight, Sparkles, Leaf, Heart, Sun, Target, Zap, MessageCircle, Plus, Camera, Search, Trophy, Users, Calendar, TrendingUp, Droplets, Apple, Utensils, Coffee, ChefHat, BarChart3, ShoppingCart, Clock, Star } from 'lucide-react'
 
 const NuriAssistant = () => {
-  const [currentStep, setCurrentStep] = useState(0)
-  const [isCalculating, setIsCalculating] = useState(false)
-  const [showCheckIn, setShowCheckIn] = useState(false)
-  const [showHealthTip, setShowHealthTip] = useState(false)
-  const [userInput, setUserInput] = useState('')
-  const [conversation, setConversation] = useState([])
-  const [isTyping, setIsTyping] = useState(false)
-  const [macroProgress, setMacroProgress] = useState({ protein: 65, carbs: 80, fats: 45 })
-  
-  const {
-    nuriState,
-    currentPersonality,
-    generateResponse,
-    handleDailyCheckIn,
-    generateMacroInsights,
-    processJournalEntry,
-    isProFeatureAvailable,
-    getProUpgradeSuggestions,
-    updateNuriState
-  } = useNuriLogic()
+  const [showEmojiCards, setShowEmojiCards] = useState(false)
+  const [userMood, setUserMood] = useState(null)
+  const [chatStarted, setChatStarted] = useState(false)
+  const [showOnboarding, setShowOnboarding] = useState(false)
+  const [onboardingStep, setOnboardingStep] = useState(0)
+  const [showNutritionDashboard, setShowNutritionDashboard] = useState(false)
+  const [selectedTab, setSelectedTab] = useState('overview')
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 })
+  const [nuriExpression, setNuriExpression] = useState('happy')
+  const [isBlinking, setIsBlinking] = useState(false)
 
-  const { theme, timeOfDay, userMood, isDark, isStressed } = useAdaptiveTheme(nuriState.userMood)
-
-  const [formData, setFormData] = useState({
-    name: '',
-    age: '',
-    gender: '',
-    height: '',
-    weight: '',
-    activityLevel: '',
-    goal: ''
-  })
-  const [results, setResults] = useState(null)
-
-  // Handle user input and generate Nuri response
-  const handleUserInput = (input) => {
-    if (!input.trim()) return
-
-    // Add user message to conversation
-    const userMessage = { type: 'user', message: input, timestamp: new Date() }
-    setConversation(prev => [...prev, userMessage])
-    setUserInput('')
-
-    // Show typing indicator
-    setIsTyping(true)
-
-    // Simulate typing delay
-    setTimeout(() => {
-      // Generate Nuri's response
-      const response = generateResponse(input, {
-        macroData: results?.macros,
-        exerciseToday: false // This would come from user data
-      })
-
-      // Add Nuri's response to conversation
-      const nuriMessage = { type: 'nuri', message: response.message, timestamp: new Date() }
-      setConversation(prev => [...prev, nuriMessage])
-      setIsTyping(false)
-
-      // Show health tip if available
-      if (response.healthTip) {
-        setShowHealthTip(true)
-      }
-
-      // Show check-in if needed
-      if (response.shouldCheckIn) {
-        setShowCheckIn(true)
-      }
-    }, 1500 + Math.random() * 1000) // Random delay for natural feel
-  }
-
-  // Handle daily check-in completion
-  const handleCheckInComplete = (mood, notes) => {
-    const response = handleDailyCheckIn(mood, notes)
-    setConversation(prev => [...prev, { type: 'nuri', message: response.message, timestamp: new Date() }])
-    setShowCheckIn(false)
-  }
-
-  // Handle journal entry
-  const handleJournalEntry = (entry) => {
-    const response = processJournalEntry(entry)
-    setConversation(prev => [...prev, { type: 'nuri', message: response.message, timestamp: new Date() }])
-  }
-
-  // Step navigation
-  const nextStep = () => {
-    if (currentStep === 5) {
-      calculateResults()
-    } else {
-      setCurrentStep(prev => Math.min(prev + 1, 6))
+  // Track cursor for eye movement
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setCursorPosition({ x: e.clientX, y: e.clientY })
     }
-  }
-  const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 0))
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
 
-  // Update form data
-  const updateFormData = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
-  }
+  // Blinking animation
+  useEffect(() => {
+    const blinkInterval = setInterval(() => {
+      setIsBlinking(true)
+      setTimeout(() => setIsBlinking(false), 150)
+    }, 8000)
+    return () => clearInterval(blinkInterval)
+  }, [])
 
-  // All calculation logic preserved from original NutritionWizard
-  const calculateBMR = () => {
-    const { age, gender, height, weight } = formData
-    const ageNum = parseInt(age)
-    const heightNum = parseFloat(height)
-    const weightNum = parseFloat(weight)
-
-    if (gender === 'male') {
-      return 10 * weightNum + 6.25 * heightNum - 5 * ageNum + 5
-    } else {
-      return 10 * weightNum + 6.25 * heightNum - 5 * ageNum - 161
-    }
-  }
-
-  const calculateDailyCalories = () => {
-    const bmr = calculateBMR()
-    const activityMultipliers = {
-      sedentary: 1.2,
-      light: 1.375,
-      moderate: 1.55,
-      active: 1.725,
-      very_active: 1.9
-    }
-    return Math.round(bmr * activityMultipliers[formData.activityLevel])
-  }
-
-  const calculateTargetCalories = () => {
-    const dailyCalories = calculateDailyCalories()
-    switch (formData.goal) {
-      case 'lose': 
-        return Math.round(dailyCalories - 500) // 1 lb/week loss
-      case 'gain': 
-        return Math.round(dailyCalories + 500) // 1 lb/week gain
-      case 'muscle':
-        return Math.round(dailyCalories + 300) // Moderate surplus for muscle building
-      case 'maintain':
-      case 'energy':
-      case 'health':
-      default: 
-        return dailyCalories // Maintenance calories
-    }
-  }
-
-  const calculateMacros = () => {
-    const targetCalories = calculateTargetCalories()
-    
-    // Health Canada & RDA macro percentage breakdowns
-    let proteinPercent, carbPercent, fatPercent
-    
-    switch (formData.goal) {
-      case 'lose':
-        proteinPercent = 30
-        carbPercent = 40
-        fatPercent = 30
-        break
-      case 'muscle':
-        proteinPercent = 30
-        carbPercent = 45
-        fatPercent = 25
-        break
-      default:
-        proteinPercent = 25
-        carbPercent = 50
-        fatPercent = 25
-        break
-    }
-
-    const proteinGrams = Math.round((targetCalories * proteinPercent / 100) / 4)
-    const fatGrams = Math.round((targetCalories * fatPercent / 100) / 9)
-    const carbGrams = Math.round((targetCalories * carbPercent / 100) / 4)
-
+  // Calculate eye movement based on cursor position
+  const calculateEyeMovement = () => {
+    const centerX = window.innerWidth / 2
+    const centerY = window.innerHeight / 2
+    const deltaX = (cursorPosition.x - centerX) / centerX
+    const deltaY = (cursorPosition.y - centerY) / centerY
     return {
-      protein: { grams: proteinGrams, percent: proteinPercent, calories: proteinGrams * 4 },
-      fat: { grams: fatGrams, percent: fatPercent, calories: fatGrams * 9 },
-      carbs: { grams: carbGrams, percent: carbPercent, calories: carbGrams * 4 }
+      x: Math.max(-3, Math.min(3, deltaX * 3)),
+      y: Math.max(-2, Math.min(2, deltaY * 2))
     }
   }
 
-  const calculateResults = async () => {
-    setIsCalculating(true)
-    setNuriMood('thinking')
-    
-    // Simulate processing time for better UX
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    const bmr = Math.round(calculateBMR())
-    const dailyCalories = calculateDailyCalories()
-    const targetCalories = calculateTargetCalories()
-    const macros = calculateMacros()
+  const eyeMovement = calculateEyeMovement()
 
-    const resultsData = {
-      bmr,
-      dailyCalories,
-      targetCalories,
-      macros,
-      personalSummary: generatePersonalSummary(dailyCalories, targetCalories)
-    }
-
-    setResults(resultsData)
-    setIsCalculating(false)
-    nextStep()
+  const handleMoodSelection = (mood) => {
+    setUserMood(mood)
+    setShowEmojiCards(false)
+    setChatStarted(true)
   }
 
-  const generatePersonalSummary = (daily, target) => {
-    const { age, activityLevel, goal } = formData
-    const activityText = {
-      sedentary: 'sedentary lifestyle',
-      light: 'lightly active',
-      moderate: 'moderately active', 
-      active: 'active lifestyle',
-      very_active: 'very active lifestyle'
-    }
-    
-    const goalText = {
-      lose: `To lose weight healthily, aim for ~${target} calories daily.`,
-      maintain: `To maintain your current weight, aim for ~${target} calories daily.`,
-      gain: `To gain weight healthily, aim for ~${target} calories daily.`,
-      muscle: `To build muscle effectively, aim for ~${target} calories daily with adequate protein.`,
-      energy: `To improve your energy levels, aim for ~${target} calories daily with balanced nutrition.`,
-      health: `To optimize your overall health, aim for ~${target} calories daily with nutrient-dense foods.`
-    }
+  const emojiCards = [
+    { emoji: "😴", label: "Terrible", value: "terrible" },
+    { emoji: "😐", label: "Not great", value: "not-great" },
+    { emoji: "😊", label: "Pretty good", value: "pretty-good" },
+    { emoji: "😄", label: "Great!", value: "great" }
+  ]
 
-    return `At ${age} with a ${activityText[activityLevel]}, you burn approximately ${daily} calories per day. ${goalText[goal] || goalText.maintain}`
+  // Nutrition data
+  const nutritionData = {
+    calories: { current: 1200, goal: 2000, unit: 'kcal' },
+    protein: { current: 65, goal: 120, unit: 'g' },
+    carbs: { current: 150, goal: 250, unit: 'g' },
+    fat: { current: 45, goal: 65, unit: 'g' },
+    water: { current: 6, goal: 8, unit: 'glasses' }
   }
 
-  // Check if current step is valid to proceed
-  const canProceed = () => {
-    switch (currentStep) {
-      case 0: return true // Welcome
-      case 1: return formData.name.trim() !== '' // Name
-      case 2: return formData.age && formData.gender && formData.height && formData.weight // Demographics
-      case 3: return formData.activityLevel !== '' // Activity
-      case 4: return formData.goal !== '' // Goal
-      case 5: return true // Calculate
-      default: return false
+  // Recent foods
+  const recentFoods = [
+    { name: 'Oatmeal', calories: 150, icon: '🥣' },
+    { name: 'Chicken Salad', calories: 320, icon: '🥗' },
+    { name: 'Apple', calories: 95, icon: '🍎' },
+    { name: 'Greek Yogurt', calories: 130, icon: '🥛' }
+  ]
+
+  // Achievement badges
+  const achievements = [
+    { name: 'Hydration Hero', icon: '💧', earned: true },
+    { name: 'Protein Power', icon: '💪', earned: true },
+    { name: 'Veggie Master', icon: '🥬', earned: false },
+    { name: 'Meal Planner', icon: '📅', earned: true }
+  ]
+
+  // Community challenges
+  const challenges = [
+    { title: '7-Day Hydration', participants: 234, progress: 85 },
+    { title: 'Protein Week', participants: 156, progress: 60 },
+    { title: 'Veggie Challenge', participants: 89, progress: 30 }
+  ]
+
+  // Floating bokeh particles
+  const bokehParticles = Array.from({ length: 15 }, (_, i) => ({
+    id: i,
+    size: Math.random() * 40 + 20, // 20px to 60px
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    delay: Math.random() * 10,
+    duration: Math.random() * 20 + 30
+  }))
+
+  const onboardingSteps = [
+    {
+      title: "Welcome to Nutriwell!",
+      description: "Let's set up your personalized nutrition journey",
+      icon: "🌱"
+    },
+    {
+      title: "Your Goals",
+      description: "What's your main nutrition goal?",
+      icon: "🎯"
+    },
+    {
+      title: "Dietary Preferences",
+      description: "Any allergies or dietary restrictions?",
+      icon: "🥗"
+    },
+    {
+      title: "Activity Level",
+      description: "How active are you on a typical day?",
+      icon: "🏃‍♀️"
+    }
+  ]
+
+  const handleOnboardingNext = () => {
+    if (onboardingStep < onboardingSteps.length - 1) {
+      setOnboardingStep(onboardingStep + 1)
+    } else {
+      setShowOnboarding(false)
+      setShowNutritionDashboard(true)
     }
   }
 
-  const containerVariants = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 }
+  const handleOnboardingSkip = () => {
+    setShowOnboarding(false)
+    setShowNutritionDashboard(true)
   }
 
-  return (
-    <div className={`min-h-screen bg-gradient-to-br ${theme.background} py-8 px-4 transition-all duration-1000`}>
-      <div className="max-w-4xl mx-auto">
-        
-        {/* Enhanced Nuri Status Indicator */}
-        <motion.div 
-          className="fixed top-8 left-8 z-50"
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5, type: "spring" }}
-        >
-          <AnimatedCard 
-            className={`${theme.card} shadow-xl`}
-            shimmer={nuriState.proEnabled}
-            glow={isStressed}
-          >
-            <div className="flex items-center gap-3 px-4 py-2">
-              <div className="relative">
-                <div className={`w-3 h-3 bg-gradient-to-r ${theme.mood} rounded-full animate-pulse`}></div>
-                <div className={`absolute inset-0 w-3 h-3 bg-gradient-to-r ${theme.mood} rounded-full animate-ping opacity-75`}></div>
-              </div>
-              <span className={`text-sm font-medium ${theme.text}`}>
-                Nuri is here
-                {timeOfDay === 'morning' && ' 🌅'}
-                {timeOfDay === 'afternoon' && ' ☀️'}
-                {timeOfDay === 'evening' && ' 🌆'}
-                {timeOfDay === 'night' && ' 🌙'}
-              </span>
-              {nuriState.proEnabled && (
-                <Crown className="w-4 h-4 text-yellow-500 animate-pulse" />
-              )}
-            </div>
-          </AnimatedCard>
-        </motion.div>
+  const ProgressRing = ({ progress, size = 60, strokeWidth = 6, color = "#4ADE80" }) => {
+    const radius = (size - strokeWidth) / 2
+    const circumference = radius * 2 * Math.PI
+    const strokeDasharray = circumference
+    const strokeDashoffset = circumference - (progress / 100) * circumference
 
-        {/* Progress Indicator */}
-        <div className="mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="flex space-x-2">
-              {[...Array(7)].map((_, i) => (
-                <div
-                  key={i}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    i <= currentStep 
-                      ? 'bg-gradient-to-r from-brandStart to-brandEnd' 
-                      : 'bg-gray-200'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-          <p className="text-center text-sm text-gray-500">
-            Step {currentStep + 1} of 7
-          </p>
-        </div>
-
-        {/* Main Content */}
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Conversation Area */}
-          <div className="flex-1 max-w-2xl">
-            <AnimatedCard 
-              className={`${theme.card} shadow-xl`}
-              delay={0.2}
-              shimmer={nuriState.proEnabled}
-            >
-              <div className="p-6">
-                {/* Welcome Message */}
-                {conversation.length === 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-center mb-8"
-                  >
-                    <div className="flex items-center justify-center gap-2 mb-4">
-                      <Sparkles className={`w-6 h-6 ${theme.text.replace('text-', 'text-')}`} />
-                      <h2 className={`text-2xl font-semibold ${theme.text}`}>
-                        {currentPersonality.greeting}
-                      </h2>
-                    </div>
-                    <p className="text-gray-600">
-                      I'm here to support your health journey. How can I help you today?
-                    </p>
-                  </motion.div>
-                )}
-
-                {/* Conversation History */}
-                <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
-                  {conversation.map((message, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: message.type === 'user' ? 20 : -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-                    >
-                      <AnimatedCard
-                        className={`max-w-xs lg:max-w-md p-3 rounded-2xl ${
-                          message.type === 'user' 
-                            ? `bg-gradient-to-r ${theme.primary} text-white` 
-                            : 'bg-gray-100 text-gray-800'
-                        }`}
-                        hover={false}
-                        delay={index * 0.1}
-                      >
-                        <p className="text-sm">{message.message}</p>
-                      </AnimatedCard>
-                    </motion.div>
-                  ))}
-                  
-                  {/* Typing Indicator */}
-                  <TypingIndicator isTyping={isTyping} theme={timeOfDay} />
-                </div>
-
-                {/* Enhanced Input Area */}
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleUserInput(userInput)}
-                    placeholder="Tell Nuri how you're feeling..."
-                    className={`flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 focus:border-transparent transition-all duration-300 ${
-                      theme.primary.includes('blue') ? 'focus:ring-blue-500' :
-                      theme.primary.includes('green') ? 'focus:ring-green-500' :
-                      theme.primary.includes('purple') ? 'focus:ring-purple-500' :
-                      'focus:ring-blue-500'
-                    }`}
-                  />
-                  <Button
-                    onClick={() => handleUserInput(userInput)}
-                    disabled={!userInput.trim()}
-                    className={`bg-gradient-to-r ${theme.primary} hover:opacity-90 text-white transition-all duration-300`}
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </AnimatedCard>
-          </div>
-
-          {/* Enhanced Sidebar */}
-          <div className="w-full lg:w-80 space-y-6">
-            {/* Macro Progress Dashboard */}
-            <AnimatedCard 
-              className={`${theme.card} shadow-xl`}
-              delay={0.4}
-              shimmer={nuriState.proEnabled}
-            >
-              <div className="p-6">
-                <h3 className={`text-lg font-semibold ${theme.text} mb-4`}>
-                  Today's Progress
-                </h3>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center">
-                    <ProgressRing 
-                      progress={macroProgress.protein} 
-                      size={60} 
-                      color="red" 
-                      label="Protein"
-                    />
-                  </div>
-                  <div className="text-center">
-                    <ProgressRing 
-                      progress={macroProgress.carbs} 
-                      size={60} 
-                      color="yellow" 
-                      label="Carbs"
-                    />
-                  </div>
-                  <div className="text-center">
-                    <ProgressRing 
-                      progress={macroProgress.fats} 
-                      size={60} 
-                      color="purple" 
-                      label="Fats"
-                    />
-                  </div>
-                </div>
-              </div>
-            </AnimatedCard>
-
-            {/* Daily Check-in */}
-            {showCheckIn && (
-              <AnimatedCard 
-                className="shadow-xl"
-                delay={0.6}
-                glow={isStressed}
-              >
-                <DailyCheckIn
-                  onComplete={handleCheckInComplete}
-                  onSkip={() => setShowCheckIn(false)}
-                  streakDays={nuriState.streakDays}
-                />
-              </AnimatedCard>
-            )}
-
-            {/* Health Tip */}
-            {showHealthTip && (
-              <AnimatedCard 
-                className="shadow-xl"
-                delay={0.8}
-                shimmer={nuriState.proEnabled}
-              >
-                <HealthTipCard
-                  tip={HEALTH_TIPS[0]}
-                  onDismiss={() => setShowHealthTip(false)}
-                />
-              </AnimatedCard>
-            )}
-
-            {/* Enhanced Pro Upgrade Suggestion */}
-            {!nuriState.proEnabled && conversation.length > 2 && (
-              <AnimatedCard 
-                className="shadow-xl"
-                delay={1.0}
-                shimmer={true}
-                glow={true}
-              >
-                <div className="p-6 bg-gradient-to-br from-yellow-50 to-amber-50 border-yellow-200 rounded-xl">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Crown className="w-5 h-5 text-yellow-600 animate-pulse" />
-                    <h4 className="font-semibold text-gray-800">Unlock Nuri Pro</h4>
-                  </div>
-                  <p className="text-sm text-gray-600 mb-3">
-                    Get advanced features like mood tracking, journaling, and personalized insights.
-                  </p>
-                  <Button className="w-full bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white transition-all duration-300">
-                    Learn More
-                  </Button>
-                </div>
-              </AnimatedCard>
-            )}
-          </div>
+    return (
+      <div className="relative">
+        <svg width={size} height={size} className="transform -rotate-90">
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke="#374151"
+            strokeWidth={strokeWidth}
+            fill="transparent"
+            className="opacity-30"
+          />
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke={color}
+            strokeWidth={strokeWidth}
+            fill="transparent"
+            strokeDasharray={strokeDasharray}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            className="transition-all duration-1000 ease-out"
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-sm font-semibold text-white">{Math.round(progress)}%</span>
         </div>
       </div>
-    </div>
-  )
-
-  function renderStepContent() {
-    const message = nuriMessages[currentStep]
-    
-    return (
-      <Card className="w-full max-w-2xl p-8 bg-white/95 backdrop-blur-sm shadow-xl border-0">
-        {/* Nuri's Message */}
-        <motion.div 
-          className="text-center mb-8"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <h2 className="text-2xl md:text-3xl font-semibold mb-3 text-gray-800">
-            {message?.text}
-          </h2>
-          {message?.subtext && (
-            <p className="text-gray-600 text-lg">
-              {message.subtext}
-            </p>
-          )}
-        </motion.div>
-
-        {/* Step Content */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          {renderCurrentStep()}
-        </motion.div>
-
-        {/* Navigation */}
-        <motion.div 
-          className="flex justify-between items-center mt-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-        >
-          <Button
-            variant="ghost"
-            onClick={prevStep}
-            disabled={currentStep === 0}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back
-          </Button>
-
-          <Button
-            onClick={nextStep}
-            disabled={!canProceed() || isCalculating}
-            className="flex items-center gap-2 bg-gradient-to-r from-brandStart to-brandEnd hover:from-brandEnd hover:to-brandStart text-white px-6 py-3 rounded-xl"
-          >
-            {currentStep === 5 ? (
-              isCalculating ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                  Calculating...
-                </>
-              ) : (
-                <>
-                  Calculate
-                  <Calculator className="w-4 h-4" />
-                </>
-              )
-            ) : currentStep === 6 ? (
-              'Start Over'
-            ) : (
-              <>
-                Continue
-                <ArrowRight className="w-4 h-4" />
-              </>
-            )}
-          </Button>
-        </motion.div>
-      </Card>
     )
   }
 
-  function renderCurrentStep() {
-    switch (currentStep) {
-      case 0: // Welcome
-        return (
-          <div className="text-center">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="p-6 bg-featureMint rounded-xl">
-                <Calculator className="w-8 h-8 text-brandStart mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-800 mb-2">Precise Calculations</h3>
-                <p className="text-sm text-gray-600">Science-based formulas for accurate results</p>
+  return (
+    <div className="min-h-screen relative overflow-hidden">
+      {/* 🌿 ANIMATED BACKGROUND */}
+      <div 
+        className="fixed inset-0 z-0"
+        style={{
+          background: 'linear-gradient(180deg, #E8F5E8 0%, #2D5016 100%)'
+        }}
+      >
+        {/* Independent breathing effect */}
+        <motion.div
+          className="absolute inset-0"
+          animate={{ 
+            scale: [1, 1.008, 1],
+            rotate: [0, 0.5, 0]
+          }}
+          transition={{ 
+            duration: 20, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            times: [0, 0.5, 1]
+          }}
+        />
+        
+        {/* Gentle floating movement */}
+        <motion.div
+          className="absolute inset-0"
+          animate={{ 
+            y: [0, -10, 0],
+            x: [0, 5, 0]
+          }}
+          transition={{ 
+            duration: 15, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: 2
+          }}
+        />
+      </div>
+
+      {/* Floating bokeh particles */}
+      <div className="fixed inset-0 z-5 pointer-events-none">
+        {bokehParticles.map((particle) => (
+          <motion.div
+            key={particle.id}
+            className="absolute rounded-full blur-sm bg-gradient-to-br from-pink-300/30 to-coral-300/20"
+            style={{
+              width: `${particle.size}px`,
+              height: `${particle.size}px`,
+              left: `${particle.x}%`,
+              top: `${particle.y}%`
+            }}
+            animate={{
+              y: [0, -30, -60],
+              x: [0, 10, -10],
+              opacity: [0, 1, 0],
+              scale: [0, 1, 0]
+            }}
+            transition={{
+              duration: particle.duration,
+              delay: particle.delay,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Floating Food Icons */}
+      <div className="fixed inset-0 z-5 pointer-events-none">
+        {[
+          { icon: '🍎', x: 10, y: 20, size: 24, delay: 0 },
+          { icon: '🥕', x: 85, y: 15, size: 20, delay: 2 },
+          { icon: '🥑', x: 20, y: 80, size: 28, delay: 4 },
+          { icon: '🥦', x: 75, y: 75, size: 22, delay: 6 },
+          { icon: '🍓', x: 90, y: 60, size: 18, delay: 8 },
+          { icon: '🥬', x: 5, y: 60, size: 26, delay: 10 }
+        ].map((food, index) => (
+          <motion.div
+            key={index}
+            className="absolute text-2xl opacity-30"
+            style={{
+              left: `${food.x}%`,
+              top: `${food.y}%`,
+              fontSize: `${food.size}px`
+            }}
+            animate={{
+              y: [0, -20, -40],
+              x: [0, 5, -5],
+              rotate: [0, 5, -5, 0]
+            }}
+            transition={{
+              duration: 8,
+              delay: food.delay,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            {food.icon}
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Onboarding Flow */}
+      <AnimatePresence>
+        {showOnboarding && (
+          <motion.div 
+            className="fixed inset-0 z-50 flex items-center justify-center p-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="bg-white/20 backdrop-blur-md rounded-3xl p-8 max-w-md w-full border border-white/30">
+              <div className="text-center mb-6">
+                <div className="text-4xl mb-4">{onboardingSteps[onboardingStep].icon}</div>
+                <h2 className="text-2xl font-bold text-white mb-2">{onboardingSteps[onboardingStep].title}</h2>
+                <p className="text-white/80 text-lg">{onboardingSteps[onboardingStep].description}</p>
               </div>
-              <div className="p-6 bg-featureLavender rounded-xl">
-                <Target className="w-8 h-8 text-brandStart mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-800 mb-2">Personal Targets</h3>
-                <p className="text-sm text-gray-600">Customized to your goals and lifestyle</p>
+              
+              {/* Progress indicator */}
+              <div className="flex justify-center mb-6">
+                {onboardingSteps.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-3 h-3 rounded-full mx-1 ${
+                      index <= onboardingStep ? 'bg-green-400' : 'bg-white/30'
+                    }`}
+                  />
+                ))}
               </div>
-              <div className="p-6 bg-featurePeach rounded-xl">
-                <TrendingUp className="w-8 h-8 text-brandStart mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-800 mb-2">Easy to Follow</h3>
-                <p className="text-sm text-gray-600">Simple, actionable recommendations</p>
+              
+              <div className="flex gap-4">
+                <button
+                  onClick={handleOnboardingSkip}
+                  className="flex-1 px-4 py-3 text-white/70 hover:text-white transition-colors"
+                >
+                  Skip
+                </button>
+                <button
+                  onClick={handleOnboardingNext}
+                  className="flex-1 bg-gradient-to-r from-green-400 to-teal-500 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all duration-300"
+                >
+                  {onboardingStep === onboardingSteps.length - 1 ? 'Get Started' : 'Next'}
+                </button>
               </div>
             </div>
-          </div>
-        )
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      case 1: // Name
-        return (
-          <div className="space-y-6">
-            <FloatingInput
-              label="Your Name"
-              value={formData.name}
-              onChange={(e) => updateFormData('name', e.target.value)}
-              placeholder="Enter your first name"
-              className="text-lg"
-            />
-          </div>
-        )
+      {/* Main Layout - 3 Columns */}
+      <div className="flex min-h-screen pt-10 relative z-10">
+        
+        {/* Left Floating Badge */}
+        <div className="fixed top-16 left-6 z-50">
+          <motion.div 
+            className="bg-white/20 backdrop-blur-md rounded-2xl px-4 py-2 shadow-lg border border-white/30"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+              <span className="text-white font-medium">Nuri is here</span>
+              <Leaf className="w-4 h-4 text-green-300" />
+            </div>
+          </motion.div>
+        </div>
 
-      case 2: // Demographics
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FloatingInput
-              label="Age"
-              type="number"
-              value={formData.age}
-              onChange={(e) => updateFormData('age', e.target.value)}
-              placeholder="25"
-            />
-            
-            <FloatingSelect
-              label="Biological Sex"
-              value={formData.gender}
-              onChange={(value) => updateFormData('gender', value)}
-              options={[
-                { value: 'male', label: 'Male' },
-                { value: 'female', label: 'Female' }
-              ]}
-              placeholder="Select sex"
-            />
-            
-            <FloatingInput
-              label="Height (cm)"
-              type="number"
-              value={formData.height}
-              onChange={(e) => updateFormData('height', e.target.value)}
-              placeholder="170"
-            />
-            
-            <FloatingInput
-              label="Weight (kg)"
-              type="number"
-              value={formData.weight}
-              onChange={(e) => updateFormData('weight', e.target.value)}
-              placeholder="70"
-            />
-          </div>
-        )
+        {/* Right Floating Onboarding Button */}
+        <div className="fixed top-16 right-6 z-50">
+          <motion.button
+            onClick={() => setShowOnboarding(true)}
+            className="bg-white/20 backdrop-blur-md rounded-2xl px-4 py-2 shadow-lg border border-white/30 text-white font-medium hover:scale-105 transition-all duration-300"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-yellow-300" />
+              <span>Get Started</span>
+            </div>
+          </motion.button>
+        </div>
 
-      case 3: // Activity Level
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              { value: 'sedentary', label: 'Sedentary', desc: 'Little to no exercise', icon: '🪑' },
-              { value: 'light', label: 'Lightly Active', desc: 'Light exercise 1-3 days/week', icon: '🚶‍♀️' },
-              { value: 'moderate', label: 'Moderately Active', desc: 'Moderate exercise 3-5 days/week', icon: '🏃‍♀️' },
-              { value: 'active', label: 'Active', desc: 'Hard exercise 6-7 days/week', icon: '💪' },
-              { value: 'very_active', label: 'Very Active', desc: 'Very hard exercise, sports', icon: '🏋️‍♀️' }
-            ].map(activity => (
-              <button
-                key={activity.value}
-                onClick={() => updateFormData('activityLevel', activity.value)}
-                className={`p-4 rounded-xl border-2 transition-all duration-200 text-left ${
-                  formData.activityLevel === activity.value 
-                    ? 'border-brandStart bg-gradient-to-br from-brandStart/10 to-brandEnd/10 shadow-lg' 
-                    : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
-                }`}
+        {/* Center Column - Main Content */}
+        <div className="flex-1 flex flex-col items-center justify-center px-8 pt-10 pb-20 relative z-20">
+          
+          {/* 🤖 3D NURI CHARACTER */}
+          <div className="relative mb-8">
+            <motion.div
+              className="relative"
+              animate={{ y: [0, -15, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            >
+              {/* Smaller 3D Nuri character */}
+              <div className="relative w-64 h-64">
+                {/* Pear-shaped body with gradient */}
+                <div className="absolute inset-0 bg-gradient-to-b from-green-300 to-green-700 rounded-full transform scale-y-110 shadow-2xl">
+                  {/* Expressive face with interactive eyes */}
+                  <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 flex gap-8">
+                    {/* Left eye with cursor following */}
+                    <div className="relative">
+                      <div className="w-5 h-5 bg-black rounded-full shadow-lg"></div>
+                      <motion.div 
+                        className="absolute top-1 left-1 w-1.5 h-1.5 bg-white rounded-full"
+                        animate={{ 
+                          x: eyeMovement.x,
+                          y: eyeMovement.y,
+                          scale: isBlinking ? 0 : 1
+                        }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                      />
+                    </div>
+                    {/* Right eye with cursor following */}
+                    <div className="relative">
+                      <div className="w-5 h-5 bg-black rounded-full shadow-lg"></div>
+                      <motion.div 
+                        className="absolute top-1 left-1 w-1.5 h-1.5 bg-white rounded-full"
+                        animate={{ 
+                          x: eyeMovement.x,
+                          y: eyeMovement.y,
+                          scale: isBlinking ? 0 : 1
+                        }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Dynamic smile based on expression */}
+                  <motion.div 
+                    className="absolute bottom-1/3 left-1/2 transform -translate-x-1/2 w-10 h-3 border-b-4 border-black rounded-full"
+                    animate={{
+                      scaleY: nuriExpression === 'happy' ? 1.2 : nuriExpression === 'thoughtful' ? 0.8 : 1,
+                      rotate: nuriExpression === 'happy' ? 5 : nuriExpression === 'thoughtful' ? -2 : 0
+                    }}
+                    transition={{ duration: 0.5 }}
+                  />
+
+                  {/* Pink cheeks with glow */}
+                  <div className="absolute top-1/2 left-1/4 w-6 h-6 bg-pink-300/60 rounded-full blur-sm shadow-lg"></div>
+                  <div className="absolute top-1/2 right-1/4 w-6 h-6 bg-pink-300/60 rounded-full blur-sm shadow-lg"></div>
+
+                  {/* Two detailed leaves with sway animation */}
+                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                    <motion.div
+                      className="w-6 h-10 bg-gradient-to-b from-green-500 to-green-700 rounded-full transform rotate-12 shadow-lg"
+                      animate={{ rotate: [12, 8, 12] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                    <motion.div
+                      className="w-6 h-10 bg-gradient-to-b from-green-500 to-green-700 rounded-full transform -rotate-12 absolute top-0 left-0 shadow-lg"
+                      animate={{ rotate: [-12, -8, -12] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                    />
+                  </div>
+
+                  {/* Sparkle particles around Nuri */}
+                  <div className="absolute inset-0">
+                    {Array.from({ length: 6 }, (_, i) => (
+                      <motion.div
+                        key={i}
+                        className="absolute w-2 h-2 bg-yellow-300 rounded-full shadow-lg"
+                        style={{
+                          left: `${Math.random() * 100}%`,
+                          top: `${Math.random() * 100}%`
+                        }}
+                        animate={{
+                          scale: [0, 1, 0],
+                          opacity: [0, 1, 0]
+                        }}
+                        transition={{
+                          duration: 2,
+                          delay: i * 0.3,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Welcome Heading with Gradient Text */}
+          <div className="text-center mb-8">
+            <motion.h1 
+              className="text-5xl font-bold mb-4 flex items-center justify-center gap-3"
+              style={{
+                background: 'linear-gradient(135deg, #4ADE80, #0EA5E9)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              Welcome to Nutriwell
+              <Leaf className="w-8 h-8 text-green-400" />
+            </motion.h1>
+            <motion.p 
+              className="text-xl text-white/90 mb-8 leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              I'm Nuri, your AI wellness assistant. Let's start your journey to better health together!
+            </motion.p>
+            
+            <motion.button
+              className="bg-gradient-to-r from-green-400 to-teal-500 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center gap-3 mx-auto group"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              onClick={() => setShowNutritionDashboard(true)}
+            >
+              <MessageCircle className="w-6 h-6" />
+              Start Chat with Nuri
+            </motion.button>
+          </div>
+
+          {/* Nuri Chat Bubble with Glassmorphism */}
+          <motion.div 
+            className="max-w-md w-full mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-200 to-green-200 rounded-full flex items-center justify-center shadow-lg border-2 border-white/50">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-300 to-green-300 rounded-full flex items-center justify-center">
+                  <div className="text-lg">🌱</div>
+                </div>
+              </div>
+              <div className="bg-white/20 backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-white/30 max-w-xs">
+                <p className="text-white/90 text-lg leading-relaxed">
+                  Good morning! 😊 I'm Nuri, your personal nutrition assistant. Let's start with a few quick questions to personalize your plan!
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Quick Actions */}
+          <motion.div 
+            className="max-w-md w-full mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+          >
+            <h3 className="text-xl font-semibold text-white mb-4 text-center">Quick Actions</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <motion.button
+                className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 hover:scale-105 transition-all duration-300"
+                whileHover={{ y: -3 }}
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl">{activity.icon}</span>
-                  <div>
-                    <div className="font-semibold text-gray-800">{activity.label}</div>
-                    <div className="text-sm text-gray-600">{activity.desc}</div>
-                  </div>
+                  <Camera className="w-6 h-6 text-green-300" />
+                  <span className="text-white font-medium">Log Food</span>
                 </div>
-              </button>
-            ))}
-          </div>
-        )
-
-      case 4: // Goals
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              { value: 'lose', label: 'Lose Weight', emoji: '📉', color: 'from-red-50 to-red-100 border-red-200 hover:border-red-300' },
-              { value: 'maintain', label: 'Maintain Weight', emoji: '⚖️', color: 'from-green-50 to-green-100 border-green-200 hover:border-green-300' },
-              { value: 'gain', label: 'Gain Weight', emoji: '📈', color: 'from-blue-50 to-blue-100 border-blue-200 hover:border-blue-300' },
-              { value: 'muscle', label: 'Build Muscle', emoji: '💪', color: 'from-purple-50 to-purple-100 border-purple-200 hover:border-purple-300' },
-              { value: 'energy', label: 'Improve Energy', emoji: '⚡', color: 'from-yellow-50 to-yellow-100 border-yellow-200 hover:border-yellow-300' },
-              { value: 'health', label: 'Overall Health', emoji: '🌟', color: 'from-teal-50 to-teal-100 border-teal-200 hover:border-teal-300' }
-            ].map(goal => (
-              <button
-                key={goal.value}
-                onClick={() => updateFormData('goal', goal.value)}
-                className={`p-4 rounded-xl border-2 transition-all duration-200 hover:scale-105 hover:shadow-md bg-gradient-to-br ${
-                  formData.goal === goal.value 
-                    ? 'border-brandStart bg-gradient-to-br from-brandStart/10 to-brandEnd/10 shadow-lg scale-105' 
-                    : goal.color
-                }`}
+              </motion.button>
+              
+              <motion.button
+                className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 hover:scale-105 transition-all duration-300"
+                whileHover={{ y: -3 }}
               >
-                <div className="text-2xl mb-2">{goal.emoji}</div>
-                <div className="font-semibold text-sm text-gray-800">{goal.label}</div>
-              </button>
-            ))}
-          </div>
-        )
-
-      case 5: // Processing
-        return (
-          <div className="text-center py-8">
-            <div className="animate-pulse text-6xl mb-4">🧮</div>
-            <p className="text-lg text-gray-600">Hang tight! I'm calculating your personalized nutrition plan...</p>
-          </div>
-        )
-
-      case 6: // Results
-        return results ? (
-          <div className="space-y-6">
-            {/* Personal Summary */}
-            <div className="text-center p-6 bg-gradient-to-r from-brandStart/10 to-brandEnd/10 rounded-xl">
-              <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                Perfect! Here's what I found for you:
-              </h3>
-              <p className="text-gray-700 leading-relaxed">{results.personalSummary}</p>
-            </div>
-
-            {/* Calorie & Macro Results */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Calories */}
-              <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-                <div className="text-center">
-                  <Zap className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-                  <h4 className="text-lg font-semibold text-blue-800 mb-2">Daily Calories</h4>
-                  <div className="text-3xl font-bold text-blue-900">{results.targetCalories}</div>
-                  <p className="text-sm text-blue-700 mt-1">per day</p>
+                <div className="flex items-center gap-3">
+                  <Search className="w-6 h-6 text-blue-300" />
+                  <span className="text-white font-medium">Search Foods</span>
                 </div>
-              </Card>
-
-              {/* Goal Badge */}
-              <Card className="p-6 bg-gradient-to-br from-green-50 to-green-100 border-green-200">
-                <div className="text-center">
-                  <Target className="w-8 h-8 text-green-600 mx-auto mb-3" />
-                  <h4 className="text-lg font-semibold text-green-800 mb-2">Your Goal</h4>
-                  <div className="text-xl font-bold text-green-900 capitalize">
-                    {formData.goal === 'lose' ? 'Weight Loss' :
-                     formData.goal === 'gain' ? 'Weight Gain' :
-                     formData.goal === 'muscle' ? 'Build Muscle' :
-                     formData.goal === 'energy' ? 'Improve Energy' :
-                     formData.goal === 'health' ? 'Overall Health' :
-                     'Maintain Weight'}
-                  </div>
-                </div>
-              </Card>
+              </motion.button>
             </div>
+          </motion.div>
 
-            {/* Macronutrients */}
-            <div className="grid grid-cols-3 gap-4">
-              <Card className="p-6 bg-gradient-to-br from-red-50 to-red-100 border-red-200 text-center">
-                <h5 className="font-semibold text-red-800 mb-2">Protein</h5>
-                <div className="text-2xl font-bold text-red-900">{results.macros.protein.grams}g</div>
-                <div className="text-sm text-red-700">{results.macros.protein.percent}%</div>
-              </Card>
-              <Card className="p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200 text-center">
-                <h5 className="font-semibold text-yellow-800 mb-2">Carbs</h5>
-                <div className="text-2xl font-bold text-yellow-900">{results.macros.carbs.grams}g</div>
-                <div className="text-sm text-yellow-700">{results.macros.carbs.percent}%</div>
-              </Card>
-              <Card className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 text-center">
-                <h5 className="font-semibold text-purple-800 mb-2">Fats</h5>
-                <div className="text-2xl font-bold text-purple-900">{results.macros.fat.grams}g</div>
-                <div className="text-sm text-purple-700">{results.macros.fat.percent}%</div>
-              </Card>
-            </div>
-
-            {/* Nuri's Insight */}
-            <div className="p-6 bg-gradient-to-r from-brandStart/10 to-brandEnd/10 rounded-xl border border-brandStart/20">
-              <div className="flex items-start gap-4">
-                <NuriAvatar size="sm" mood="excited" animate={false} />
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Nuri's Insight:</h4>
-                  <p className="text-gray-700 leading-relaxed">
-                    This nutrition plan gives your body the perfect fuel it needs! 
-                    {formData.goal === 'muscle' && " Focus on hitting that protein target to support muscle growth."}
-                    {formData.goal === 'lose' && " The higher protein will help preserve muscle while you lose fat."}
-                    {formData.goal === 'energy' && " These balanced macros will keep your energy steady throughout the day."}
-                    {formData.goal === 'health' && " This balanced approach supports overall wellness and vitality."}
-                    {(formData.goal === 'maintain' || formData.goal === 'gain') && " This balanced plan supports your goals while maintaining optimal health."}
-                  </p>
-                </div>
+          {/* Premium Features Teaser with Glassmorphism */}
+          <motion.div 
+            className="max-w-4xl w-full"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1 }}
+          >
+            <div className="bg-gradient-to-r from-purple-200/30 to-pink-200/30 backdrop-blur-md rounded-3xl p-4 mb-6 inline-block border border-white/30">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-purple-300" />
+                <span className="text-sm font-medium text-white">Premium Features</span>
               </div>
             </div>
+            
+            <h2 className="text-3xl font-bold text-white mb-3">Transform Your Health Journey</h2>
+            <p className="text-white/80 mb-8 leading-relaxed">
+              Unlock personalized nutrition guidance with our premium features designed for your unique health journey.
+            </p>
 
-            {/* Action Buttons */}
-            <div className="flex justify-center gap-4 pt-4">
-              <Button variant="outline" className="flex items-center gap-2">
-                <Download className="w-4 h-4" />
-                Save Plan
-              </Button>
-              <Button variant="outline" className="flex items-center gap-2">
-                <Share2 className="w-4 h-4" />
-                Share
-              </Button>
-              <Button 
-                onClick={() => {
-                  setCurrentStep(0)
-                  setFormData({
-                    name: '',
-                    age: '',
-                    gender: '',
-                    height: '',
-                    weight: '',
-                    activityLevel: '',
-                    goal: ''
-                  })
-                  setResults(null)
-                }}
-                className="flex items-center gap-2 bg-gradient-to-r from-brandStart to-brandEnd text-white"
+            {/* Premium Feature Cards with Enhanced Design */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              {/* Recipe Generator Pro */}
+              <motion.div 
+                className="bg-white/10 backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-white/20 hover:scale-105 transition-all duration-300 relative overflow-hidden group"
+                whileHover={{ y: -8, scale: 1.02 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.2 }}
               >
-                <RefreshCw className="w-4 h-4" />
-                Start Over
-              </Button>
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 to-red-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
+                      <ChefHat className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white">Recipe Generator Pro</h3>
+                      <p className="text-white/70 text-sm">AI creates custom recipes based on your ingredients</p>
+                    </div>
+                  </div>
+                  <p className="text-white/80 text-sm mb-4">Get personalized recipes that match your dietary preferences, available ingredients, and nutritional goals.</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-orange-300 text-sm font-medium">✨ AI-Powered</span>
+                    <motion.button
+                      className="bg-gradient-to-r from-orange-400 to-red-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:shadow-lg transition-all duration-300"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Try Free (3 days)
+                    </motion.button>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Health Insights Dashboard */}
+              <motion.div 
+                className="bg-white/10 backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-white/20 hover:scale-105 transition-all duration-300 relative overflow-hidden group"
+                whileHover={{ y: -8, scale: 1.02 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.4 }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg">
+                      <BarChart3 className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white">Health Insights Dashboard</h3>
+                      <p className="text-white/70 text-sm">Advanced analytics & correlations</p>
+                    </div>
+                  </div>
+                  <p className="text-white/80 text-sm mb-4">Discover correlations between food, mood, energy, sleep, and biomarkers with detailed analytics.</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-blue-300 text-sm font-medium">📊 Advanced Analytics</span>
+                    <motion.button
+                      className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:shadow-lg transition-all duration-300"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Try Free (3 days)
+                    </motion.button>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Personal Nutrition Coach */}
+              <motion.div 
+                className="bg-white/10 backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-white/20 hover:scale-105 transition-all duration-300 relative overflow-hidden group"
+                whileHover={{ y: -8, scale: 1.02 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.6 }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 to-teal-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg">
+                      <Users className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white">Personal Nutrition Coach</h3>
+                      <p className="text-white/70 text-sm">Real-time chat with certified nutritionists</p>
+                    </div>
+                  </div>
+                  <p className="text-white/80 text-sm mb-4">Get personalized meal plans and real-time guidance from certified nutritionists.</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-green-300 text-sm font-medium">👨‍⚕️ Expert Guidance</span>
+                    <motion.button
+                      className="bg-gradient-to-r from-green-400 to-teal-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:shadow-lg transition-all duration-300"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Try Free (3 days)
+                    </motion.button>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Smart Grocery Assistant */}
+              <motion.div 
+                className="bg-white/10 backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-white/20 hover:scale-105 transition-all duration-300 relative overflow-hidden group"
+                whileHover={{ y: -8, scale: 1.02 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.8 }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
+                      <ShoppingCart className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white">Smart Grocery Assistant</h3>
+                      <p className="text-white/70 text-sm">AI-generated shopping lists & local prices</p>
+                    </div>
+                  </div>
+                  <p className="text-white/80 text-sm mb-4">Get smart shopping lists based on your goals, dietary restrictions, and local store prices.</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-yellow-300 text-sm font-medium">🛒 Smart Lists</span>
+                    <motion.button
+                      className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:shadow-lg transition-all duration-300"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Try Free (3 days)
+                    </motion.button>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Social Proof & FOMO Elements */}
+            <motion.div 
+              className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-md rounded-3xl p-6 border border-white/20"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 2 }}
+            >
+              <div className="text-center mb-4">
+                <h3 className="text-xl font-bold text-white mb-2">Join 10,000+ users transforming their health</h3>
+                <p className="text-white/80 text-sm">Limited time: Premium features 40% off</p>
+              </div>
+              
+              {/* User testimonials */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div className="bg-white/10 rounded-2xl p-4 text-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                    <span className="text-white font-bold">A</span>
+                  </div>
+                  <p className="text-white/90 text-sm">"Ana is healthier than ever"</p>
+                  <div className="flex justify-center mt-2">
+                    {[1,2,3,4,5].map(i => <Star key={i} className="w-3 h-3 text-yellow-400 fill-current" />)}
+                  </div>
+                </div>
+                
+                <div className="bg-white/10 rounded-2xl p-4 text-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-teal-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                    <span className="text-white font-bold">M</span>
+                  </div>
+                  <p className="text-white/90 text-sm">"Lost 15lbs in 3 months"</p>
+                  <div className="flex justify-center mt-2">
+                    {[1,2,3,4,5].map(i => <Star key={i} className="w-3 h-3 text-yellow-400 fill-current" />)}
+                  </div>
+                </div>
+                
+                <div className="bg-white/10 rounded-2xl p-4 text-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                    <span className="text-white font-bold">J</span>
+                  </div>
+                  <p className="text-white/90 text-sm">"Energy levels through the roof!"</p>
+                  <div className="flex justify-center mt-2">
+                    {[1,2,3,4,5].map(i => <Star key={i} className="w-3 h-3 text-yellow-400 fill-current" />)}
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating Action Button */}
+              <motion.button
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full font-bold text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 mx-auto block"
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                🚀 Start Free Trial (3 days)
+              </motion.button>
+            </motion.div>
+          </motion.div>
+
+        </div>
+
+        {/* Right Sidebar with Glassmorphism */}
+        <motion.div 
+          className="w-80 bg-white/10 backdrop-blur-md border-l border-white/20 p-6 overflow-y-auto sticky top-0 h-screen relative z-30"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 1 }}
+        >
+          
+          {/* Today's Progress */}
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-4">
+              <Sun className="w-6 h-6 text-yellow-300" />
+              <h3 className="text-xl font-semibold text-white">Today's Progress</h3>
+            </div>
+            <div className="bg-blue-500/20 backdrop-blur-sm rounded-xl p-3 mb-4 border border-blue-400/30">
+              <p className="text-blue-200 text-xs font-medium">📊 Example Data</p>
+              <p className="text-blue-100 text-xs">This shows how your dashboard will look once you start tracking</p>
+            </div>
+            <p className="text-sm text-white/70 mb-6">Your wellness journey</p>
+            
+            <div className="space-y-4">
+              <motion.div 
+                className="bg-white/10 backdrop-blur-md rounded-3xl p-5 shadow-2xl border border-white/20 hover:scale-105 transition-all duration-300"
+                whileHover={{ y: -3 }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Zap className="w-6 h-6 text-orange-400" />
+                    <span className="text-white">Energy Level</span>
+                  </div>
+                  <span className="bg-orange-200/30 text-orange-200 px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm">Moderate</span>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                className="bg-white/10 backdrop-blur-md rounded-3xl p-5 shadow-2xl border border-white/20 hover:scale-105 transition-all duration-300"
+                whileHover={{ y: -3 }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="text-2xl">😊</div>
+                    <span className="text-white">Mood</span>
+                  </div>
+                  <span className="bg-blue-200/30 text-blue-200 px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm">High</span>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                className="bg-white/10 backdrop-blur-md rounded-3xl p-5 shadow-2xl border border-white/20 hover:scale-105 transition-all duration-300"
+                whileHover={{ y: -3 }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Target className="w-6 h-6 text-pink-300" />
+                    <span className="text-white">Focus</span>
+                  </div>
+                  <span className="bg-pink-200/30 text-pink-200 px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm">Low</span>
+                </div>
+              </motion.div>
             </div>
           </div>
-        ) : null
 
-      default:
-        return null
-    }
-  }
+          {/* Today's Nutrition Dashboard */}
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold text-white mb-6">Today's Nutrition</h3>
+            
+            <div className="bg-green-500/20 backdrop-blur-sm rounded-xl p-3 mb-4 border border-green-400/30">
+              <p className="text-green-200 text-xs font-medium">📊 Example Data</p>
+              <p className="text-green-100 text-xs">This shows how your nutrition tracking will look once you start logging meals</p>
+            </div>
+            
+            <div className="space-y-4">
+              {/* Calories */}
+              <div className="bg-white/10 backdrop-blur-md rounded-3xl p-5 shadow-2xl border border-white/20">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <Apple className="w-5 h-5 text-green-400" />
+                    <span className="text-white font-medium">Calories</span>
+                  </div>
+                  <span className="text-white/70 text-sm">{nutritionData.calories.current}/{nutritionData.calories.goal} {nutritionData.calories.unit}</span>
+                </div>
+                <ProgressRing progress={(nutritionData.calories.current / nutritionData.calories.goal) * 100} color="#4ADE80" />
+              </div>
+
+              {/* Macros */}
+              <div className="grid grid-cols-3 gap-3">
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                  <div className="text-center">
+                    <div className="text-orange-400 text-sm font-medium">Protein</div>
+                    <div className="text-white text-lg font-bold">{nutritionData.protein.current}g</div>
+                    <div className="text-white/50 text-xs">{nutritionData.protein.goal}g goal</div>
+                  </div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                  <div className="text-center">
+                    <div className="text-blue-400 text-sm font-medium">Carbs</div>
+                    <div className="text-white text-lg font-bold">{nutritionData.carbs.current}g</div>
+                    <div className="text-white/50 text-xs">{nutritionData.carbs.goal}g goal</div>
+                  </div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                  <div className="text-center">
+                    <div className="text-yellow-400 text-sm font-medium">Fat</div>
+                    <div className="text-white text-lg font-bold">{nutritionData.fat.current}g</div>
+                    <div className="text-white/50 text-xs">{nutritionData.fat.goal}g goal</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Water Intake */}
+              <div className="bg-white/10 backdrop-blur-md rounded-3xl p-5 shadow-2xl border border-white/20">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <Droplets className="w-5 h-5 text-blue-400" />
+                    <span className="text-white font-medium">Water Intake</span>
+                  </div>
+                  <span className="text-white/70 text-sm">{nutritionData.water.current}/{nutritionData.water.goal} {nutritionData.water.unit}</span>
+                </div>
+                <ProgressRing progress={(nutritionData.water.current / nutritionData.water.goal) * 100} color="#3B82F6" />
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Log Recent Foods */}
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold text-white mb-4">Recent Foods</h3>
+            <div className="space-y-3">
+              {recentFoods.map((food, index) => (
+                <motion.button
+                  key={index}
+                  className="w-full bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 hover:scale-105 transition-all duration-300 text-left"
+                  whileHover={{ y: -2 }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{food.icon}</span>
+                      <div>
+                        <div className="text-white font-medium">{food.name}</div>
+                        <div className="text-white/60 text-sm">{food.calories} kcal</div>
+                      </div>
+                    </div>
+                    <Plus className="w-5 h-5 text-white/60" />
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+          </div>
+
+          {/* Achievements */}
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold text-white mb-4">Achievements</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {achievements.map((achievement, index) => (
+                <div
+                  key={index}
+                  className={`backdrop-blur-md rounded-2xl p-4 border ${
+                    achievement.earned 
+                      ? 'bg-white/20 border-white/30' 
+                      : 'bg-white/5 border-white/10'
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">{achievement.icon}</div>
+                    <div className={`text-sm font-medium ${
+                      achievement.earned ? 'text-white' : 'text-white/50'
+                    }`}>
+                      {achievement.name}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Community Challenges */}
+          <div>
+            <h3 className="text-xl font-semibold text-white mb-4">Community Challenges</h3>
+            <div className="space-y-3">
+              {challenges.map((challenge, index) => (
+                <div key={index} className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="text-white font-medium">{challenge.title}</div>
+                    <div className="text-white/60 text-sm">{challenge.participants} participants</div>
+                  </div>
+                  <div className="w-full bg-white/20 rounded-full h-2">
+                    <div 
+                      className="bg-gradient-to-r from-green-400 to-teal-500 h-2 rounded-full transition-all duration-1000"
+                      style={{ width: `${challenge.progress}%` }}
+                    />
+                  </div>
+                  <div className="text-white/60 text-xs mt-1">{challenge.progress}% complete</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </motion.div>
+      </div>
+    </div>
+  )
 }
 
 export default NuriAssistant

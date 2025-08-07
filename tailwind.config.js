@@ -8,10 +8,75 @@ export default {
   theme: {
     extend: {
       colors: {
-        // New vibrant brand palette
-        brandStart: '#37c8b4',  // teal
-        brandEnd: '#fd818b',    // coral-pink
-        brandMid: '#8fe4c5',    // pastel green
+        // Soft Teal Color Palette - Nutrition AI Experience
+        teal: {
+          50:  '#E1F5F4',   // Primary-100 - Card backgrounds, subtle overlays
+          100: '#B8E4E2',   // Primary-200 - Hover backgrounds, soft dividers
+          200: '#8ED3CF',   // Primary-300 - Secondary buttons, badge backgrounds
+          300: '#6CC7C4',   // Primary-400 - Hover/active states
+          400: '#4EB1AE',   // Primary-500 - Main buttons, active tabs, Nuri's aura
+          500: '#40A4A0',   // Primary-600 - Dark-mode text, high-contrast icons
+          600: '#2F868F',   // Primary-700 - Navigation bar (dark mode)
+          700: '#206D79',   // Primary-800 - Footer, deep-tone overlays
+          800: '#0E4F5A',   // Primary-900 - Error-free emphasis, strong CTA
+          900: '#0E4F5A',   // Primary-900 - Strong call-to-action
+        },
+        
+        // Complementary Colors
+        coral: {
+          50:  '#FFF5F5',
+          100: '#FFE8E8',
+          200: '#FFD1D1',
+          300: '#FFB3B3',
+          400: '#FF9A8B',   // Soft coral accent
+          500: '#FF7A6B',
+          600: '#FF5A4D',
+          700: '#E53E3E',
+          800: '#C53030',
+          900: '#9B2C2B',
+        },
+        
+        // Green for wellness touches
+        green: {
+          50:  '#F0FDF4',
+          100: '#DCFCE7',
+          200: '#BBF7D0',
+          300: '#86EFAC',
+          400: '#4ADE80',   // For sprout hairpin
+          500: '#22C55E',
+          600: '#16A34A',
+          700: '#15803D',
+          800: '#166534',
+          900: '#14532D',
+        },
+        
+        // Mint and deep leaf green for Nuri character
+        'mint-green': '#B8E6B8',
+        'deep-leaf-green': '#4A7C59',
+        'fern-green': '#2E4E3F',
+        
+        // Additional colors for sparkles
+        coral: {
+          300: '#FF9A8B',
+        },
+        mint: {
+          300: '#B8E6B8',
+        },
+        cream: {
+          300: '#FFF8DC',
+        },
+        
+        // Legacy colors (maintained for compatibility)
+        sage: '#A7C7A3',      // Soft sage green (primary)
+        misty: '#B3DFF5',     // Misty blue (accent)
+        lavender: '#D8C8EB',  // Pale lavender (secondary)
+        blush: '#F5C6C6',     // Blush pink (highlight)
+        mint: '#A7C7A3',      // Mint green (same as sage)
+        neutral: '#F5F5F5',   // Warm neutral (background)
+        
+        brandStart: '#4EB1AE',  // Updated to soft teal
+        brandEnd: '#FF9A8B',    // Updated to soft coral
+        brandMid: '#8ED3CF',    // Updated to teal-200
         muted: '#f5f7fa',       // light background
         
         // Feature card colors
@@ -59,6 +124,13 @@ export default {
       fontFamily: {
         'sans': ['Inter', 'ui-sans-serif', 'system-ui'],
         'heading': ['Poppins', 'ui-sans-serif', 'system-ui'],
+        'nunito': ['Nunito', 'ui-sans-serif', 'system-ui'],
+        'dm-sans': ['DM Sans', 'ui-sans-serif', 'system-ui'],
+        'body': ['Nunito', 'ui-sans-serif', 'system-ui'],
+        'title': ['Poppins', 'ui-sans-serif', 'system-ui'],
+      },
+      backdropBlur: { 
+        xs: '2px' 
       },
       fontSize: {
         'xs': '0.75rem',
