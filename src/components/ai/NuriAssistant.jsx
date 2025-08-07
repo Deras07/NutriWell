@@ -32,6 +32,11 @@ const NuriAssistant = () => {
   const [showThinkingAnimation, setShowThinkingAnimation] = useState(false)
   const [onboardingComplete, setOnboardingComplete] = useState(false)
 
+  // Results reveal state
+  const [showResults, setShowResults] = useState(false)
+  const [currentResultSection, setCurrentResultSection] = useState(0)
+  const [resultsData, setResultsData] = useState(null)
+
   // Onboarding questions flow
   const onboardingQuestions = [
     {
@@ -202,8 +207,12 @@ const NuriAssistant = () => {
         // Processing animation
         setShowThinkingAnimation(true)
         setTimeout(() => {
+          const results = generateResults(onboardingData)
+          setResultsData(results)
           setOnboardingComplete(true)
           setShowThinkingAnimation(false)
+          setShowResults(true)
+          setShowOnboarding(false)
         }, 3000)
       }
     }, 500)
@@ -220,6 +229,97 @@ const NuriAssistant = () => {
   const getProgressPercentage = () => {
     return ((currentQuestion + 1) / onboardingQuestions.length) * 100
   }
+
+  // Generate personalized results based on onboarding data
+  const generateResults = (userData) => {
+    const age = parseInt(userData.age) || 30
+    const weight = parseFloat(userData.weight) || 70
+    const height = parseFloat(userData.height) || 170
+    const activityLevel = userData.activityLevel || 'Moderately Active'
+    const mainGoal = userData.mainGoal || 'Maintain health'
+
+    // Calculate BMR using Mifflin-St Jeor Equation
+    const bmr = 10 * weight + 6.25 * height - 5 * age + 5
+    let tdee = bmr * 1.2 // Sedentary base
+
+    // Adjust for activity level
+    switch (activityLevel) {
+      case 'Lightly Active': tdee = bmr * 1.375; break
+      case 'Moderately Active': tdee = bmr * 1.55; break
+      case 'Very Active': tdee = bmr * 1.725; break
+      case 'Athlete': tdee = bmr * 1.9; break
+    }
+
+    // Adjust for goals
+    switch (mainGoal) {
+      case 'Lose fat': tdee *= 0.85; break
+      case 'Build muscle': tdee *= 1.1; break
+    }
+
+    // Calculate macros
+    const protein = weight * 2.2 // 1g per lb
+    const fat = (tdee * 0.25) / 9 // 25% of calories
+    const carbs = (tdee - (protein * 4) - (fat * 9)) / 4
+
+    // Calculate hydration
+    const waterNeeds = weight * 0.033 // 33ml per kg
+
+    return {
+      calories: Math.round(tdee),
+      macros: {
+        protein: Math.round(protein),
+        carbs: Math.round(carbs),
+        fat: Math.round(fat)
+      },
+      hydration: {
+        dailyGoal: Math.round(waterNeeds * 100) / 100,
+        reminders: ['7:00 AM', '10:00 AM', '12:00 PM', '3:00 PM', '6:00 PM', '8:00 PM']
+      },
+      mealTiming: {
+        breakfast: '8:00 AM',
+        lunch: '12:30 PM',
+        dinner: '6:00 PM',
+        snacks: ['10:30 AM', '3:30 PM']
+      },
+      foodCompatibility: {
+        green: ['Salmon', 'Berries', 'Spinach', 'Quinoa', 'Avocado', 'Greek Yogurt'],
+        yellow: ['Cheese', 'White Bread', 'Bananas', 'Pasta', 'Nuts'],
+        red: ['Processed Meats', 'Fried Foods', 'Soda', 'Candy', 'White Sugar']
+      }
+    }
+  }
+
+  // Results sections with Nuri's scripted messages
+  const resultsSections = [
+    {
+      id: 'macros',
+      title: 'Macro Breakdown',
+      icon: '🍽️',
+      nuriMessage: "Based on your profile, here's your personalized macro balance! I've matched this to trusted science from Health Canada, MyPlate, and the NIH 🧬",
+      premiumHook: "This is your foundation — Premium unlocks dynamic targets based on sleep, stress, and training recovery 💪"
+    },
+    {
+      id: 'hydration',
+      title: 'Hydration Needs',
+      icon: '💧',
+      nuriMessage: "Your body is mostly water 💧 Here's how much YOU need to thrive — calculated from your weight, age, and activity!",
+      premiumHook: "Premium adapts hydration to your sleep, caffeine intake, and climate ☀️🌧️"
+    },
+    {
+      id: 'timing',
+      title: 'Meal Timing',
+      icon: '⏰',
+      nuriMessage: "Let's sync your meals with your natural rhythm. Meal timing affects energy, focus, and fat storage! ⏳",
+      premiumHook: "Premium gives you meal timing based on circadian rhythm and workout schedules 🧘‍♂️⏰"
+    },
+    {
+      id: 'compatibility',
+      title: 'Food Compatibility',
+      icon: '🛑',
+      nuriMessage: "Not every 'healthy' food fits everyone. Here's your personalized food compatibility — simplified with science ❤️💡",
+      premiumHook: "Premium unlocks 47 more insights — including inflammation triggers, gut reactions, and food synergy for your body type."
+    }
+  ]
 
   const emojiCards = [
     { emoji: "😴", label: "Terrible", value: "terrible" },
@@ -651,6 +751,391 @@ const NuriAssistant = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Results Reveal Interface */}
+      <AnimatePresence>
+        {showResults && resultsData && (
+          <motion.div 
+            className="fixed inset-0 z-50 flex items-center justify-center p-6 overflow-y-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="bg-white/20 backdrop-blur-md rounded-3xl p-8 max-w-4xl w-full border border-white/30 max-h-[90vh] overflow-y-auto">
+              {/* Header */}
+              <div className="text-center mb-8">
+                <motion.h1 
+                  className="text-4xl font-bold text-white mb-4"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  Your Personalized Results 🌟
+                </motion.h1>
+                <motion.p 
+                  className="text-white/80 text-lg"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  Based on your unique profile, here's what your body needs
+                </motion.p>
+              </div>
+
+              {/* Results Sections */}
+              <div className="space-y-8">
+                {resultsSections.map((section, index) => (
+                  <motion.div
+                    key={section.id}
+                    className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 + index * 0.2 }}
+                  >
+                    {/* Section Header */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="text-3xl">{section.icon}</div>
+                      <h2 className="text-2xl font-bold text-white">{section.title}</h2>
+                    </div>
+
+                    {/* Nuri Message */}
+                    <div className="flex items-start gap-4 mb-6">
+                      <div className="relative">
+                        <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-teal-500 rounded-full flex items-center justify-center text-white text-lg">
+                          🌱
+                        </div>
+                        <div className="absolute inset-0 rounded-full border-2 border-green-300/50 animate-pulse"></div>
+                      </div>
+                      <div className="flex-1">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4">
+                          <p className="text-gray-800 text-lg leading-relaxed">
+                            {section.nuriMessage}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Section Content */}
+                    {section.id === 'macros' && (
+                      <div className="space-y-6">
+                        {/* Macro Chart */}
+                        <div className="flex justify-center">
+                          <div className="relative w-48 h-48">
+                            <svg className="w-full h-full transform -rotate-90">
+                              <circle
+                                cx="96"
+                                cy="96"
+                                r="80"
+                                fill="none"
+                                stroke="#FCD34D"
+                                strokeWidth="16"
+                                strokeDasharray={`${2 * Math.PI * 80 * 0.4} ${2 * Math.PI * 80}`}
+                                strokeDashoffset="0"
+                              />
+                              <circle
+                                cx="96"
+                                cy="96"
+                                r="80"
+                                fill="none"
+                                stroke="#3B82F6"
+                                strokeWidth="16"
+                                strokeDasharray={`${2 * Math.PI * 80 * 0.35} ${2 * Math.PI * 80}`}
+                                strokeDashoffset={`-${2 * Math.PI * 80 * 0.4}`}
+                              />
+                              <circle
+                                cx="96"
+                                cy="96"
+                                r="80"
+                                fill="none"
+                                stroke="#EC4899"
+                                strokeWidth="16"
+                                strokeDasharray={`${2 * Math.PI * 80 * 0.25} ${2 * Math.PI * 80}`}
+                                strokeDashoffset={`-${2 * Math.PI * 80 * 0.75}`}
+                              />
+                            </svg>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="text-center">
+                                <div className="text-2xl font-bold text-white">{resultsData.calories}</div>
+                                <div className="text-white/70 text-sm">calories</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Macro Breakdown */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="bg-yellow-400/20 rounded-xl p-4 text-center">
+                            <div className="text-2xl font-bold text-yellow-300">{resultsData.macros.carbs}g</div>
+                            <div className="text-white/80">🍚 Carbs</div>
+                            <div className="text-white/60 text-sm">Quick energy fuel</div>
+                          </div>
+                          <div className="bg-blue-400/20 rounded-xl p-4 text-center">
+                            <div className="text-2xl font-bold text-blue-300">{resultsData.macros.protein}g</div>
+                            <div className="text-white/80">🥩 Protein</div>
+                            <div className="text-white/60 text-sm">Muscle-building blocks</div>
+                          </div>
+                          <div className="bg-pink-400/20 rounded-xl p-4 text-center">
+                            <div className="text-2xl font-bold text-pink-300">{resultsData.macros.fat}g</div>
+                            <div className="text-white/80">🥑 Fats</div>
+                            <div className="text-white/60 text-sm">Hormone & brain support</div>
+                          </div>
+                        </div>
+
+                        {/* Example Foods */}
+                        <div className="bg-white/10 rounded-xl p-4">
+                          <h3 className="text-white font-semibold mb-3">Example Foods</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                            <div>
+                              <div className="text-yellow-300 font-medium">Protein:</div>
+                              <div className="text-white/70">Chicken breast, lentils, tofu</div>
+                            </div>
+                            <div>
+                              <div className="text-blue-300 font-medium">Carbs:</div>
+                              <div className="text-white/70">Rice, oats, sweet potato</div>
+                            </div>
+                            <div>
+                              <div className="text-pink-300 font-medium">Fats:</div>
+                              <div className="text-white/70">Avocado, olive oil, almonds</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {section.id === 'hydration' && (
+                      <div className="space-y-6">
+                        {/* Water Bottle Animation */}
+                        <div className="flex justify-center">
+                          <div className="relative w-32 h-48 bg-white/20 rounded-2xl border-4 border-white/30">
+                            <motion.div
+                              className="absolute bottom-0 left-0 right-0 bg-blue-400/60 rounded-b-xl"
+                              initial={{ height: 0 }}
+                              animate={{ height: `${(resultsData.hydration.dailyGoal / 3) * 100}%` }}
+                              transition={{ duration: 2, delay: 0.5 }}
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="text-center">
+                                <div className="text-2xl font-bold text-white">{resultsData.hydration.dailyGoal}L</div>
+                                <div className="text-white/70 text-sm">daily goal</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Hydration Reminders */}
+                        <div className="bg-white/10 rounded-xl p-4">
+                          <h3 className="text-white font-semibold mb-3">💧 Hydration Reminders</h3>
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                            {resultsData.hydration.reminders.map((time, index) => (
+                              <div key={index} className="bg-blue-400/20 rounded-lg p-2 text-center">
+                                <div className="text-blue-300 font-medium">{time}</div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Benefits */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="bg-white/10 rounded-xl p-4 text-center">
+                            <div className="text-2xl mb-2">✨</div>
+                            <div className="text-white font-medium">Glowing skin</div>
+                          </div>
+                          <div className="bg-white/10 rounded-xl p-4 text-center">
+                            <div className="text-2xl mb-2">🔋</div>
+                            <div className="text-white font-medium">Stable energy</div>
+                          </div>
+                          <div className="bg-white/10 rounded-xl p-4 text-center">
+                            <div className="text-2xl mb-2">🧠</div>
+                            <div className="text-white font-medium">Clearer focus</div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {section.id === 'timing' && (
+                      <div className="space-y-6">
+                        {/* Meal Timing Grid */}
+                        <div className="bg-white/10 rounded-xl p-4">
+                          <h3 className="text-white font-semibold mb-4">⏰ Your Optimal Meal Schedule</h3>
+                          <div className="space-y-3">
+                            <div className="flex justify-between items-center bg-white/10 rounded-lg p-3">
+                              <div className="flex items-center gap-3">
+                                <div className="text-2xl">🌅</div>
+                                <div>
+                                  <div className="text-white font-medium">Breakfast</div>
+                                  <div className="text-white/60 text-sm">Start your day right</div>
+                                </div>
+                              </div>
+                              <div className="text-white font-bold">{resultsData.mealTiming.breakfast}</div>
+                            </div>
+                            <div className="flex justify-between items-center bg-white/10 rounded-lg p-3">
+                              <div className="flex items-center gap-3">
+                                <div className="text-2xl">☀️</div>
+                                <div>
+                                  <div className="text-white font-medium">Lunch</div>
+                                  <div className="text-white/60 text-sm">Midday fuel</div>
+                                </div>
+                              </div>
+                              <div className="text-white font-bold">{resultsData.mealTiming.lunch}</div>
+                            </div>
+                            <div className="flex justify-between items-center bg-white/10 rounded-lg p-3">
+                              <div className="flex items-center gap-3">
+                                <div className="text-2xl">🌙</div>
+                                <div>
+                                  <div className="text-white font-medium">Dinner</div>
+                                  <div className="text-white/60 text-sm">Light evening meal</div>
+                                </div>
+                              </div>
+                              <div className="text-white font-bold">{resultsData.mealTiming.dinner}</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Portion Guide */}
+                        <div className="bg-white/10 rounded-xl p-4">
+                          <h3 className="text-white font-semibold mb-3">👐 Portion Guide</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="text-center">
+                              <div className="text-3xl mb-2">🤲</div>
+                              <div className="text-white font-medium">1 palm = protein</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-3xl mb-2">👊</div>
+                              <div className="text-white font-medium">1 fist = carbs</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-3xl mb-2">👍</div>
+                              <div className="text-white font-medium">1 thumb = fat</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {section.id === 'compatibility' && (
+                      <div className="space-y-6">
+                        {/* Traffic Light Chart */}
+                        <div className="space-y-4">
+                          <div className="bg-green-400/20 rounded-xl p-4">
+                            <div className="flex items-center gap-3 mb-3">
+                              <div className="text-2xl">🟢</div>
+                              <div className="text-white font-semibold">Best for your goals</div>
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                              {resultsData.foodCompatibility.green.map((food, index) => (
+                                <div key={index} className="bg-green-400/30 rounded-lg p-2 text-center text-white">
+                                  {food}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          <div className="bg-yellow-400/20 rounded-xl p-4">
+                            <div className="flex items-center gap-3 mb-3">
+                              <div className="text-2xl">🟡</div>
+                              <div className="text-white font-semibold">Okay in moderation</div>
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                              {resultsData.foodCompatibility.yellow.map((food, index) => (
+                                <div key={index} className="bg-yellow-400/30 rounded-lg p-2 text-center text-white">
+                                  {food}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          <div className="bg-red-400/20 rounded-xl p-4">
+                            <div className="flex items-center gap-3 mb-3">
+                              <div className="text-2xl">🔴</div>
+                              <div className="text-white font-semibold">Limit due to your profile</div>
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                              {resultsData.foodCompatibility.red.map((food, index) => (
+                                <div key={index} className="bg-red-400/30 rounded-lg p-2 text-center text-white">
+                                  {food}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Swap Suggestions */}
+                        <div className="bg-white/10 rounded-xl p-4">
+                          <h3 className="text-white font-semibold mb-3">💡 Smart Swaps</h3>
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-3">
+                              <div className="text-red-400">❌</div>
+                              <div className="text-white/70">Soda</div>
+                              <div className="text-white/50">→</div>
+                              <div className="text-green-400">✅</div>
+                              <div className="text-white/70">Sparkling water + lime</div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="text-red-400">❌</div>
+                              <div className="text-white/70">White rice</div>
+                              <div className="text-white/50">→</div>
+                              <div className="text-green-400">✅</div>
+                              <div className="text-white/70">Quinoa or lentils</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Premium Hook */}
+                    <div className="mt-6 p-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl border border-purple-300/30">
+                      <div className="flex items-start gap-3">
+                        <div className="text-2xl">💎</div>
+                        <div>
+                          <p className="text-white/90 text-lg">{section.premiumHook}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Final CTA */}
+              <motion.div 
+                className="mt-8 text-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.5 }}
+              >
+                <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl p-6 border border-purple-300/30 mb-6">
+                  <h3 className="text-2xl font-bold text-white mb-4">This is just the beginning! 🌟</h3>
+                  <p className="text-white/90 text-lg mb-4">
+                    Your body deserves the full picture. Premium unlocks:
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="text-green-400">✅</div>
+                      <div className="text-white">In-depth micronutrient analysis</div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="text-green-400">🧬</div>
+                      <div className="text-white">Gut & inflammation compatibility</div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="text-green-400">🧘</div>
+                      <div className="text-white">Smart meal plans + food tracking</div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="text-green-400">🔄</div>
+                      <div className="text-white">Adaptive daily recalculations</div>
+                    </div>
+                  </div>
+                  <motion.button
+                    className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-all duration-300 shadow-lg"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    ✨ See My Full Health Blueprint (Upgrade to Premium)
+                  </motion.button>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
         )}
