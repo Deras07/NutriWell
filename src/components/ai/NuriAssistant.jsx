@@ -10,7 +10,7 @@ const NuriAssistant = () => {
   const [onboardingStep, setOnboardingStep] = useState(0)
   const [showNutritionDashboard, setShowNutritionDashboard] = useState(false)
   const [selectedTab, setSelectedTab] = useState('overview')
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 })
+
   const [nuriExpression, setNuriExpression] = useState('happy')
   const [isBlinking, setIsBlinking] = useState(false)
 
@@ -140,14 +140,7 @@ const NuriAssistant = () => {
     }
   ]
 
-  // Track cursor for eye movement
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setCursorPosition({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
+
 
   // Blinking animation
   useEffect(() => {
@@ -158,19 +151,7 @@ const NuriAssistant = () => {
     return () => clearInterval(blinkInterval)
   }, [])
 
-  // Calculate eye movement based on cursor position
-  const calculateEyeMovement = () => {
-    const centerX = window.innerWidth / 2
-    const centerY = window.innerHeight / 2
-    const deltaX = (cursorPosition.x - centerX) / centerX
-    const deltaY = (cursorPosition.y - centerY) / centerY
-    return {
-      x: Math.max(-3, Math.min(3, deltaX * 3)),
-      y: Math.max(-2, Math.min(2, deltaY * 2))
-    }
-  }
 
-  const eyeMovement = calculateEyeMovement()
 
   const handleMoodSelection = (mood) => {
     setUserMood(mood)
@@ -420,15 +401,7 @@ const NuriAssistant = () => {
     { title: 'Veggie Challenge', participants: 89, progress: 30 }
   ]
 
-  // Floating bokeh particles
-  const bokehParticles = Array.from({ length: 15 }, (_, i) => ({
-    id: i,
-    size: Math.random() * 40 + 20, // 20px to 60px
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    delay: Math.random() * 10,
-    duration: Math.random() * 20 + 30
-  }))
+
 
   const onboardingSteps = [
     {
@@ -541,102 +514,13 @@ const NuriAssistant = () => {
       <div 
         className="fixed inset-0 z-0"
         style={{
-          background: 'linear-gradient(180deg, #E8F5E8 0%, #2D5016 100%)'
+          background: 'linear-gradient(180deg, #F0F4F0 0%, #FEFEFE 100%)'
         }}
       >
-        {/* Independent breathing effect */}
-        <motion.div
-          className="absolute inset-0"
-          animate={{ 
-            scale: [1, 1.008, 1],
-            rotate: [0, 0.5, 0]
-          }}
-          transition={{ 
-            duration: 20, 
-            repeat: Infinity, 
-            ease: "easeInOut",
-            times: [0, 0.5, 1]
-          }}
-        />
-        
-        {/* Gentle floating movement */}
-        <motion.div
-          className="absolute inset-0"
-          animate={{ 
-            y: [0, -10, 0],
-            x: [0, 5, 0]
-          }}
-          transition={{ 
-            duration: 15, 
-            repeat: Infinity, 
-            ease: "easeInOut",
-            delay: 2
-          }}
-        />
+
       </div>
 
-      {/* Floating bokeh particles */}
-      <div className="fixed inset-0 z-5 pointer-events-none">
-        {bokehParticles.map((particle) => (
-          <motion.div
-            key={particle.id}
-            className="absolute rounded-full blur-sm bg-gradient-to-br from-pink-300/30 to-coral-300/20"
-            style={{
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-              left: `${particle.x}%`,
-              top: `${particle.y}%`
-            }}
-            animate={{
-              y: [0, -30, -60],
-              x: [0, 10, -10],
-              opacity: [0, 1, 0],
-              scale: [0, 1, 0]
-            }}
-            transition={{
-              duration: particle.duration,
-              delay: particle.delay,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-        ))}
-      </div>
 
-      {/* Floating Food Icons */}
-      <div className="fixed inset-0 z-5 pointer-events-none">
-        {[
-          { icon: '🍎', x: 10, y: 20, size: 24, delay: 0 },
-          { icon: '🥕', x: 85, y: 15, size: 20, delay: 2 },
-          { icon: '🥑', x: 20, y: 80, size: 28, delay: 4 },
-          { icon: '🥦', x: 75, y: 75, size: 22, delay: 6 },
-          { icon: '🍓', x: 90, y: 60, size: 18, delay: 8 },
-          { icon: '🥬', x: 5, y: 60, size: 26, delay: 10 }
-        ].map((food, index) => (
-          <motion.div
-            key={index}
-            className="absolute text-2xl opacity-30"
-            style={{
-              left: `${food.x}%`,
-              top: `${food.y}%`,
-              fontSize: `${food.size}px`
-            }}
-            animate={{
-              y: [0, -20, -40],
-              x: [0, 5, -5],
-              rotate: [0, 5, -5, 0]
-            }}
-            transition={{
-              duration: 8,
-              delay: food.delay,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          >
-            {food.icon}
-          </motion.div>
-        ))}
-      </div>
 
       {/* Conversational Onboarding Flow */}
       <AnimatePresence>
@@ -1580,27 +1464,23 @@ const NuriAssistant = () => {
                 <div className="absolute inset-0 bg-gradient-to-b from-green-300 to-green-700 rounded-full transform scale-y-110 shadow-2xl">
                   {/* Expressive face with interactive eyes */}
                   <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 flex gap-8">
-                    {/* Left eye with cursor following */}
+                    {/* Left eye */}
                     <div className="relative">
                       <div className="w-5 h-5 bg-black rounded-full shadow-lg"></div>
                       <motion.div 
                         className="absolute top-1 left-1 w-1.5 h-1.5 bg-white rounded-full"
                         animate={{ 
-                          x: eyeMovement.x,
-                          y: eyeMovement.y,
                           scale: isBlinking ? 0 : 1
                         }}
                         transition={{ duration: 0.3, ease: "easeOut" }}
                       />
                     </div>
-                    {/* Right eye with cursor following */}
+                    {/* Right eye */}
                     <div className="relative">
                       <div className="w-5 h-5 bg-black rounded-full shadow-lg"></div>
                       <motion.div 
                         className="absolute top-1 left-1 w-1.5 h-1.5 bg-white rounded-full"
                         animate={{ 
-                          x: eyeMovement.x,
-                          y: eyeMovement.y,
                           scale: isBlinking ? 0 : 1
                         }}
                         transition={{ duration: 0.3, ease: "easeOut" }}
@@ -1667,22 +1547,16 @@ const NuriAssistant = () => {
           {/* Welcome Heading with Gradient Text */}
           <div className="text-center mb-8">
             <motion.h1 
-              className="text-5xl font-bold mb-4 flex items-center justify-center gap-3"
-              style={{
-                background: 'linear-gradient(135deg, #4ADE80, #0EA5E9)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                textShadow: '0 2px 4px rgba(0,0,0,0.1)'
-              }}
+              className="text-5xl font-bold mb-4 flex items-center justify-center gap-3 text-[#2D2D2D]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
               Welcome to Nutriwell
-              <Leaf className="w-8 h-8 text-green-400" />
+              <Leaf className="w-8 h-8 text-[#4CAF50]" />
             </motion.h1>
             <motion.p 
-              className="text-xl text-white/90 mb-8 leading-relaxed"
+              className="text-xl text-[#2D2D2D]/80 mb-8 leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -1691,7 +1565,7 @@ const NuriAssistant = () => {
             </motion.p>
             
             <motion.button
-              className="bg-gradient-to-r from-green-400 to-teal-500 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center gap-3 mx-auto group"
+              className="bg-[#4CAF50] hover:bg-[#45a049] text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-3 mx-auto group"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               initial={{ opacity: 0, y: 20 }}
@@ -1717,8 +1591,8 @@ const NuriAssistant = () => {
                   <div className="text-lg">🌱</div>
                 </div>
               </div>
-              <div className="bg-white/20 backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-white/30 max-w-xs">
-                <p className="text-white/90 text-lg leading-relaxed">
+              <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-200 max-w-xs">
+                <p className="text-[#2D2D2D] text-lg leading-relaxed">
                   Good morning! 😊 I'm Nuri, your personal nutrition assistant. Let's start with a few quick questions to personalize your plan!
                 </p>
               </div>
@@ -1779,133 +1653,121 @@ const NuriAssistant = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {/* Recipe Generator Pro */}
               <motion.div 
-                className="bg-white/10 backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-white/20 hover:scale-105 transition-all duration-300 relative overflow-hidden group"
-                whileHover={{ y: -8, scale: 1.02 }}
+                className="bg-white rounded-3xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
+                whileHover={{ y: -4 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.2 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 to-red-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
-                      <ChefHat className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-white">Recipe Generator Pro</h3>
-                      <p className="text-white/70 text-sm">AI creates custom recipes based on your ingredients</p>
-                    </div>
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <ChefHat className="w-6 h-6 text-white" />
                   </div>
-                  <p className="text-white/80 text-sm mb-4">Get personalized recipes that match your dietary preferences, available ingredients, and nutritional goals.</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-orange-300 text-sm font-medium">✨ AI-Powered</span>
-                    <motion.button
-                      className="bg-gradient-to-r from-orange-400 to-red-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:shadow-lg transition-all duration-300"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Try Free (3 days)
-                    </motion.button>
+                  <div>
+                    <h3 className="text-xl font-bold text-[#2D2D2D]">Recipe Generator Pro</h3>
+                    <p className="text-[#2D2D2D]/70 text-sm">AI creates custom recipes based on your ingredients</p>
                   </div>
+                </div>
+                <p className="text-[#2D2D2D]/80 text-sm mb-4">Get personalized recipes that match your dietary preferences, available ingredients, and nutritional goals.</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-orange-500 text-sm font-medium">✨ AI-Powered</span>
+                  <motion.button
+                    className="bg-[#4CAF50] hover:bg-[#45a049] text-white px-4 py-2 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Try Free (3 days)
+                  </motion.button>
                 </div>
               </motion.div>
 
               {/* Health Insights Dashboard */}
               <motion.div 
-                className="bg-white/10 backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-white/20 hover:scale-105 transition-all duration-300 relative overflow-hidden group"
-                whileHover={{ y: -8, scale: 1.02 }}
+                className="bg-white rounded-3xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
+                whileHover={{ y: -4 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.4 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg">
-                      <BarChart3 className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-white">Health Insights Dashboard</h3>
-                      <p className="text-white/70 text-sm">Advanced analytics & correlations</p>
-                    </div>
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <BarChart3 className="w-6 h-6 text-white" />
                   </div>
-                  <p className="text-white/80 text-sm mb-4">Discover correlations between food, mood, energy, sleep, and biomarkers with detailed analytics.</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-blue-300 text-sm font-medium">📊 Advanced Analytics</span>
-                    <motion.button
-                      className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:shadow-lg transition-all duration-300"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Try Free (3 days)
-                    </motion.button>
+                  <div>
+                    <h3 className="text-xl font-bold text-[#2D2D2D]">Health Insights Dashboard</h3>
+                    <p className="text-[#2D2D2D]/70 text-sm">Advanced analytics & correlations</p>
                   </div>
+                </div>
+                <p className="text-[#2D2D2D]/80 text-sm mb-4">Discover correlations between food, mood, energy, sleep, and biomarkers with detailed analytics.</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-blue-500 text-sm font-medium">📊 Advanced Analytics</span>
+                  <motion.button
+                    className="bg-[#4CAF50] hover:bg-[#45a049] text-white px-4 py-2 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Try Free (3 days)
+                  </motion.button>
                 </div>
               </motion.div>
 
               {/* Personal Nutrition Coach */}
               <motion.div 
-                className="bg-white/10 backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-white/20 hover:scale-105 transition-all duration-300 relative overflow-hidden group"
-                whileHover={{ y: -8, scale: 1.02 }}
+                className="bg-white rounded-3xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
+                whileHover={{ y: -4 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.6 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 to-teal-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg">
-                      <Users className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-white">Personal Nutrition Coach</h3>
-                      <p className="text-white/70 text-sm">Real-time chat with certified nutritionists</p>
-                    </div>
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Users className="w-6 h-6 text-white" />
                   </div>
-                  <p className="text-white/80 text-sm mb-4">Get personalized meal plans and real-time guidance from certified nutritionists.</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-green-300 text-sm font-medium">👨‍⚕️ Expert Guidance</span>
-                    <motion.button
-                      className="bg-gradient-to-r from-green-400 to-teal-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:shadow-lg transition-all duration-300"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Try Free (3 days)
-                    </motion.button>
+                  <div>
+                    <h3 className="text-xl font-bold text-[#2D2D2D]">Personal Nutrition Coach</h3>
+                    <p className="text-[#2D2D2D]/70 text-sm">Real-time chat with certified nutritionists</p>
                   </div>
+                </div>
+                <p className="text-[#2D2D2D]/80 text-sm mb-4">Get personalized meal plans and real-time guidance from certified nutritionists.</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-green-500 text-sm font-medium">👨‍⚕️ Expert Guidance</span>
+                  <motion.button
+                    className="bg-[#4CAF50] hover:bg-[#45a049] text-white px-4 py-2 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Try Free (3 days)
+                  </motion.button>
                 </div>
               </motion.div>
 
               {/* Smart Grocery Assistant */}
               <motion.div 
-                className="bg-white/10 backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-white/20 hover:scale-105 transition-all duration-300 relative overflow-hidden group"
-                whileHover={{ y: -8, scale: 1.02 }}
+                className="bg-white rounded-3xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
+                whileHover={{ y: -4 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.8 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
-                      <ShoppingCart className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-white">Smart Grocery Assistant</h3>
-                      <p className="text-white/70 text-sm">AI-generated shopping lists & local prices</p>
-                    </div>
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <ShoppingCart className="w-6 h-6 text-white" />
                   </div>
-                  <p className="text-white/80 text-sm mb-4">Get smart shopping lists based on your goals, dietary restrictions, and local store prices.</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-yellow-300 text-sm font-medium">🛒 Smart Lists</span>
-                    <motion.button
-                      className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:shadow-lg transition-all duration-300"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Try Free (3 days)
-                    </motion.button>
+                  <div>
+                    <h3 className="text-xl font-bold text-[#2D2D2D]">Smart Grocery Assistant</h3>
+                    <p className="text-[#2D2D2D]/70 text-sm">AI-generated shopping lists & local prices</p>
                   </div>
+                </div>
+                <p className="text-[#2D2D2D]/80 text-sm mb-4">Get smart shopping lists based on your goals, dietary restrictions, and local store prices.</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-yellow-600 text-sm font-medium">🛒 Smart Lists</span>
+                  <motion.button
+                    className="bg-[#4CAF50] hover:bg-[#45a049] text-white px-4 py-2 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Try Free (3 days)
+                  </motion.button>
                 </div>
               </motion.div>
             </div>
@@ -1970,7 +1832,7 @@ const NuriAssistant = () => {
 
         {/* Right Sidebar with Glassmorphism */}
         <motion.div 
-          className="w-80 bg-white/10 backdrop-blur-md border-l border-white/20 p-6 overflow-y-auto sticky top-0 h-screen relative z-30"
+          className="w-80 bg-white/90 border-l border-gray-200 p-6 overflow-y-auto sticky top-0 h-screen relative z-30 shadow-lg"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
@@ -1979,52 +1841,52 @@ const NuriAssistant = () => {
           {/* Today's Progress */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
-              <Sun className="w-6 h-6 text-yellow-300" />
-              <h3 className="text-xl font-semibold text-white">Today's Progress</h3>
+              <Sun className="w-6 h-6 text-yellow-500" />
+              <h3 className="text-xl font-semibold text-[#2D2D2D]">Today's Progress</h3>
             </div>
-            <div className="bg-blue-500/20 backdrop-blur-sm rounded-xl p-3 mb-4 border border-blue-400/30">
-              <p className="text-blue-200 text-xs font-medium">📊 Example Data</p>
-              <p className="text-blue-100 text-xs">This shows how your dashboard will look once you start tracking</p>
+            <div className="bg-blue-50 rounded-xl p-3 mb-4 border border-blue-200">
+              <p className="text-blue-600 text-xs font-medium">📊 Example Data</p>
+              <p className="text-blue-500 text-xs">This shows how your dashboard will look once you start tracking</p>
             </div>
-            <p className="text-sm text-white/70 mb-6">Your wellness journey</p>
+            <p className="text-sm text-[#2D2D2D]/70 mb-6">Your wellness journey</p>
             
             <div className="space-y-4">
               <motion.div 
-                className="bg-white/10 backdrop-blur-md rounded-3xl p-5 shadow-2xl border border-white/20 hover:scale-105 transition-all duration-300"
+                className="bg-white rounded-3xl p-5 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
                 whileHover={{ y: -3 }}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <Zap className="w-6 h-6 text-orange-400" />
-                    <span className="text-white">Energy Level</span>
+                    <Zap className="w-6 h-6 text-orange-500" />
+                    <span className="text-[#2D2D2D]">Energy Level</span>
                   </div>
-                  <span className="bg-orange-200/30 text-orange-200 px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm">Moderate</span>
+                  <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm font-medium">Moderate</span>
                 </div>
               </motion.div>
               
               <motion.div 
-                className="bg-white/10 backdrop-blur-md rounded-3xl p-5 shadow-2xl border border-white/20 hover:scale-105 transition-all duration-300"
+                className="bg-white rounded-3xl p-5 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
                 whileHover={{ y: -3 }}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="text-2xl">😊</div>
-                    <span className="text-white">Mood</span>
+                    <span className="text-[#2D2D2D]">Mood</span>
                   </div>
-                  <span className="bg-blue-200/30 text-blue-200 px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm">High</span>
+                  <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">High</span>
                 </div>
               </motion.div>
               
               <motion.div 
-                className="bg-white/10 backdrop-blur-md rounded-3xl p-5 shadow-2xl border border-white/20 hover:scale-105 transition-all duration-300"
+                className="bg-white rounded-3xl p-5 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
                 whileHover={{ y: -3 }}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <Target className="w-6 h-6 text-pink-300" />
-                    <span className="text-white">Focus</span>
+                    <Target className="w-6 h-6 text-pink-500" />
+                    <span className="text-[#2D2D2D]">Focus</span>
                   </div>
-                  <span className="bg-pink-200/30 text-pink-200 px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm">Low</span>
+                  <span className="bg-pink-100 text-pink-600 px-3 py-1 rounded-full text-sm font-medium">Low</span>
                 </div>
               </motion.div>
             </div>
