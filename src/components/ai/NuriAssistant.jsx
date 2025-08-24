@@ -63,6 +63,10 @@ const NuriAssistant = () => {
   const [currentPremiumStep, setCurrentPremiumStep] = useState(0)
   const [showSneakPeek, setShowSneakPeek] = useState(false)
   const [premiumChoice, setPremiumChoice] = useState(null)
+  
+  // Navigation state
+  const [currentView, setCurrentView] = useState('dashboard') // 'dashboard', 'services', 'chat', 'profile'
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // Onboarding questions flow
   const onboardingQuestions = [
@@ -614,6 +618,45 @@ const NuriAssistant = () => {
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-sm font-semibold text-white">{Math.round(progress)}%</span>
         </div>
+
+        {/* Mobile Bottom Drawer for Sidebar Content */}
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-lg">
+          <div className="px-4 py-3">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-[16px] font-medium text-[#2D2D2D]">Today's Progress</h3>
+              <button className="p-2 rounded-lg text-[#6C757D] hover:bg-[#F8F9FA] transition-colors duration-200">
+                <TrendingUp className="w-5 h-5" />
+              </button>
+            </div>
+            
+            {/* Mobile Progress Cards */}
+            <div className="grid grid-cols-3 gap-3">
+              <div className="bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
+                <div className="flex items-center gap-2 mb-2">
+                  <Zap className="w-4 h-4 text-orange-500" />
+                  <span className="text-[12px] font-medium text-[#2D2D2D]">Energy</span>
+                </div>
+                <span className="bg-orange-100 text-orange-600 px-2 py-1 rounded-full text-xs font-medium">Moderate</span>
+              </div>
+              
+              <div className="bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="text-lg">😊</div>
+                  <span className="text-[12px] font-medium text-[#2D2D2D]">Mood</span>
+                </div>
+                <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs font-medium">High</span>
+              </div>
+              
+              <div className="bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
+                <div className="flex items-center gap-2 mb-2">
+                  <Target className="w-4 h-4 text-pink-500" />
+                  <span className="text-[12px] font-medium text-[#2D2D2D]">Focus</span>
+                </div>
+                <span className="bg-pink-100 text-pink-600 px-2 py-1 rounded-full text-xs font-medium">Low</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
@@ -658,6 +701,95 @@ const NuriAssistant = () => {
         }}
       >
 
+      </div>
+
+      {/* Responsive Navigation */}
+      <div className="fixed top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-[#4CAF50] to-green-600 rounded-full flex items-center justify-center shadow-md">
+                <Leaf className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-xl font-bold text-[#2D2D2D] tracking-tight">Nutriwell</span>
+            </div>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-1">
+              {[
+                { id: 'dashboard', label: 'Dashboard', icon: '📊' },
+                { id: 'services', label: 'Services', icon: '🛠️' },
+                { id: 'chat', label: 'Chat', icon: '💬' },
+                { id: 'profile', label: 'Profile', icon: '👤' }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setCurrentView(tab.id)}
+                  className={`px-4 sm:px-6 py-3 rounded-xl font-medium transition-all duration-200 flex items-center gap-2 ${
+                    currentView === tab.id
+                      ? 'bg-[#4CAF50] text-white shadow-md'
+                      : 'text-[#6C757D] hover:text-[#2D2D2D] hover:bg-[#F8F9FA]'
+                  }`}
+                >
+                  <span className="text-sm">{tab.icon}</span>
+                  <span className="text-sm hidden sm:inline">{tab.label}</span>
+                </button>
+              ))}
+            </nav>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg text-[#2D2D2D] hover:bg-[#F8F9FA] transition-colors duration-200"
+              aria-label="Toggle mobile menu"
+            >
+              <div className="w-6 h-6 flex flex-col justify-center items-center">
+                <div className={`w-5 h-0.5 bg-current transition-all duration-200 ${mobileMenuOpen ? 'rotate-45 translate-y-1' : ''}`}></div>
+                <div className={`w-5 h-0.5 bg-current mt-1 transition-all duration-200 ${mobileMenuOpen ? 'opacity-0' : ''}`}></div>
+                <div className={`w-5 h-0.5 bg-current mt-1 transition-all duration-200 ${mobileMenuOpen ? '-rotate-45 -translate-y-1' : ''}`}></div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu Drawer */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden bg-white border-t border-gray-200 shadow-lg"
+            >
+              <nav className="px-4 py-4 space-y-2">
+                {[
+                  { id: 'dashboard', label: 'Dashboard', icon: '📊' },
+                  { id: 'services', label: 'Services', icon: '🛠️' },
+                  { id: 'chat', label: 'Chat', icon: '💬' },
+                  { id: 'profile', label: 'Profile', icon: '👤' }
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => {
+                      setCurrentView(tab.id)
+                      setMobileMenuOpen(false)
+                    }}
+                    className={`w-full px-4 py-3 rounded-xl font-medium transition-all duration-200 flex items-center gap-3 text-left ${
+                      currentView === tab.id
+                        ? 'bg-[#4CAF50] text-white shadow-md'
+                        : 'text-[#6C757D] hover:text-[#2D2D2D] hover:bg-[#F8F9FA]'
+                    }`}
+                  >
+                    <span className="text-lg">{tab.icon}</span>
+                    <span className="text-base">{tab.label}</span>
+                  </button>
+                ))}
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
 
@@ -1556,10 +1688,10 @@ const NuriAssistant = () => {
       </AnimatePresence>
 
       {/* Main Layout - 3 Columns */}
-      <div className="flex min-h-screen pt-10 relative z-10">
+      <div className="flex min-h-screen pt-16 md:pt-20 relative z-10">
         
-        {/* Left Floating Badge */}
-        <div className="fixed top-16 left-6 z-50">
+        {/* Left Floating Badge - Hidden on Mobile */}
+        <div className="fixed top-16 left-6 z-50 hidden md:block">
           <motion.div 
             className="bg-white/90 backdrop-blur-md rounded-2xl px-4 py-2 shadow-lg border border-gray-200"
             whileHover={{ scale: 1.05 }}
@@ -1573,8 +1705,8 @@ const NuriAssistant = () => {
           </motion.div>
         </div>
 
-        {/* Right Floating Onboarding Button */}
-        <div className="fixed top-16 right-6 z-50">
+        {/* Right Floating Onboarding Button - Hidden on Mobile */}
+        <div className="fixed top-16 right-6 z-50 hidden md:block">
           <motion.button
             onClick={handleOnboardingStart}
             className="bg-white/90 backdrop-blur-md rounded-2xl px-4 py-2 shadow-lg border border-gray-200 text-[#2D2D2D] font-medium hover:scale-105 transition-all duration-300"
@@ -1589,8 +1721,34 @@ const NuriAssistant = () => {
         </div>
 
         {/* Center Column - Main Content */}
-        <div className="flex-1 flex flex-col items-center justify-center px-8 pt-10 pb-20 relative z-20">
+        <div className="flex-1 flex flex-col px-4 sm:px-6 lg:px-8 pt-6 md:pt-10 pb-20 relative z-20">
           
+          {/* Dashboard View */}
+          {currentView === 'dashboard' && (
+            <>
+              <div className="text-center mb-8">
+                <h1 className="text-[24px] sm:text-[28px] font-semibold mb-4 flex items-center justify-center gap-3 text-[#2D2D2D] leading-tight">
+                  Your Daily Wellness Hub
+                  <Leaf className="w-5 h-5 sm:w-6 sm:h-6 text-[#4CAF50]" />
+                </h1>
+                <p className="text-[14px] sm:text-[16px] text-[#6C757D] mb-8 leading-relaxed px-4">
+                  Track your nutrition, mood, and progress with Nuri
+                </p>
+                
+                <motion.button
+                  className="bg-[#4CAF50] hover:bg-[#28A745] text-white px-6 sm:px-8 py-4 sm:py-3 rounded-xl font-medium text-[14px] sm:text-[16px] shadow-[0_4px_12px_rgba(76,175,80,0.3)] hover:shadow-[0_8px_24px_rgba(76,175,80,0.4)] transition-all duration-200 flex items-center gap-3 mx-auto group h-14 sm:h-12 min-w-[200px] sm:min-w-[220px]"
+                  whileHover={{ scale: 1.02, y: -1 }}
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  onClick={() => setShowNutritionDashboard(true)}
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  Start Chat with Nuri
+                </motion.button>
+              </div>
+
           {/* 🤖 3D NURI CHARACTER */}
           <div className="relative mb-8">
             <motion.div
@@ -1598,8 +1756,8 @@ const NuriAssistant = () => {
               animate={{ y: [0, -15, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
-              {/* Smaller 3D Nuri character */}
-              <div className="relative w-64 h-64">
+              {/* Responsive 3D Nuri character */}
+              <div className="relative w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64">
                 {/* Pear-shaped body with gradient */}
                 <div className="absolute inset-0 bg-gradient-to-b from-green-300 to-green-700 rounded-full transform scale-y-110 shadow-2xl">
                   {/* Expressive face with interactive eyes */}
@@ -1684,55 +1842,23 @@ const NuriAssistant = () => {
             </motion.div>
           </div>
 
-          {/* Welcome Heading with Gradient Text */}
-          <div className="text-center mb-8">
-            <motion.h1 
-              className="text-[28px] font-semibold mb-4 flex items-center justify-center gap-3 text-[#2D2D2D] leading-tight"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              Welcome to Nutriwell
-              <Leaf className="w-6 h-6 text-[#4CAF50]" />
-            </motion.h1>
-            <motion.p 
-              className="text-[16px] text-[#6C757D] mb-8 leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              I'm Nuri, your AI wellness assistant. Let's start your journey to better health together!
-            </motion.p>
-            
-            <motion.button
-              className="bg-[#4CAF50] hover:bg-[#28A745] text-white px-8 py-3 rounded-xl font-medium text-[16px] shadow-[0_4px_12px_rgba(76,175,80,0.3)] hover:shadow-[0_8px_24px_rgba(76,175,80,0.4)] transition-all duration-200 flex items-center gap-3 mx-auto group h-12"
-              whileHover={{ scale: 1.02, y: -1 }}
-              whileTap={{ scale: 0.98 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              onClick={() => setShowNutritionDashboard(true)}
-            >
-              <MessageCircle className="w-5 h-5" />
-              Start Chat with Nuri
-            </motion.button>
-          </div>
+
 
           {/* Nuri Chat Bubble with Glassmorphism */}
           <motion.div 
-            className="max-w-md w-full mb-8"
+            className="w-full max-w-md mx-auto mb-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-200 to-green-200 rounded-full flex items-center justify-center shadow-lg border-2 border-white/50">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-300 to-green-300 rounded-full flex items-center justify-center">
-                  <div className="text-lg">🌱</div>
+            <div className="flex items-start gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-200 to-green-200 rounded-full flex items-center justify-center shadow-lg border-2 border-white/50 flex-shrink-0">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-300 to-green-300 rounded-full flex items-center justify-center">
+                  <div className="text-base sm:text-lg">🌱</div>
                 </div>
               </div>
-              <div className="bg-white rounded-xl p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 max-w-xs">
-                <p className="text-[#2D2D2D] text-[16px] leading-relaxed">
+              <div className="bg-white rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 flex-1">
+                <p className="text-[#2D2D2D] text-[14px] sm:text-[16px] leading-relaxed">
                   Good morning! 😊 I'm Nuri, your personal nutrition assistant. Let's start with a few quick questions to personalize your plan!
                 </p>
               </div>
@@ -1741,74 +1867,220 @@ const NuriAssistant = () => {
 
           {/* Quick Actions */}
           <motion.div 
-            className="max-w-4xl w-full mb-12"
+            className="w-full max-w-4xl mx-auto mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <h3 className="text-[20px] font-medium text-[#2D2D2D] mb-6 text-center">Quick Actions</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <h3 className="text-[18px] sm:text-[20px] font-medium text-[#2D2D2D] mb-6 text-center">Quick Actions</h3>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               <motion.button
-                className="bg-white rounded-xl p-6 border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left h-20"
+                className="bg-white rounded-xl p-4 sm:p-6 border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-gray-50"
                 whileHover={{ y: -2, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex items-center justify-center shadow-md">
-                    <Apple className="w-5 h-5 text-white" />
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+                    <Apple className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                   </div>
-                  <div>
-                    <h4 className="text-[#2D2D2D] font-medium text-[16px]">Log Meal</h4>
-                    <p className="text-[#6C757D] text-[14px]">Track your food</p>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-[#2D2D2D] font-medium text-[14px] sm:text-[16px]">Log Meal</h4>
+                    <p className="text-[#6C757D] text-[12px] sm:text-[14px]">Track your food</p>
                   </div>
                 </div>
               </motion.button>
               
               <motion.button
-                className="bg-white rounded-xl p-6 border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left h-20"
+                className="bg-white rounded-xl p-4 sm:p-6 border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-gray-50"
                 whileHover={{ y: -2, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md">
-                    <div className="text-xl">😊</div>
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+                    <div className="text-xl sm:text-2xl">😊</div>
                   </div>
-                  <div>
-                    <h4 className="text-[#2D2D2D] font-medium text-[16px]">Track Mood</h4>
-                    <p className="text-[#6C757D] text-[14px]">Log your mood</p>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-[#2D2D2D] font-medium text-[14px] sm:text-[16px]">Track Mood</h4>
+                    <p className="text-[#6C757D] text-[12px] sm:text-[14px]">Log your mood</p>
                   </div>
                 </div>
               </motion.button>
 
               <motion.button
-                className="bg-white rounded-xl p-6 border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left h-20"
+                className="bg-white rounded-xl p-4 sm:p-6 border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-gray-50"
                 whileHover={{ y: -2, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-[#4CAF50] to-green-600 rounded-xl flex items-center justify-center shadow-md">
-                    <MessageCircle className="w-5 h-5 text-white" />
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-[#4CAF50] to-green-600 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+                    <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                   </div>
-                  <div>
-                    <h4 className="text-[#2D2D2D] font-medium text-[16px]">Chat with Nuri</h4>
-                    <p className="text-[#6C757D] text-[14px]">Get advice</p>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-[#2D2D2D] font-medium text-[14px] sm:text-[16px]">Chat with Nuri</h4>
+                    <p className="text-[#6C757D] text-[12px] sm:text-[14px]">Get advice</p>
                   </div>
                 </div>
               </motion.button>
 
               <motion.button
-                className="bg-white rounded-xl p-6 border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left h-20"
+                className="bg-white rounded-xl p-4 sm:p-6 border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-gray-50"
                 whileHover={{ y: -2, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-md">
-                    <TrendingUp className="w-5 h-5 text-white" />
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+                    <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                   </div>
-                  <div>
-                    <h4 className="text-[#2D2D2D] font-medium text-[16px]">View Progress</h4>
-                    <p className="text-[#6C757D] text-[14px]">Check trends</p>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-[#2D2D2D] font-medium text-[14px] sm:text-[16px]">View Progress</h4>
+                    <p className="text-[#6C757D] text-[12px] sm:text-[14px]">Check trends</p>
                   </div>
                 </div>
               </motion.button>
             </div>
           </motion.div>
+
+            </>
+          )}
+
+          {/* Services View */}
+          {currentView === 'services' && (
+            <div className="w-full max-w-7xl mx-auto">
+              <div className="text-center mb-12">
+                <h1 className="text-[24px] sm:text-[28px] font-semibold mb-4 text-[#2D2D2D] leading-tight">Premium Wellness Tools</h1>
+                <p className="text-[14px] sm:text-[16px] text-[#6C757D] leading-relaxed px-4">
+                  Unlock personalized nutrition guidance with our premium features
+                </p>
+              </div>
+
+              {/* Premium Feature Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
+                {/* Recipe Generator Pro */}
+                <motion.div 
+                  className="bg-white rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
+                  whileHover={{ y: -2, scale: 1.02 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <div className="flex items-center gap-3 sm:gap-4 mb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex items-center justify-center shadow-md">
+                      <ChefHat className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-[16px] sm:text-xl font-bold text-[#2D2D2D]">Recipe Generator Pro</h3>
+                      <p className="text-[#6C757D] text-[12px] sm:text-sm">AI creates custom recipes</p>
+                    </div>
+                  </div>
+                  <p className="text-[#6C757D] text-[12px] sm:text-sm mb-4">Get personalized recipes that match your dietary preferences and nutritional goals.</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-orange-500 text-[12px] sm:text-sm font-medium">✨ AI-Powered</span>
+                    <motion.button
+                      className="bg-[#4CAF50] hover:bg-[#28A745] text-white px-3 sm:px-4 py-2 rounded-lg text-[12px] sm:text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Try Free
+                    </motion.button>
+                  </div>
+                </motion.div>
+
+                {/* Health Insights Dashboard */}
+                <motion.div 
+                  className="bg-white rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
+                  whileHover={{ y: -2, scale: 1.02 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <div className="flex items-center gap-3 sm:gap-4 mb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md">
+                      <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-[16px] sm:text-xl font-bold text-[#2D2D2D]">Health Insights</h3>
+                      <p className="text-[#6C757D] text-[12px] sm:text-sm">Advanced analytics</p>
+                    </div>
+                  </div>
+                  <p className="text-[#6C757D] text-[12px] sm:text-sm mb-4">Discover correlations between food, mood, energy, and sleep.</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-blue-500 text-[12px] sm:text-sm font-medium">📊 Analytics</span>
+                    <motion.button
+                      className="bg-[#4CAF50] hover:bg-[#28A745] text-white px-3 sm:px-4 py-2 rounded-lg text-[12px] sm:text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Try Free
+                    </motion.button>
+                  </div>
+                </motion.div>
+
+                {/* Personal Nutrition Coach - Featured */}
+                <motion.div 
+                  className="md:col-span-2 lg:col-span-1 bg-gradient-to-br from-[#4CAF50]/10 to-green-100 rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border-2 border-[#4CAF50]/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
+                  whileHover={{ y: -2, scale: 1.02 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <div className="flex items-start gap-3 sm:gap-4 mb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#4CAF50] to-green-600 rounded-xl flex items-center justify-center shadow-md">
+                      <Users className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="text-[16px] sm:text-xl font-bold text-[#2D2D2D]">Personal Coach</h3>
+                        <span className="bg-[#4CAF50] text-white text-[10px] sm:text-xs px-2 py-1 rounded-full font-medium">Popular</span>
+                      </div>
+                      <p className="text-[#6C757D] text-[12px] sm:text-sm">Real-time chat with nutritionists</p>
+                    </div>
+                  </div>
+                  <p className="text-[#6C757D] text-[12px] sm:text-sm mb-4">Get personalized meal plans and real-time guidance from certified nutritionists.</p>
+                  <motion.button
+                    className="w-full bg-[#4CAF50] hover:bg-[#28A745] text-white px-4 py-3 rounded-lg text-[14px] sm:text-[16px] font-medium shadow-md hover:shadow-lg transition-all duration-200"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Start Free Trial (7 days)
+                  </motion.button>
+                </motion.div>
+              </div>
+            </div>
+          )}
+
+          {/* Chat View */}
+          {currentView === 'chat' && (
+            <div className="w-full max-w-4xl mx-auto text-center">
+              <div className="mb-8">
+                <h1 className="text-[24px] sm:text-[28px] font-semibold mb-4 text-[#2D2D2D] leading-tight">Chat with Nuri</h1>
+                <p className="text-[14px] sm:text-[16px] text-[#6C757D] leading-relaxed px-4">
+                  Get personalized nutrition advice and guidance
+                </p>
+              </div>
+              <div className="bg-white rounded-xl p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100">
+                <MessageCircle className="w-16 h-16 text-[#4CAF50] mx-auto mb-4" />
+                <h3 className="text-[18px] sm:text-[20px] font-medium text-[#2D2D2D] mb-2">Coming Soon</h3>
+                <p className="text-[14px] sm:text-[16px] text-[#6C757D]">Chat functionality will be available soon!</p>
+              </div>
+            </div>
+          )}
+
+          {/* Profile View */}
+          {currentView === 'profile' && (
+            <div className="w-full max-w-4xl mx-auto text-center">
+              <div className="mb-8">
+                <h1 className="text-[24px] sm:text-[28px] font-semibold mb-4 text-[#2D2D2D] leading-tight">Your Profile</h1>
+                <p className="text-[14px] sm:text-[16px] text-[#6C757D] leading-relaxed px-4">
+                  Manage your account and preferences
+                </p>
+              </div>
+              <div className="bg-white rounded-xl p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100">
+                <Users className="w-16 h-16 text-[#4CAF50] mx-auto mb-4" />
+                <h3 className="text-[18px] sm:text-[20px] font-medium text-[#2D2D2D] mb-2">Profile Settings</h3>
+                <p className="text-[14px] sm:text-[16px] text-[#6C757D]">Profile management coming soon!</p>
+              </div>
+            </div>
+          )}
 
           {/* Premium Features Teaser with Glassmorphism */}
           <motion.div 
@@ -2012,7 +2284,7 @@ const NuriAssistant = () => {
 
         {/* Right Sidebar with Glassmorphism */}
         <motion.div 
-          className="w-80 bg-white border-l border-gray-100 p-6 overflow-y-auto sticky top-0 h-screen relative z-30 shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
+          className="hidden lg:block w-80 bg-white border-l border-gray-100 p-6 overflow-y-auto sticky top-0 h-screen relative z-30 shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
