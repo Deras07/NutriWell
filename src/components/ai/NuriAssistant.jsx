@@ -1,6 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronRight, Sparkles, Leaf, Heart, Sun, Target, Zap, MessageCircle, Plus, Camera, Search, Trophy, Users, Calendar, TrendingUp, Droplets, Apple, Utensils, Coffee, ChefHat, BarChart3, ShoppingCart, Clock, Star } from 'lucide-react'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js'
+import { Line } from 'react-chartjs-2'
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+)
 
 const NuriAssistant = () => {
   const [showEmojiCards, setShowEmojiCards] = useState(false)
@@ -376,6 +397,100 @@ const NuriAssistant = () => {
     carbs: { current: 150, goal: 250, unit: 'g' },
     fat: { current: 45, goal: 65, unit: 'g' },
     water: { current: 6, goal: 8, unit: 'glasses' }
+  }
+
+  // Wellness chart data
+  const wellnessChartData = {
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    datasets: [
+      {
+        label: 'Energy',
+        data: [60, 65, 70, 68, 75, 80, 78],
+        borderColor: '#FF8A65',
+        backgroundColor: 'rgba(255, 138, 101, 0.1)',
+        tension: 0.4,
+        pointBackgroundColor: '#FF8A65',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+      },
+      {
+        label: 'Mood',
+        data: [70, 75, 80, 85, 80, 85, 90],
+        borderColor: '#4CAF50',
+        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+        tension: 0.4,
+        pointBackgroundColor: '#4CAF50',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+      },
+      {
+        label: 'Focus',
+        data: [50, 55, 60, 65, 70, 65, 75],
+        borderColor: '#9C27B0',
+        backgroundColor: 'rgba(156, 39, 176, 0.1)',
+        tension: 0.4,
+        pointBackgroundColor: '#9C27B0',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+      },
+    ],
+  }
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: {
+          color: '#2D2D2D',
+          font: {
+            size: 12,
+            weight: '500',
+          },
+          usePointStyle: true,
+          pointStyle: 'circle',
+        },
+      },
+      tooltip: {
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        titleColor: '#2D2D2D',
+        bodyColor: '#2D2D2D',
+        borderColor: '#E5E7EB',
+        borderWidth: 1,
+        cornerRadius: 8,
+        displayColors: true,
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          color: 'rgba(0, 0, 0, 0.05)',
+        },
+        ticks: {
+          color: '#2D2D2D',
+          font: {
+            size: 11,
+          },
+        },
+      },
+      y: {
+        grid: {
+          color: 'rgba(0, 0, 0, 0.05)',
+        },
+        ticks: {
+          color: '#2D2D2D',
+          font: {
+            size: 11,
+          },
+        },
+        min: 0,
+        max: 100,
+      },
+    },
   }
 
   // Recent foods
@@ -1397,8 +1512,8 @@ const NuriAssistant = () => {
                 </div>
 
                 <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl p-6 border border-purple-300/30">
-                  <h3 className="text-white font-bold text-xl mb-4">✨ This is just a preview!</h3>
-                  <p className="text-white/90 mb-6">
+                  <h3 className="text-[#2D2D2D] font-bold text-xl mb-4">✨ This is just a preview!</h3>
+                  <p className="text-[#2D2D2D]/80 mb-6">
                     Premium gives you 47+ more insights like this, plus real-time adjustments 
                     based on your daily health data.
                   </p>
@@ -1421,14 +1536,14 @@ const NuriAssistant = () => {
         {/* Left Floating Badge */}
         <div className="fixed top-16 left-6 z-50">
           <motion.div 
-            className="bg-white/20 backdrop-blur-md rounded-2xl px-4 py-2 shadow-lg border border-white/30"
+            className="bg-white/90 backdrop-blur-md rounded-2xl px-4 py-2 shadow-lg border border-gray-200"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
           >
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-              <span className="text-white font-medium">Nuri is here</span>
-              <Leaf className="w-4 h-4 text-green-300" />
+              <span className="text-[#2D2D2D] font-medium">Nuri is here</span>
+              <Leaf className="w-4 h-4 text-[#4CAF50]" />
             </div>
           </motion.div>
         </div>
@@ -1437,13 +1552,13 @@ const NuriAssistant = () => {
         <div className="fixed top-16 right-6 z-50">
           <motion.button
             onClick={handleOnboardingStart}
-            className="bg-white/20 backdrop-blur-md rounded-2xl px-4 py-2 shadow-lg border border-white/30 text-white font-medium hover:scale-105 transition-all duration-300"
+            className="bg-white/90 backdrop-blur-md rounded-2xl px-4 py-2 shadow-lg border border-gray-200 text-[#2D2D2D] font-medium hover:scale-105 transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
           >
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-yellow-300" />
-              <span>Start Chat with Nuri</span>
+              <Sparkles className="w-4 h-4 text-yellow-500" />
+              <span className="text-[#2D2D2D]">Start Chat with Nuri</span>
             </div>
           </motion.button>
         </div>
@@ -1774,43 +1889,43 @@ const NuriAssistant = () => {
 
             {/* Social Proof & FOMO Elements */}
             <motion.div 
-              className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-md rounded-3xl p-6 border border-white/20"
+              className="bg-white/90 backdrop-blur-md rounded-3xl p-6 border border-gray-200 shadow-lg"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 2 }}
             >
               <div className="text-center mb-4">
-                <h3 className="text-xl font-bold text-white mb-2">Join 10,000+ users transforming their health</h3>
-                <p className="text-white/80 text-sm">Limited time: Premium features 40% off</p>
+                                  <h3 className="text-xl font-bold text-[#2D2D2D] mb-2">Join 10,000+ users transforming their health</h3>
+                <p className="text-[#2D2D2D]/80 text-sm">Limited time: Premium features 40% off</p>
               </div>
               
               {/* User testimonials */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div className="bg-white/10 rounded-2xl p-4 text-center">
+                <div className="bg-white/80 rounded-2xl p-4 text-center border border-gray-200">
                   <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full mx-auto mb-2 flex items-center justify-center">
                     <span className="text-white font-bold">A</span>
                   </div>
-                  <p className="text-white/90 text-sm">"Ana is healthier than ever"</p>
+                  <p className="text-[#2D2D2D]/80 text-sm">"Ana is healthier than ever"</p>
                   <div className="flex justify-center mt-2">
                     {[1,2,3,4,5].map(i => <Star key={i} className="w-3 h-3 text-yellow-400 fill-current" />)}
                   </div>
                 </div>
                 
-                <div className="bg-white/10 rounded-2xl p-4 text-center">
+                <div className="bg-white/80 rounded-2xl p-4 text-center border border-gray-200">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-teal-500 rounded-full mx-auto mb-2 flex items-center justify-center">
                     <span className="text-white font-bold">M</span>
                   </div>
-                  <p className="text-white/90 text-sm">"Lost 15lbs in 3 months"</p>
+                  <p className="text-[#2D2D2D]/80 text-sm">"Lost 15lbs in 3 months"</p>
                   <div className="flex justify-center mt-2">
                     {[1,2,3,4,5].map(i => <Star key={i} className="w-3 h-3 text-yellow-400 fill-current" />)}
                   </div>
                 </div>
                 
-                <div className="bg-white/10 rounded-2xl p-4 text-center">
+                <div className="bg-white/80 rounded-2xl p-4 text-center border border-gray-200">
                   <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mx-auto mb-2 flex items-center justify-center">
                     <span className="text-white font-bold">J</span>
                   </div>
-                  <p className="text-white/90 text-sm">"Energy levels through the roof!"</p>
+                  <p className="text-[#2D2D2D]/80 text-sm">"Energy levels through the roof!"</p>
                   <div className="flex justify-center mt-2">
                     {[1,2,3,4,5].map(i => <Star key={i} className="w-3 h-3 text-yellow-400 fill-current" />)}
                   </div>
@@ -1892,9 +2007,22 @@ const NuriAssistant = () => {
             </div>
           </div>
 
+          {/* Wellness Chart */}
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-4">
+              <TrendingUp className="w-6 h-6 text-[#4CAF50]" />
+              <h3 className="text-xl font-semibold text-[#2D2D2D]">Weekly Wellness Trends</h3>
+            </div>
+            <div className="bg-white rounded-3xl p-4 shadow-lg border border-gray-200">
+              <div className="h-48">
+                <Line data={wellnessChartData} options={chartOptions} />
+              </div>
+            </div>
+          </div>
+
           {/* Today's Nutrition Dashboard */}
           <div className="mb-8">
-            <h3 className="text-xl font-semibold text-white mb-6">Today's Nutrition</h3>
+            <h3 className="text-xl font-semibold text-[#2D2D2D] mb-6">Today's Nutrition</h3>
             
             <div className="bg-green-500/20 backdrop-blur-sm rounded-xl p-3 mb-4 border border-green-400/30">
               <p className="text-green-200 text-xs font-medium">📊 Example Data</p>
