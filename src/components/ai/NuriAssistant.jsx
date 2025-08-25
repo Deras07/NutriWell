@@ -637,7 +637,7 @@ const NuriAssistant = () => {
         </div>
 
         {/* Mobile Bottom Drawer for Sidebar Content */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#F9FBF9] border-t border-gray-200 shadow-lg">
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-white/30 shadow-lg">
           <div className="px-4 py-3">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-[16px] font-medium text-[#2D2D2D]">Today's Progress</h3>
@@ -647,31 +647,31 @@ const NuriAssistant = () => {
             </div>
             
             {/* Mobile Progress Cards */}
-            <div className="grid grid-cols-3 gap-3">
-              <div className="bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <Zap className="w-4 h-4 text-orange-500" />
-                  <span className="text-[12px] font-medium text-[#2D2D2D]">Energy</span>
+                          <div className="grid grid-cols-3 gap-3">
+                <div className="bg-white/90 backdrop-blur-md rounded-xl p-3 border border-white/30 shadow-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Zap className="w-4 h-4 text-orange-500" />
+                    <span className="text-[12px] font-medium text-[#2D2D2D]">Energy</span>
+                  </div>
+                  <span className="bg-orange-100 text-orange-600 px-2 py-1 rounded-full text-xs font-medium">Moderate</span>
                 </div>
-                <span className="bg-orange-100 text-orange-600 px-2 py-1 rounded-full text-xs font-medium">Moderate</span>
-              </div>
-              
-              <div className="bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="text-lg">😊</div>
-                  <span className="text-[12px] font-medium text-[#2D2D2D]">Mood</span>
+                
+                <div className="bg-white/90 backdrop-blur-md rounded-xl p-3 border border-white/30 shadow-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="text-lg">😊</div>
+                    <span className="text-[12px] font-medium text-[#2D2D2D]">Mood</span>
+                  </div>
+                  <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs font-medium">High</span>
                 </div>
-                <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs font-medium">High</span>
-              </div>
-              
-              <div className="bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <Target className="w-4 h-4 text-pink-500" />
-                  <span className="text-[12px] font-medium text-[#2D2D2D]">Focus</span>
+                
+                <div className="bg-white/90 backdrop-blur-md rounded-xl p-3 border border-white/30 shadow-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Target className="w-4 h-4 text-pink-500" />
+                    <span className="text-[12px] font-medium text-[#2D2D2D]">Focus</span>
+                  </div>
+                  <span className="bg-pink-100 text-pink-600 px-2 py-1 rounded-full text-xs font-medium">Low</span>
                 </div>
-                <span className="bg-pink-100 text-pink-600 px-2 py-1 rounded-full text-xs font-medium">Low</span>
               </div>
-            </div>
           </div>
         </div>
       </div>
@@ -721,7 +721,7 @@ const NuriAssistant = () => {
       </div>
 
       {/* Responsive Navigation */}
-      <div className="fixed top-0 left-0 right-0 z-40 bg-[#F9FBF9]/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
+      <div className="fixed top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-white/30 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
@@ -778,7 +778,7 @@ const NuriAssistant = () => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden bg-[#F9FBF9] border-t border-gray-200 shadow-lg"
+              className="md:hidden bg-white/95 backdrop-blur-md border-t border-white/30 shadow-lg"
             >
               <nav className="px-4 py-4 space-y-2">
                 {[
@@ -1892,7 +1892,7 @@ const NuriAssistant = () => {
             <h3 className="text-[18px] sm:text-[20px] font-medium text-[#2D2D2D] mb-6 text-center">Quick Actions</h3>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               <motion.button
-                className="bg-white rounded-xl p-4 sm:p-6 border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-gray-50"
+                className="bg-white/90 backdrop-blur-md rounded-xl p-4 sm:p-6 border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-white/80"
                 whileHover={{ y: -2, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -1908,7 +1908,7 @@ const NuriAssistant = () => {
               </motion.button>
               
               <motion.button
-                className="bg-white rounded-xl p-4 sm:p-6 border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-gray-50"
+                className="bg-white/90 backdrop-blur-md rounded-xl p-4 sm:p-6 border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-white/80"
                 whileHover={{ y: -2, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -1924,13 +1924,13 @@ const NuriAssistant = () => {
               </motion.button>
 
               <motion.button
-                className="bg-white rounded-xl p-4 sm:p-6 border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-gray-50"
+                className="bg-white/90 backdrop-blur-md rounded-xl p-4 sm:p-6 border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-white/80"
                 whileHover={{ y: -2, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <div className="flex items-center gap-3 sm:gap-4">
                   <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-[#4CAF50] to-green-600 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
-                    <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                    <MessageCircle className="w-4 h-4 sm:w-5 sm:w-5 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="text-[#2D2D2D] font-medium text-[14px] sm:text-[16px]">Chat with Nuri</h4>
@@ -1940,7 +1940,7 @@ const NuriAssistant = () => {
               </motion.button>
 
               <motion.button
-                className="bg-white rounded-xl p-4 sm:p-6 border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-gray-50"
+                className="bg-white/90 backdrop-blur-md rounded-xl p-4 sm:p-6 border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-white/80"
                 whileHover={{ y: -2, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -1970,7 +1970,7 @@ const NuriAssistant = () => {
               
               {/* Time Period Selector */}
               <div className="flex justify-center">
-                <div className="bg-white rounded-lg p-1 shadow-sm border border-gray-100">
+                <div className="bg-white/90 backdrop-blur-md rounded-lg p-1 shadow-sm border border-white/30">
                   {[
                     { id: 'week', label: 'Week', icon: '📅' },
                     { id: 'month', label: 'Month', icon: '📆' },
@@ -1993,7 +1993,7 @@ const NuriAssistant = () => {
               </div>
             </div>
             
-            <div className="bg-white rounded-xl p-6 sm:p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100">
+            <div className="bg-white/95 backdrop-blur-md rounded-xl p-6 sm:p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30">
               <div className="h-[300px] sm:h-[400px] lg:h-[500px]">
                 <Line data={wellnessChartData} options={chartOptions} />
               </div>
@@ -2017,7 +2017,7 @@ const NuriAssistant = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
                 {/* Recipe Generator Pro */}
                 <motion.div 
-                  className="bg-white rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
+                  className="bg-white/90 backdrop-blur-md rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
                   whileHover={{ y: -2, scale: 1.02 }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -2047,7 +2047,7 @@ const NuriAssistant = () => {
 
                 {/* Health Insights Dashboard */}
                 <motion.div 
-                  className="bg-white rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
+                  className="bg-white/90 backdrop-blur-md rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
                   whileHover={{ y: -2, scale: 1.02 }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -2077,7 +2077,7 @@ const NuriAssistant = () => {
 
                 {/* Personal Nutrition Coach - Featured */}
                 <motion.div 
-                  className="md:col-span-2 lg:col-span-1 bg-gradient-to-br from-[#4CAF50]/10 to-green-100 rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border-2 border-[#4CAF50]/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
+                  className="md:col-span-2 lg:col-span-1 bg-gradient-to-br from-[#4CAF50]/20 to-green-100/80 backdrop-blur-md rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border-2 border-[#4CAF50]/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
                   whileHover={{ y: -2, scale: 1.02 }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -2117,7 +2117,7 @@ const NuriAssistant = () => {
                   Get personalized nutrition advice and guidance
                 </p>
               </div>
-              <div className="bg-white rounded-xl p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100">
+              <div className="bg-white/95 backdrop-blur-md rounded-xl p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30">
                 <MessageCircle className="w-16 h-16 text-[#4CAF50] mx-auto mb-4" />
                 <h3 className="text-[18px] sm:text-[20px] font-medium text-[#2D2D2D] mb-2">Coming Soon</h3>
                 <p className="text-[14px] sm:text-[16px] text-[#6C757D]">Chat functionality will be available soon!</p>
@@ -2134,10 +2134,10 @@ const NuriAssistant = () => {
                   Manage your account and preferences
                 </p>
               </div>
-              <div className="bg-white rounded-xl p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100">
+              <div className="bg-white/95 backdrop-blur-md rounded-xl p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30">
                 <Users className="w-16 h-16 text-[#4CAF50] mx-auto mb-4" />
                 <h3 className="text-[18px] sm:text-[20px] font-medium text-[#2D2D2D] mb-2">Profile Settings</h3>
-                <p className="text-[14px] sm:text-[16px] text-[#6C757D]">Profile management coming soon!</p>
+                <p className="text-[#6C757D] text-[14px] sm:text-[16px]">Profile management coming soon!</p>
               </div>
             </div>
           )}
@@ -2344,7 +2344,7 @@ const NuriAssistant = () => {
 
         {/* Right Sidebar with Glassmorphism */}
         <motion.div 
-          className="hidden lg:block w-80 bg-[#F9FBF9] border-l border-gray-100 p-6 overflow-y-auto sticky top-0 h-screen relative z-30 shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
+          className="hidden lg:block w-80 bg-white/95 backdrop-blur-md border-l border-white/30 p-6 overflow-y-auto sticky top-0 h-screen relative z-30 shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
@@ -2364,7 +2364,7 @@ const NuriAssistant = () => {
             
             <div className="space-y-4">
               <motion.div 
-                className="bg-white rounded-xl p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
+                className="bg-white/90 backdrop-blur-md rounded-xl p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
                 whileHover={{ y: -2, scale: 1.02 }}
               >
                 <div className="flex items-center justify-between">
@@ -2377,7 +2377,7 @@ const NuriAssistant = () => {
               </motion.div>
               
               <motion.div 
-                className="bg-white rounded-xl p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
+                className="bg-white/90 backdrop-blur-md rounded-xl p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
                 whileHover={{ y: -2, scale: 1.02 }}
               >
                 <div className="flex items-center justify-between">
@@ -2390,7 +2390,7 @@ const NuriAssistant = () => {
               </motion.div>
               
               <motion.div 
-                className="bg-white rounded-xl p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
+                className="bg-white/90 backdrop-blur-md rounded-xl p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
                 whileHover={{ y: -2, scale: 1.02 }}
               >
                 <div className="flex items-center justify-between">
