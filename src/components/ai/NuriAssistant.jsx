@@ -1696,7 +1696,7 @@ const NuriAssistant = () => {
         )}
       </AnimatePresence>
 
-      {/* Main Layout - 3 Columns */}
+      {/* Main Layout - Full Width */}
       <div className="flex min-h-screen pt-16 md:pt-20 relative z-10">
         
         {/* Left Floating Badge - Hidden on Mobile */}
@@ -1730,7 +1730,7 @@ const NuriAssistant = () => {
         </div>
 
         {/* Center Column - Main Content */}
-        <div className="flex-1 flex flex-col px-4 sm:px-6 lg:px-8 pt-6 md:pt-10 pb-20 relative z-20">
+        <div className="flex-1 flex flex-col px-4 sm:px-6 lg:px-8 pt-6 md:pt-10 pb-32 relative z-20 max-w-7xl mx-auto">
           
           {/* Dashboard View */}
           {currentView === 'dashboard' && (
@@ -1876,14 +1876,14 @@ const NuriAssistant = () => {
 
           {/* Premium Quick Actions */}
           <motion.div 
-            className="w-full max-w-6xl mx-auto mb-16"
+            className="w-full max-w-6xl mx-auto mb-20"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <div className="text-center mb-10">
-              <h2 className="text-[24px] sm:text-[28px] font-semibold text-[#2D2D2D] mb-3 leading-tight">Smart Wellness Actions</h2>
-              <p className="text-[16px] text-[#6C757D] leading-relaxed">AI-powered insights to optimize your health journey</p>
+            <div className="section-header text-center mb-12">
+              <h2 className="section-title text-[28px] sm:text-[32px] font-bold text-[#2D2D2D] mb-4 leading-tight">Smart Wellness Actions</h2>
+              <p className="section-subtitle text-[16px] text-[#6C757D] leading-relaxed max-w-2xl mx-auto">AI-powered insights to optimize your health journey with personalized recommendations</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <motion.div
@@ -2009,24 +2009,24 @@ const NuriAssistant = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.2 }}
           >
-            <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#4CAF50]/20 to-green-100/80 rounded-full px-4 py-2 mb-4">
+            <div className="section-header text-center mb-12">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#4CAF50]/20 to-green-100/80 rounded-full px-4 py-2 mb-6">
                 <span className="text-sm">✨</span>
                 <span className="text-sm font-medium text-[#4CAF50]">AI Insights</span>
               </div>
-              <h2 className="text-[28px] sm:text-[32px] font-bold text-[#2D2D2D] mb-4 leading-tight">Your Wellness Journey</h2>
-              <p className="text-[16px] text-[#6C757D] leading-relaxed mb-8">Advanced analytics powered by machine learning</p>
+              <h2 className="section-title text-[32px] sm:text-[36px] font-bold text-[#2D2D2D] mb-4 leading-tight">Your Wellness Journey</h2>
+              <p className="section-subtitle text-[16px] text-[#6C757D] leading-relaxed max-w-3xl mx-auto mb-8">Advanced analytics powered by machine learning to track your health progress</p>
               
               {/* Premium Time Period Selector */}
-              <div className="flex justify-center">
+              <div className="flex justify-center mb-8">
                 <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-lg p-[1px]">
                     <div className="bg-white/95 backdrop-blur-md rounded-[7px] p-1">
                       <div className="flex">
                         {[
-                          { id: 'week', label: 'Week', icon: '📅' },
-                          { id: 'month', label: 'Month', icon: '📆' },
-                          { id: 'quarter', label: 'Quarter', icon: '📊' }
+                          { id: 'week', label: 'This Week', icon: '📅' },
+                          { id: 'month', label: 'This Month', icon: '📆' },
+                          { id: 'quarter', label: 'This Quarter', icon: '📊' }
                         ].map((period) => (
                           <button
                             key={period.id}
@@ -2072,50 +2072,50 @@ const NuriAssistant = () => {
 
             {/* AI Insights Panel */}
             <motion.div 
-              className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6"
+              className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.6 }}
             >
-              <div className="bg-white/90 backdrop-blur-md rounded-xl p-6 border border-white/30 shadow-lg">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-[#3F51B5] to-[#5C6BC0] rounded-xl flex items-center justify-center">
-                    <div className="text-xl">😴</div>
+              <div className="stats-card bg-white/90 backdrop-blur-md rounded-xl p-8 border border-white/30 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#3F51B5] to-[#5C6BC0] rounded-xl flex items-center justify-center shadow-lg">
+                    <div className="text-2xl">😴</div>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-[#2D2D2D]">Sleep Quality</h4>
+                    <h4 className="font-bold text-[#2D2D2D] text-lg">Sleep Quality</h4>
                     <p className="text-sm text-[#6C757D]">Improving trend</p>
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-[#3F51B5] mb-2">7.5 hrs</div>
+                <div className="stat-number text-3xl font-bold text-[#3F51B5] mb-3">7.5 hrs</div>
                 <p className="text-sm text-[#6C757D]">+15% from last week</p>
               </div>
 
-              <div className="bg-white/90 backdrop-blur-md rounded-xl p-6 border border-white/30 shadow-lg">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-[#4CAF50] to-[#81C784] rounded-xl flex items-center justify-center">
-                    <div className="text-xl">🏃</div>
+              <div className="stats-card bg-white/90 backdrop-blur-md rounded-xl p-8 border border-white/30 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#4CAF50] to-[#81C784] rounded-xl flex items-center justify-center shadow-lg">
+                    <div className="text-2xl">🏃</div>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-[#2D2D2D]">Activity Level</h4>
+                    <h4 className="font-bold text-[#2D2D2D] text-lg">Activity Level</h4>
                     <p className="text-sm text-[#6C757D]">Peak performance</p>
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-[#4CAF50] mb-2">8,542</div>
+                <div className="stat-number text-3xl font-bold text-[#4CAF50] mb-3">8,542</div>
                 <p className="text-sm text-[#6C757D]">steps today</p>
               </div>
 
-              <div className="bg-white/90 backdrop-blur-md rounded-xl p-6 border border-white/30 shadow-lg">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-[#FF9800] to-[#FFB74D] rounded-xl flex items-center justify-center">
-                    <div className="text-xl">🥗</div>
+              <div className="stats-card bg-white/90 backdrop-blur-md rounded-xl p-8 border border-white/30 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#FF9800] to-[#FFB74D] rounded-xl flex items-center justify-center shadow-lg">
+                    <div className="text-2xl">🥗</div>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-[#2D2D2D]">Nutrition Score</h4>
+                    <h4 className="font-bold text-[#2D2D2D] text-lg">Nutrition Score</h4>
                     <p className="text-sm text-[#6C757D]">Excellent balance</p>
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-[#FF9800] mb-2">92/100</div>
+                <div className="stat-number text-3xl font-bold text-[#FF9800] mb-3">92/100</div>
                 <p className="text-sm text-[#6C757D]">Personal best!</p>
               </div>
             </motion.div>
