@@ -710,27 +710,7 @@ const NuriAssistant = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* 🌿 VIBRANT WELLNESS GRADIENT BACKGROUND */}
-      <div 
-        className="fixed inset-0 z-0"
-        style={{
-          background: 'linear-gradient(135deg, #D4EDDA 0%, #E8F5E8 25%, #F0F8F0 50%, #E8F5E8 75%, #D4EDDA 100%)'
-        }}
-      >
-        {/* Enhanced animated background pattern overlay */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: `
-              radial-gradient(circle at 20% 50%, rgba(76, 175, 80, 0.15) 0%, transparent 50%),
-              radial-gradient(circle at 80% 20%, rgba(129, 199, 132, 0.12) 0%, transparent 50%),
-              radial-gradient(circle at 40% 80%, rgba(165, 214, 167, 0.10) 0%, transparent 50%),
-              radial-gradient(circle at 60% 10%, rgba(200, 230, 201, 0.08) 0%, transparent 50%)
-            `,
-            pointerEvents: 'none'
-          }}
-        />
-      </div>
+
 
       {/* Responsive Navigation */}
       <div className="fixed top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-white/30 shadow-sm">
@@ -1767,94 +1747,99 @@ const NuriAssistant = () => {
 
               </div>
 
-          {/* 🤖 3D NURI CHARACTER */}
-          <div className="relative mb-8">
+          {/* 🌱 CUTE NURI CHARACTER */}
+          <div className="relative mb-8 flex justify-center">
             <motion.div
-              className="relative"
-              animate={{ y: [0, -15, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="relative nuri-avatar"
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              style={{
+                width: '120px',
+                height: '120px',
+                filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.15))'
+              }}
             >
-              {/* Responsive 3D Nuri character */}
-              <div className="relative w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64">
-                {/* Pear-shaped body with gradient */}
-                <div className="absolute inset-0 bg-gradient-to-b from-green-300 to-green-700 rounded-full transform scale-y-110 shadow-2xl">
-                  {/* Expressive face with interactive eyes */}
-                  <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 flex gap-8">
-                    {/* Left eye */}
-                    <div className="relative">
-                      <div className="w-5 h-5 bg-black rounded-full shadow-lg"></div>
-                      <motion.div 
-                        className="absolute top-1 left-1 w-1.5 h-1.5 bg-white rounded-full"
-                        animate={{ 
-                          scale: isBlinking ? 0 : 1
-                        }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
-                      />
-                    </div>
-                    {/* Right eye */}
-                    <div className="relative">
-                      <div className="w-5 h-5 bg-black rounded-full shadow-lg"></div>
-                      <motion.div 
-                        className="absolute top-1 left-1 w-1.5 h-1.5 bg-white rounded-full"
-                        animate={{ 
-                          scale: isBlinking ? 0 : 1
-                        }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
-                      />
-                    </div>
+              {/* Glow effect */}
+              <div className="absolute -inset-2 bg-gradient-to-r from-green-400/20 via-teal-400/20 to-green-400/20 rounded-full blur-xl animate-pulse-glow"></div>
+              
+              {/* Cute Nuri character */}
+              <div className="relative w-full h-full bg-gradient-to-b from-green-300 to-green-600 rounded-full shadow-xl border-4 border-white/20">
+                {/* Cute face */}
+                <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 flex gap-4">
+                  {/* Left eye */}
+                  <div className="relative">
+                    <div className="w-3 h-3 bg-black rounded-full"></div>
+                    <motion.div 
+                      className="absolute top-0.5 left-0.5 w-1 h-1 bg-white rounded-full"
+                      animate={{ 
+                        scale: isBlinking ? 0 : 1
+                      }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    />
                   </div>
+                  {/* Right eye */}
+                  <div className="relative">
+                    <div className="w-3 h-3 bg-black rounded-full"></div>
+                    <motion.div 
+                      className="absolute top-0.5 left-0.5 w-1 h-1 bg-white rounded-full"
+                      animate={{ 
+                        scale: isBlinking ? 0 : 1
+                      }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    />
+                  </div>
+                </div>
 
-                  {/* Dynamic smile based on expression */}
-                  <motion.div 
-                    className="absolute bottom-1/3 left-1/2 transform -translate-x-1/2 w-10 h-3 border-b-4 border-black rounded-full"
-                    animate={{
-                      scaleY: nuriExpression === 'happy' ? 1.2 : nuriExpression === 'thoughtful' ? 0.8 : 1,
-                      rotate: nuriExpression === 'happy' ? 5 : nuriExpression === 'thoughtful' ? -2 : 0
-                    }}
-                    transition={{ duration: 0.5 }}
+                {/* Happy smile */}
+                <motion.div 
+                  className="absolute bottom-1/3 left-1/2 transform -translate-x-1/2 w-6 h-2 border-b-2 border-black rounded-full"
+                  animate={{
+                    scaleY: nuriExpression === 'happy' ? 1.2 : nuriExpression === 'thoughtful' ? 0.8 : 1,
+                    rotate: nuriExpression === 'happy' ? 3 : nuriExpression === 'thoughtful' ? -1 : 0
+                  }}
+                  transition={{ duration: 0.5 }}
+                />
+
+                {/* Cute pink cheeks */}
+                <div className="absolute top-1/2 left-1/4 w-3 h-3 bg-pink-300/80 rounded-full blur-sm"></div>
+                <div className="absolute top-1/2 right-1/4 w-3 h-3 bg-pink-300/80 rounded-full blur-sm"></div>
+
+                {/* Simple leaf crown */}
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <motion.div
+                    className="w-4 h-6 bg-gradient-to-b from-green-400 to-green-600 rounded-full transform rotate-12"
+                    animate={{ rotate: [12, 8, 12] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                   />
+                  <motion.div
+                    className="w-4 h-6 bg-gradient-to-b from-green-400 to-green-600 rounded-full transform -rotate-12 absolute top-0 left-0"
+                    animate={{ rotate: [-12, -8, -12] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                  />
+                </div>
 
-                  {/* Pink cheeks with glow */}
-                  <div className="absolute top-1/2 left-1/4 w-6 h-6 bg-pink-300/60 rounded-full blur-sm shadow-lg"></div>
-                  <div className="absolute top-1/2 right-1/4 w-6 h-6 bg-pink-300/60 rounded-full blur-sm shadow-lg"></div>
-
-                  {/* Two detailed leaves with sway animation */}
-                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                {/* Gentle sparkles */}
+                <div className="absolute inset-0">
+                  {Array.from({ length: 3 }, (_, i) => (
                     <motion.div
-                      className="w-6 h-10 bg-gradient-to-b from-green-500 to-green-700 rounded-full transform rotate-12 shadow-lg"
-                      animate={{ rotate: [12, 8, 12] }}
-                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                      key={i}
+                      className="absolute w-1.5 h-1.5 bg-yellow-200 rounded-full"
+                      style={{
+                        left: `${20 + Math.random() * 60}%`,
+                        top: `${20 + Math.random() * 60}%`
+                      }}
+                      animate={{
+                        scale: [0, 1, 0],
+                        opacity: [0, 0.8, 0]
+                      }}
+                      transition={{
+                        duration: 3,
+                        delay: i * 1,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
                     />
-                    <motion.div
-                      className="w-6 h-10 bg-gradient-to-b from-green-500 to-green-700 rounded-full transform -rotate-12 absolute top-0 left-0 shadow-lg"
-                      animate={{ rotate: [-12, -8, -12] }}
-                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                    />
-                  </div>
-
-                  {/* Sparkle particles around Nuri */}
-                  <div className="absolute inset-0">
-                    {Array.from({ length: 6 }, (_, i) => (
-                      <motion.div
-                        key={i}
-                        className="absolute w-2 h-2 bg-yellow-300 rounded-full shadow-lg"
-                        style={{
-                          left: `${Math.random() * 100}%`,
-                          top: `${Math.random() * 100}%`
-                        }}
-                        animate={{
-                          scale: [0, 1, 0],
-                          opacity: [0, 1, 0]
-                        }}
-                        transition={{
-                          duration: 2,
-                          delay: i * 0.3,
-                          repeat: Infinity,
-                          ease: "easeInOut"
-                        }}
-                      />
-                    ))}
-                  </div>
+                  ))}
                 </div>
               </div>
             </motion.div>
@@ -1862,23 +1847,29 @@ const NuriAssistant = () => {
 
 
 
-          {/* Nuri Chat Bubble with Glassmorphism */}
+          {/* Elegant Nuri Chat Bubble */}
           <motion.div 
-            className="w-full max-w-md mx-auto mb-8"
+            className="w-full max-w-lg mx-auto mb-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <div className="flex items-start gap-3 sm:gap-4">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-200 to-green-200 rounded-full flex items-center justify-center shadow-lg border-2 border-white/50 flex-shrink-0">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-300 to-green-300 rounded-full flex items-center justify-center">
-                  <div className="text-base sm:text-lg">🌱</div>
+            <div className="relative">
+              {/* Chat bubble tail */}
+              <div className="absolute left-4 top-6 w-4 h-4 bg-white/90 border border-white/30 transform rotate-45 backdrop-blur-[25px]"></div>
+              
+              {/* Main chat bubble */}
+              <div className="nuri-chat-bubble bg-white/90 backdrop-blur-[25px] border border-white/30 rounded-[20px] p-6 ml-8 shadow-[0_8px_32px_rgba(0,0,0,0.1)] relative">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-teal-500 rounded-full flex items-center justify-center shadow-lg border-2 border-white/50 flex-shrink-0">
+                    <div className="text-lg">🌱</div>
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-[#2D2D2D] text-[16px] leading-relaxed font-medium">
+                      Good morning! 😊 I'm Nuri, your personal nutrition assistant. Let's start with a few quick questions to personalize your plan!
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="bg-white rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 flex-1">
-                <p className="text-[#2D2D2D] text-[14px] sm:text-[16px] leading-relaxed">
-                  Good morning! 😊 I'm Nuri, your personal nutrition assistant. Let's start with a few quick questions to personalize your plan!
-                </p>
               </div>
             </div>
           </motion.div>
@@ -2566,205 +2557,16 @@ const NuriAssistant = () => {
 
         </div>
 
-        {/* Right Sidebar with Glassmorphism */}
-        <motion.div 
-          className="hidden lg:block w-80 bg-white/95 backdrop-blur-md border-l border-white/30 p-6 overflow-y-auto sticky top-0 h-screen relative z-30 shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
-        >
-          
-          {/* Today's Progress */}
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <Sun className="w-6 h-6 text-yellow-500" />
-              <h3 className="text-[20px] font-medium text-[#2D2D2D]">Today's Progress</h3>
-            </div>
-            <div className="bg-blue-50 rounded-xl p-3 mb-4 border border-blue-200">
-              <p className="text-blue-600 text-xs font-medium">📊 Example Data</p>
-              <p className="text-blue-500 text-xs">This shows how your dashboard will look once you start tracking</p>
-            </div>
-            <p className="text-sm text-[#2D2D2D]/70 mb-6">Your wellness journey</p>
-            
-            <div className="space-y-4">
-              <motion.div 
-                className="bg-white/90 backdrop-blur-md rounded-xl p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
-                whileHover={{ y: -2, scale: 1.02 }}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Zap className="w-6 h-6 text-orange-500" />
-                    <span className="text-[#2D2D2D] font-medium">Energy Level</span>
-                  </div>
-                  <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm font-medium">Moderate</span>
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                className="bg-white/90 backdrop-blur-md rounded-xl p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
-                whileHover={{ y: -2, scale: 1.02 }}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="text-2xl">😊</div>
-                    <span className="text-[#2D2D2D] font-medium">Mood</span>
-                  </div>
-                  <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">High</span>
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                className="bg-white/90 backdrop-blur-md rounded-xl p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
-                whileHover={{ y: -2, scale: 1.02 }}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Target className="w-6 h-6 text-pink-500" />
-                    <span className="text-[#2D2D2D] font-medium">Focus</span>
-                  </div>
-                  <span className="bg-pink-100 text-pink-600 px-3 py-1 rounded-full text-sm font-medium">Low</span>
-                </div>
-              </motion.div>
-            </div>
-          </div>
 
 
 
-          {/* Today's Nutrition Dashboard */}
-          <div className="mb-8">
-            <h3 className="text-[20px] font-medium text-[#2D2D2D] mb-6">Today's Nutrition</h3>
-            
-            <div className="bg-green-500/20 backdrop-blur-sm rounded-xl p-3 mb-4 border border-green-400/30">
-              <p className="text-green-200 text-xs font-medium">📊 Example Data</p>
-              <p className="text-green-100 text-xs">This shows how your nutrition tracking will look once you start logging meals</p>
-            </div>
-            
-            <div className="space-y-4">
-              {/* Calories */}
-              <div className="bg-white/10 backdrop-blur-md rounded-3xl p-5 shadow-2xl border border-white/20">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <Apple className="w-5 h-5 text-green-400" />
-                    <span className="text-white font-medium">Calories</span>
-                  </div>
-                  <span className="text-white/70 text-sm">{nutritionData.calories.current}/{nutritionData.calories.goal} {nutritionData.calories.unit}</span>
-                </div>
-                <ProgressRing progress={(nutritionData.calories.current / nutritionData.calories.goal) * 100} color="#4ADE80" />
-              </div>
 
-              {/* Macros */}
-              <div className="grid grid-cols-3 gap-3">
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
-                  <div className="text-center">
-                    <div className="text-orange-400 text-sm font-medium">Protein</div>
-                    <div className="text-white text-lg font-bold">{nutritionData.protein.current}g</div>
-                    <div className="text-white/50 text-xs">{nutritionData.protein.goal}g goal</div>
-                  </div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
-                  <div className="text-center">
-                    <div className="text-blue-400 text-sm font-medium">Carbs</div>
-                    <div className="text-white text-lg font-bold">{nutritionData.carbs.current}g</div>
-                    <div className="text-white/50 text-xs">{nutritionData.carbs.goal}g goal</div>
-                  </div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
-                  <div className="text-center">
-                    <div className="text-yellow-400 text-sm font-medium">Fat</div>
-                    <div className="text-white text-lg font-bold">{nutritionData.fat.current}g</div>
-                    <div className="text-white/50 text-xs">{nutritionData.fat.goal}g goal</div>
-                  </div>
-                </div>
-              </div>
 
-              {/* Water Intake */}
-              <div className="bg-white/10 backdrop-blur-md rounded-3xl p-5 shadow-2xl border border-white/20">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <Droplets className="w-5 h-5 text-blue-400" />
-                    <span className="text-white font-medium">Water Intake</span>
-                  </div>
-                  <span className="text-white/70 text-sm">{nutritionData.water.current}/{nutritionData.water.goal} {nutritionData.water.unit}</span>
-                </div>
-                <ProgressRing progress={(nutritionData.water.current / nutritionData.water.goal) * 100} color="#3B82F6" />
-              </div>
-            </div>
-          </div>
 
-          {/* Quick Log Recent Foods */}
-          <div className="mb-8">
-            <h3 className="text-xl font-semibold text-white mb-4">Recent Foods</h3>
-            <div className="space-y-3">
-              {recentFoods.map((food, index) => (
-                <motion.button
-                  key={index}
-                  className="w-full bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 hover:scale-105 transition-all duration-300 text-left"
-                  whileHover={{ y: -2 }}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl">{food.icon}</span>
-                      <div>
-                        <div className="text-white font-medium">{food.name}</div>
-                        <div className="text-white/60 text-sm">{food.calories} kcal</div>
-                      </div>
-                    </div>
-                    <Plus className="w-5 h-5 text-white/60" />
-                  </div>
-                </motion.button>
-              ))}
-            </div>
-          </div>
 
-          {/* Achievements */}
-          <div className="mb-8">
-            <h3 className="text-xl font-semibold text-white mb-4">Achievements</h3>
-            <div className="grid grid-cols-2 gap-3">
-              {achievements.map((achievement, index) => (
-                <div
-                  key={index}
-                  className={`backdrop-blur-md rounded-2xl p-4 border ${
-                    achievement.earned 
-                      ? 'bg-white/20 border-white/30' 
-                      : 'bg-white/5 border-white/10'
-                  }`}
-                >
-                  <div className="text-center">
-                    <div className="text-2xl mb-2">{achievement.icon}</div>
-                    <div className={`text-sm font-medium ${
-                      achievement.earned ? 'text-white' : 'text-white/50'
-                    }`}>
-                      {achievement.name}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
 
-          {/* Community Challenges */}
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-4">Community Challenges</h3>
-            <div className="space-y-3">
-              {challenges.map((challenge, index) => (
-                <div key={index} className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="text-white font-medium">{challenge.title}</div>
-                    <div className="text-white/60 text-sm">{challenge.participants} participants</div>
-                  </div>
-                  <div className="w-full bg-white/20 rounded-full h-2">
-                    <div 
-                      className="bg-gradient-to-r from-green-400 to-teal-500 h-2 rounded-full transition-all duration-1000"
-                      style={{ width: `${challenge.progress}%` }}
-                    />
-                  </div>
-                  <div className="text-white/60 text-xs mt-1">{challenge.progress}% complete</div>
-                </div>
-              ))}
-            </div>
-          </div>
 
-        </motion.div>
+
       </div>
     </div>
   )
