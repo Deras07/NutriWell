@@ -67,6 +67,7 @@ const NuriAssistant = () => {
   // Navigation state
   const [currentView, setCurrentView] = useState('dashboard') // 'dashboard', 'services', 'chat', 'profile'
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [timePeriod, setTimePeriod] = useState('week') // 'week', 'month', 'quarter'
 
   // Onboarding questions flow
   const onboardingQuestions = [
@@ -403,42 +404,58 @@ const NuriAssistant = () => {
     water: { current: 6, goal: 8, unit: 'glasses' }
   }
 
+  // Wellness data structure
+  const wellnessData = {
+    sleep: [7.2, 8.1, 6.5, 7.8, 8.3, 7.1, 7.9],
+    activity: [65, 78, 45, 82, 71, 88, 76],
+    nutrition: [85, 72, 91, 68, 79, 84, 77]
+  }
+
   // Wellness chart data
   const wellnessChartData = {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     datasets: [
       {
-        label: 'Energy',
-        data: [60, 65, 70, 68, 75, 80, 78],
-        borderColor: '#FF8A65',
-        backgroundColor: 'rgba(255, 138, 101, 0.1)',
+        label: 'Sleep Quality',
+        data: wellnessData.sleep,
+        borderColor: '#6B7280',
+        backgroundColor: 'rgba(107, 114, 128, 0.1)',
         tension: 0.4,
-        pointBackgroundColor: '#FF8A65',
+        borderWidth: 3,
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        pointBackgroundColor: '#6B7280',
         pointBorderColor: '#fff',
         pointBorderWidth: 2,
-        pointRadius: 4,
+        fill: true,
       },
       {
-        label: 'Mood',
-        data: [70, 75, 80, 85, 80, 85, 90],
+        label: 'Activity Level',
+        data: wellnessData.activity,
         borderColor: '#4CAF50',
         backgroundColor: 'rgba(76, 175, 80, 0.1)',
         tension: 0.4,
+        borderWidth: 3,
+        pointRadius: 6,
+        pointHoverRadius: 8,
         pointBackgroundColor: '#4CAF50',
         pointBorderColor: '#fff',
         pointBorderWidth: 2,
-        pointRadius: 4,
+        fill: true,
       },
       {
-        label: 'Focus',
-        data: [50, 55, 60, 65, 70, 65, 75],
-        borderColor: '#9C27B0',
-        backgroundColor: 'rgba(156, 39, 176, 0.1)',
+        label: 'Nutrition Score',
+        data: wellnessData.nutrition,
+        borderColor: '#3B82F6',
+        backgroundColor: 'rgba(59, 130, 246, 0.1)',
         tension: 0.4,
-        pointBackgroundColor: '#9C27B0',
+        borderWidth: 3,
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        pointBackgroundColor: '#3B82F6',
         pointBorderColor: '#fff',
         pointBorderWidth: 2,
-        pointRadius: 4,
+        fill: true,
       },
     ],
   }
@@ -453,11 +470,11 @@ const NuriAssistant = () => {
           color: '#2D2D2D',
           font: {
             size: 14,
-            weight: '500',
+            weight: '600',
           },
           usePointStyle: true,
           pointStyle: 'circle',
-          padding: 20,
+          padding: 24,
         },
       },
       tooltip: {
@@ -481,7 +498,7 @@ const NuriAssistant = () => {
     scales: {
       x: {
         grid: {
-          color: 'rgba(0, 0, 0, 0.08)',
+          color: '#E5E7EB',
           drawBorder: false,
         },
         ticks: {
@@ -494,7 +511,7 @@ const NuriAssistant = () => {
       },
       y: {
         grid: {
-          color: 'rgba(0, 0, 0, 0.08)',
+          color: '#E5E7EB',
           drawBorder: false,
         },
         ticks: {
@@ -510,8 +527,8 @@ const NuriAssistant = () => {
     },
     elements: {
       point: {
-        radius: 4,
-        hoverRadius: 6,
+        radius: 6,
+        hoverRadius: 8,
         borderWidth: 2,
         borderColor: '#FFFFFF',
       },
@@ -620,7 +637,7 @@ const NuriAssistant = () => {
         </div>
 
         {/* Mobile Bottom Drawer for Sidebar Content */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-lg">
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#F9FBF9] border-t border-gray-200 shadow-lg">
           <div className="px-4 py-3">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-[16px] font-medium text-[#2D2D2D]">Today's Progress</h3>
@@ -697,14 +714,14 @@ const NuriAssistant = () => {
       <div 
         className="fixed inset-0 z-0"
         style={{
-          background: '#F8F9FA'
+          background: 'linear-gradient(135deg, #F7F9F7 0%, #F0F4F0 100%)'
         }}
       >
 
       </div>
 
       {/* Responsive Navigation */}
-      <div className="fixed top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
+      <div className="fixed top-0 left-0 right-0 z-40 bg-[#F9FBF9]/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
@@ -761,7 +778,7 @@ const NuriAssistant = () => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden bg-white border-t border-gray-200 shadow-lg"
+              className="md:hidden bg-[#F9FBF9] border-t border-gray-200 shadow-lg"
             >
               <nav className="px-4 py-4 space-y-2">
                 {[
@@ -1940,6 +1957,49 @@ const NuriAssistant = () => {
             </div>
           </motion.div>
 
+          {/* Weekly Wellness Trends Chart */}
+          <motion.div 
+            className="w-full max-w-7xl mx-auto mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.2 }}
+          >
+            <div className="text-center mb-8">
+              <h2 className="text-[20px] sm:text-[24px] font-semibold text-[#2D2D2D] mb-2">Weekly Wellness Trends</h2>
+              <p className="text-[14px] sm:text-[16px] text-[#6C757D] mb-6">Track your sleep, activity, and nutrition patterns</p>
+              
+              {/* Time Period Selector */}
+              <div className="flex justify-center">
+                <div className="bg-white rounded-lg p-1 shadow-sm border border-gray-100">
+                  {[
+                    { id: 'week', label: 'Week', icon: '📅' },
+                    { id: 'month', label: 'Month', icon: '📆' },
+                    { id: 'quarter', label: 'Quarter', icon: '📊' }
+                  ].map((period) => (
+                    <button
+                      key={period.id}
+                      onClick={() => setTimePeriod(period.id)}
+                      className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
+                        timePeriod === period.id
+                          ? 'bg-[#4CAF50] text-white shadow-md'
+                          : 'text-[#6C757D] hover:text-[#2D2D2D] hover:bg-[#F8F9FA]'
+                      }`}
+                    >
+                      <span className="text-xs">{period.icon}</span>
+                      <span className="hidden sm:inline">{period.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-xl p-6 sm:p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100">
+              <div className="h-[300px] sm:h-[400px] lg:h-[500px]">
+                <Line data={wellnessChartData} options={chartOptions} />
+              </div>
+            </div>
+          </motion.div>
+
             </>
           )}
 
@@ -2284,7 +2344,7 @@ const NuriAssistant = () => {
 
         {/* Right Sidebar with Glassmorphism */}
         <motion.div 
-          className="hidden lg:block w-80 bg-white border-l border-gray-100 p-6 overflow-y-auto sticky top-0 h-screen relative z-30 shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
+          className="hidden lg:block w-80 bg-[#F9FBF9] border-l border-gray-100 p-6 overflow-y-auto sticky top-0 h-screen relative z-30 shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
@@ -2344,18 +2404,7 @@ const NuriAssistant = () => {
             </div>
           </div>
 
-          {/* Wellness Chart */}
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <TrendingUp className="w-6 h-6 text-[#4CAF50]" />
-              <h3 className="text-[20px] font-medium text-[#2D2D2D]">Weekly Wellness Trends</h3>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100">
-              <div className="h-48">
-                <Line data={wellnessChartData} options={chartOptions} />
-              </div>
-            </div>
-          </div>
+
 
           {/* Today's Nutrition Dashboard */}
           <div className="mb-8">
