@@ -1885,118 +1885,120 @@ const NuriAssistant = () => {
               <h2 className="section-title text-[28px] sm:text-[32px] font-bold text-[#2D2D2D] mb-4 leading-tight">Smart Wellness Actions</h2>
               <p className="section-subtitle text-[16px] text-[#6C757D] leading-relaxed max-w-2xl mx-auto">AI-powered insights to optimize your health journey with personalized recommendations</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="wellness-actions-grid">
+              {/* Recipe Generator Pro Card */}
               <motion.div
-                className="relative group cursor-pointer"
-                whileHover={{ y: -4 }}
+                className="action-card"
+                whileHover={{ y: -12 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[20px] p-[1px]">
-                  <div className="h-full w-full bg-white/95 backdrop-blur-[10px] rounded-[19px] p-6 relative overflow-hidden">
-                    {/* Top gradient bar */}
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7]"></div>
-                    
-                    <div className="flex flex-col items-center text-center">
-                      <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg mb-4 transform group-hover:scale-110 transition-transform duration-200">
-                        <Apple className="w-6 h-6 text-white" />
-                      </div>
-                      <h4 className="text-[#2D2D2D] font-semibold text-lg mb-2">Smart Meal Log</h4>
-                      <p className="text-[#6C757D] text-sm mb-3">AI-powered nutrition tracking</p>
-                      
-                      {/* Progress indicator */}
-                      <div className="w-full bg-gray-100 rounded-full h-2 mb-2">
-                        <div className="bg-gradient-to-r from-orange-400 to-red-500 h-2 rounded-full w-3/4 transition-all duration-300"></div>
-                      </div>
-                      <span className="text-xs text-[#6C757D]">75% today's goal</span>
-                    </div>
+                <div className="card-header">
+                  <div className="icon-container recipe-icon">
+                    🍳
+                  </div>
+                  <h3 className="card-title">Recipe Generator Pro</h3>
+                  <p className="card-subtitle">AI creates custom recipes</p>
+                </div>
+                
+                <div className="card-content">
+                  <p className="card-description">Get personalized recipes that match your dietary preferences, available ingredients, and nutritional goals.</p>
+                  <div className="card-features">
+                    <span className="feature-badge ai-powered">✨ AI-Powered</span>
                   </div>
                 </div>
+                
+                <div className="card-footer">
+                  <button className="try-free-btn">Try Free (3 days)</button>
+                </div>
               </motion.div>
-              
+
+              {/* Health Insights Dashboard Card */}
               <motion.div
-                className="relative group cursor-pointer"
-                whileHover={{ y: -4 }}
+                className="action-card"
+                whileHover={{ y: -12 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[20px] p-[1px]">
-                  <div className="h-full w-full bg-white/95 backdrop-blur-[10px] rounded-[19px] p-6 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7]"></div>
-                    
-                    <div className="flex flex-col items-center text-center">
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg mb-4 transform group-hover:scale-110 transition-transform duration-200">
-                        <div className="text-2xl">😊</div>
-                      </div>
-                      <h4 className="text-[#2D2D2D] font-semibold text-lg mb-2">Mood Tracker</h4>
-                      <p className="text-[#6C757D] text-sm mb-3">AI emotional insights</p>
-                      
-                      <div className="w-full bg-gray-100 rounded-full h-2 mb-2">
-                        <div className="bg-gradient-to-r from-blue-400 to-purple-500 h-2 rounded-full w-4/5 transition-all duration-300"></div>
-                      </div>
-                      <span className="text-xs text-[#6C757D]">Feeling Great!</span>
-                    </div>
+                <div className="card-header">
+                  <div className="icon-container insights-icon">
+                    📊
                   </div>
+                  <h3 className="card-title">Health Insights Dashboard</h3>
+                  <p className="card-subtitle">Advanced analytics & correlations</p>
+                </div>
+                
+                <div className="card-content">
+                  <p className="card-description">Discover correlations between food, mood, energy, sleep, and biomarkers with detailed analytics.</p>
+                  <div className="card-features">
+                    <span className="feature-badge analytics">📈 Advanced Analytics</span>
+                  </div>
+                </div>
+                
+                <div className="card-footer">
+                  <button className="try-free-btn">Try Free (3 days)</button>
                 </div>
               </motion.div>
 
+              {/* Personal Nutrition Coach Card */}
               <motion.div
-                className="relative group cursor-pointer"
-                whileHover={{ y: -4 }}
+                className="action-card"
+                whileHover={{ y: -12 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[20px] p-[1px]">
-                  <div className="h-full w-full bg-white/95 backdrop-blur-[10px] rounded-[19px] p-6 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7]"></div>
-                    
-                    <div className="flex flex-col items-center text-center">
-                      <div className="w-12 h-12 bg-gradient-to-br from-[#4CAF50] to-green-600 rounded-2xl flex items-center justify-center shadow-lg mb-4 transform group-hover:scale-110 transition-transform duration-200">
-                        <MessageCircle className="w-6 h-6 text-white" />
-                      </div>
-                      <h4 className="text-[#2D2D2D] font-semibold text-lg mb-2">Chat with Nuri</h4>
-                      <p className="text-[#6C757D] text-sm mb-3">24/7 AI wellness coach</p>
-                      
-                      <div className="w-full bg-gray-100 rounded-full h-2 mb-2">
-                        <div className="bg-gradient-to-r from-[#4CAF50] to-green-600 h-2 rounded-full w-full transition-all duration-300"></div>
-                      </div>
-                      <span className="text-xs text-[#6C757D]">Always available</span>
-                    </div>
+                <div className="card-header">
+                  <div className="icon-container coach-icon">
+                    👥
                   </div>
+                  <h3 className="card-title">Personal Nutrition Coach</h3>
+                  <p className="card-subtitle">Real-time chat with certified nutritionists</p>
+                </div>
+                
+                <div className="card-content">
+                  <p className="card-description">Get personalized meal plans and real-time guidance from certified nutritionists.</p>
+                  <div className="card-features">
+                    <span className="feature-badge expert">🏆 Expert Guidance</span>
+                  </div>
+                </div>
+                
+                <div className="card-footer">
+                  <button className="try-free-btn">Try Free (3 days)</button>
                 </div>
               </motion.div>
 
+              {/* Smart Grocery Assistant Card */}
               <motion.div
-                className="relative group cursor-pointer"
-                whileHover={{ y: -4 }}
+                className="action-card"
+                whileHover={{ y: -12 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[20px] p-[1px]">
-                  <div className="h-full w-full bg-white/95 backdrop-blur-[10px] rounded-[19px] p-6 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7]"></div>
-                    
-                    <div className="flex flex-col items-center text-center">
-                      <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg mb-4 transform group-hover:scale-110 transition-transform duration-200">
-                        <TrendingUp className="w-6 h-6 text-white" />
-                      </div>
-                      <h4 className="text-[#2D2D2D] font-semibold text-lg mb-2">Progress Analytics</h4>
-                      <p className="text-[#6C757D] text-sm mb-3">Advanced health metrics</p>
-                      
-                      <div className="w-full bg-gray-100 rounded-full h-2 mb-2">
-                        <div className="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full w-5/6 transition-all duration-300"></div>
-                      </div>
-                      <span className="text-xs text-[#6C757D]">+12% this week</span>
-                    </div>
+                <div className="card-header">
+                  <div className="icon-container grocery-icon">
+                    🛒
                   </div>
+                  <h3 className="card-title">Smart Grocery Assistant</h3>
+                  <p className="card-subtitle">AI-generated shopping lists & local prices</p>
+                </div>
+                
+                <div className="card-content">
+                  <p className="card-description">Get smart shopping lists based on your goals, dietary restrictions, and local store prices.</p>
+                  <div className="card-features">
+                    <span className="feature-badge smart-lists">🛍️ Smart Lists</span>
+                  </div>
+                </div>
+                
+                <div className="card-footer">
+                  <button className="try-free-btn">Try Free (3 days)</button>
                 </div>
               </motion.div>
             </div>
@@ -2017,34 +2019,21 @@ const NuriAssistant = () => {
               <h2 className="section-title text-[32px] sm:text-[36px] font-bold text-[#2D2D2D] mb-4 leading-tight">Your Wellness Journey</h2>
               <p className="section-subtitle text-[16px] text-[#6C757D] leading-relaxed max-w-3xl mx-auto mb-8">Advanced analytics powered by machine learning to track your health progress</p>
               
-              {/* Premium Time Period Selector */}
-              <div className="flex justify-center mb-8">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-lg p-[1px]">
-                    <div className="bg-white/95 backdrop-blur-md rounded-[7px] p-1">
-                      <div className="flex">
-                        {[
-                          { id: 'week', label: 'This Week', icon: '📅' },
-                          { id: 'month', label: 'This Month', icon: '📆' },
-                          { id: 'quarter', label: 'This Quarter', icon: '📊' }
-                        ].map((period) => (
-                          <button
-                            key={period.id}
-                            onClick={() => setTimePeriod(period.id)}
-                            className={`px-6 py-3 rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
-                              timePeriod === period.id
-                                ? 'bg-gradient-to-r from-[#4CAF50] to-green-600 text-white shadow-lg transform scale-105'
-                                : 'text-[#6C757D] hover:text-[#2D2D2D] hover:bg-white/50'
-                            }`}
-                          >
-                            <span className="text-base">{period.icon}</span>
-                            <span>{period.label}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              {/* Time Period Selector */}
+              <div className="time-selector">
+                {[
+                  { id: 'week', label: 'Week', icon: '📊' },
+                  { id: 'month', label: 'Month', icon: '📅' },
+                  { id: 'quarter', label: 'Quarter', icon: '📈' }
+                ].map((period) => (
+                  <button
+                    key={period.id}
+                    onClick={() => setTimePeriod(period.id)}
+                    className={`time-btn ${timePeriod === period.id ? 'active' : ''}`}
+                  >
+                    {period.icon} {period.label}
+                  </button>
+                ))}
               </div>
             </div>
             
@@ -2072,12 +2061,12 @@ const NuriAssistant = () => {
 
             {/* AI Insights Panel */}
             <motion.div 
-              className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8"
+              className="stats-grid"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.6 }}
             >
-              <div className="stats-card bg-white/90 backdrop-blur-md rounded-xl p-8 border border-white/30 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="stat-card">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 bg-gradient-to-br from-[#3F51B5] to-[#5C6BC0] rounded-xl flex items-center justify-center shadow-lg">
                     <div className="text-2xl">😴</div>
@@ -2091,7 +2080,7 @@ const NuriAssistant = () => {
                 <p className="text-sm text-[#6C757D]">+15% from last week</p>
               </div>
 
-              <div className="stats-card bg-white/90 backdrop-blur-md rounded-xl p-8 border border-white/30 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="stat-card">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 bg-gradient-to-br from-[#4CAF50] to-[#81C784] rounded-xl flex items-center justify-center shadow-lg">
                     <div className="text-2xl">🏃</div>
@@ -2105,7 +2094,7 @@ const NuriAssistant = () => {
                 <p className="text-sm text-[#6C757D]">steps today</p>
               </div>
 
-              <div className="stats-card bg-white/90 backdrop-blur-md rounded-xl p-8 border border-white/30 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="stat-card">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 bg-gradient-to-br from-[#FF9800] to-[#FFB74D] rounded-xl flex items-center justify-center shadow-lg">
                     <div className="text-2xl">🥗</div>
