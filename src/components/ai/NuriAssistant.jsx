@@ -710,14 +710,26 @@ const NuriAssistant = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* 🌿 ANIMATED BACKGROUND */}
+      {/* 🌿 VIBRANT WELLNESS GRADIENT BACKGROUND */}
       <div 
         className="fixed inset-0 z-0"
         style={{
-          background: 'linear-gradient(135deg, #F7F9F7 0%, #F0F4F0 100%)'
+          background: 'linear-gradient(135deg, #D4EDDA 0%, #E8F5E8 25%, #F0F8F0 50%, #E8F5E8 75%, #D4EDDA 100%)'
         }}
       >
-
+        {/* Enhanced animated background pattern overlay */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: `
+              radial-gradient(circle at 20% 50%, rgba(76, 175, 80, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(129, 199, 132, 0.12) 0%, transparent 50%),
+              radial-gradient(circle at 40% 80%, rgba(165, 214, 167, 0.10) 0%, transparent 50%),
+              radial-gradient(circle at 60% 10%, rgba(200, 230, 201, 0.08) 0%, transparent 50%)
+            `,
+            pointerEvents: 'none'
+          }}
+        />
       </div>
 
       {/* Responsive Navigation */}
@@ -1752,18 +1764,7 @@ const NuriAssistant = () => {
                   Track your nutrition, mood, and progress with Nuri
                 </p>
                 
-                <motion.button
-                  className="bg-[#4CAF50] hover:bg-[#28A745] text-white px-6 sm:px-8 py-4 sm:py-3 rounded-xl font-medium text-[14px] sm:text-[16px] shadow-[0_4px_12px_rgba(76,175,80,0.3)] hover:shadow-[0_8px_24px_rgba(76,175,80,0.4)] transition-all duration-200 flex items-center gap-3 mx-auto group h-14 sm:h-12 min-w-[200px] sm:min-w-[220px]"
-                  whileHover={{ scale: 1.02, y: -1 }}
-                  whileTap={{ scale: 0.98 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                  onClick={() => setShowNutritionDashboard(true)}
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  Start Chat with Nuri
-                </motion.button>
+
               </div>
 
           {/* 🤖 3D NURI CHARACTER */}
@@ -1882,122 +1883,251 @@ const NuriAssistant = () => {
             </div>
           </motion.div>
 
-          {/* Quick Actions */}
+          {/* Premium Quick Actions */}
           <motion.div 
-            className="w-full max-w-4xl mx-auto mb-12"
+            className="w-full max-w-6xl mx-auto mb-16"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <h3 className="text-[18px] sm:text-[20px] font-medium text-[#2D2D2D] mb-6 text-center">Quick Actions</h3>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              <motion.button
-                className="bg-white/90 backdrop-blur-md rounded-xl p-4 sm:p-6 border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-white/80"
-                whileHover={{ y: -2, scale: 1.02 }}
+            <div className="text-center mb-10">
+              <h2 className="text-[24px] sm:text-[28px] font-semibold text-[#2D2D2D] mb-3 leading-tight">Smart Wellness Actions</h2>
+              <p className="text-[16px] text-[#6C757D] leading-relaxed">AI-powered insights to optimize your health journey</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <motion.div
+                className="relative group cursor-pointer"
+                whileHover={{ y: -4 }}
                 whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
               >
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
-                    <Apple className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-[#2D2D2D] font-medium text-[14px] sm:text-[16px]">Log Meal</h4>
-                    <p className="text-[#6C757D] text-[12px] sm:text-[14px]">Track your food</p>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[20px] p-[1px]">
+                  <div className="h-full w-full bg-white/95 backdrop-blur-[10px] rounded-[19px] p-6 relative overflow-hidden">
+                    {/* Top gradient bar */}
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7]"></div>
+                    
+                    <div className="flex flex-col items-center text-center">
+                      <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg mb-4 transform group-hover:scale-110 transition-transform duration-200">
+                        <Apple className="w-6 h-6 text-white" />
+                      </div>
+                      <h4 className="text-[#2D2D2D] font-semibold text-lg mb-2">Smart Meal Log</h4>
+                      <p className="text-[#6C757D] text-sm mb-3">AI-powered nutrition tracking</p>
+                      
+                      {/* Progress indicator */}
+                      <div className="w-full bg-gray-100 rounded-full h-2 mb-2">
+                        <div className="bg-gradient-to-r from-orange-400 to-red-500 h-2 rounded-full w-3/4 transition-all duration-300"></div>
+                      </div>
+                      <span className="text-xs text-[#6C757D]">75% today's goal</span>
+                    </div>
                   </div>
                 </div>
-              </motion.button>
+              </motion.div>
               
-              <motion.button
-                className="bg-white/90 backdrop-blur-md rounded-xl p-4 sm:p-6 border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-white/80"
-                whileHover={{ y: -2, scale: 1.02 }}
+              <motion.div
+                className="relative group cursor-pointer"
+                whileHover={{ y: -4 }}
                 whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
               >
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
-                    <div className="text-xl sm:text-2xl">😊</div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-[#2D2D2D] font-medium text-[14px] sm:text-[16px]">Track Mood</h4>
-                    <p className="text-[#6C757D] text-[12px] sm:text-[14px]">Log your mood</p>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[20px] p-[1px]">
+                  <div className="h-full w-full bg-white/95 backdrop-blur-[10px] rounded-[19px] p-6 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7]"></div>
+                    
+                    <div className="flex flex-col items-center text-center">
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg mb-4 transform group-hover:scale-110 transition-transform duration-200">
+                        <div className="text-2xl">😊</div>
+                      </div>
+                      <h4 className="text-[#2D2D2D] font-semibold text-lg mb-2">Mood Tracker</h4>
+                      <p className="text-[#6C757D] text-sm mb-3">AI emotional insights</p>
+                      
+                      <div className="w-full bg-gray-100 rounded-full h-2 mb-2">
+                        <div className="bg-gradient-to-r from-blue-400 to-purple-500 h-2 rounded-full w-4/5 transition-all duration-300"></div>
+                      </div>
+                      <span className="text-xs text-[#6C757D]">Feeling Great!</span>
+                    </div>
                   </div>
                 </div>
-              </motion.button>
+              </motion.div>
 
-              <motion.button
-                className="bg-white/90 backdrop-blur-md rounded-xl p-4 sm:p-6 border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-white/80"
-                whileHover={{ y: -2, scale: 1.02 }}
+              <motion.div
+                className="relative group cursor-pointer"
+                whileHover={{ y: -4 }}
                 whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
               >
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-[#4CAF50] to-green-600 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
-                    <MessageCircle className="w-4 h-4 sm:w-5 sm:w-5 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-[#2D2D2D] font-medium text-[14px] sm:text-[16px]">Chat with Nuri</h4>
-                    <p className="text-[#6C757D] text-[12px] sm:text-[14px]">Get advice</p>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[20px] p-[1px]">
+                  <div className="h-full w-full bg-white/95 backdrop-blur-[10px] rounded-[19px] p-6 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7]"></div>
+                    
+                    <div className="flex flex-col items-center text-center">
+                      <div className="w-12 h-12 bg-gradient-to-br from-[#4CAF50] to-green-600 rounded-2xl flex items-center justify-center shadow-lg mb-4 transform group-hover:scale-110 transition-transform duration-200">
+                        <MessageCircle className="w-6 h-6 text-white" />
+                      </div>
+                      <h4 className="text-[#2D2D2D] font-semibold text-lg mb-2">Chat with Nuri</h4>
+                      <p className="text-[#6C757D] text-sm mb-3">24/7 AI wellness coach</p>
+                      
+                      <div className="w-full bg-gray-100 rounded-full h-2 mb-2">
+                        <div className="bg-gradient-to-r from-[#4CAF50] to-green-600 h-2 rounded-full w-full transition-all duration-300"></div>
+                      </div>
+                      <span className="text-xs text-[#6C757D]">Always available</span>
+                    </div>
                   </div>
                 </div>
-              </motion.button>
+              </motion.div>
 
-              <motion.button
-                className="bg-white/90 backdrop-blur-md rounded-xl p-4 sm:p-6 border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 text-left min-h-[80px] sm:h-20 active:bg-white/80"
-                whileHover={{ y: -2, scale: 1.02 }}
+              <motion.div
+                className="relative group cursor-pointer"
+                whileHover={{ y: -4 }}
                 whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
               >
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
-                    <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-[#2D2D2D] font-medium text-[14px] sm:text-[16px]">View Progress</h4>
-                    <p className="text-[#6C757D] text-[12px] sm:text-[14px]">Check trends</p>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[20px] p-[1px]">
+                  <div className="h-full w-full bg-white/95 backdrop-blur-[10px] rounded-[19px] p-6 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7]"></div>
+                    
+                    <div className="flex flex-col items-center text-center">
+                      <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg mb-4 transform group-hover:scale-110 transition-transform duration-200">
+                        <TrendingUp className="w-6 h-6 text-white" />
+                      </div>
+                      <h4 className="text-[#2D2D2D] font-semibold text-lg mb-2">Progress Analytics</h4>
+                      <p className="text-[#6C757D] text-sm mb-3">Advanced health metrics</p>
+                      
+                      <div className="w-full bg-gray-100 rounded-full h-2 mb-2">
+                        <div className="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full w-5/6 transition-all duration-300"></div>
+                      </div>
+                      <span className="text-xs text-[#6C757D]">+12% this week</span>
+                    </div>
                   </div>
                 </div>
-              </motion.button>
+              </motion.div>
             </div>
           </motion.div>
 
-          {/* Weekly Wellness Trends Chart */}
+          {/* Revolutionary AI Wellness Analytics */}
           <motion.div 
-            className="w-full max-w-7xl mx-auto mb-12"
+            className="w-full max-w-7xl mx-auto mb-16"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.2 }}
           >
-            <div className="text-center mb-8">
-              <h2 className="text-[20px] sm:text-[24px] font-semibold text-[#2D2D2D] mb-2">Weekly Wellness Trends</h2>
-              <p className="text-[14px] sm:text-[16px] text-[#6C757D] mb-6">Track your sleep, activity, and nutrition patterns</p>
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#4CAF50]/20 to-green-100/80 rounded-full px-4 py-2 mb-4">
+                <span className="text-sm">✨</span>
+                <span className="text-sm font-medium text-[#4CAF50]">AI Insights</span>
+              </div>
+              <h2 className="text-[28px] sm:text-[32px] font-bold text-[#2D2D2D] mb-4 leading-tight">Your Wellness Journey</h2>
+              <p className="text-[16px] text-[#6C757D] leading-relaxed mb-8">Advanced analytics powered by machine learning</p>
               
-              {/* Time Period Selector */}
+              {/* Premium Time Period Selector */}
               <div className="flex justify-center">
-                <div className="bg-white/90 backdrop-blur-md rounded-lg p-1 shadow-sm border border-white/30">
-                  {[
-                    { id: 'week', label: 'Week', icon: '📅' },
-                    { id: 'month', label: 'Month', icon: '📆' },
-                    { id: 'quarter', label: 'Quarter', icon: '📊' }
-                  ].map((period) => (
-                    <button
-                      key={period.id}
-                      onClick={() => setTimePeriod(period.id)}
-                      className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
-                        timePeriod === period.id
-                          ? 'bg-[#4CAF50] text-white shadow-md'
-                          : 'text-[#6C757D] hover:text-[#2D2D2D] hover:bg-[#F8F9FA]'
-                      }`}
-                    >
-                      <span className="text-xs">{period.icon}</span>
-                      <span className="hidden sm:inline">{period.label}</span>
-                    </button>
-                  ))}
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-lg p-[1px]">
+                    <div className="bg-white/95 backdrop-blur-md rounded-[7px] p-1">
+                      <div className="flex">
+                        {[
+                          { id: 'week', label: 'Week', icon: '📅' },
+                          { id: 'month', label: 'Month', icon: '📆' },
+                          { id: 'quarter', label: 'Quarter', icon: '📊' }
+                        ].map((period) => (
+                          <button
+                            key={period.id}
+                            onClick={() => setTimePeriod(period.id)}
+                            className={`px-6 py-3 rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
+                              timePeriod === period.id
+                                ? 'bg-gradient-to-r from-[#4CAF50] to-green-600 text-white shadow-lg transform scale-105'
+                                : 'text-[#6C757D] hover:text-[#2D2D2D] hover:bg-white/50'
+                            }`}
+                          >
+                            <span className="text-base">{period.icon}</span>
+                            <span>{period.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             
-            <div className="bg-white/95 backdrop-blur-md rounded-xl p-6 sm:p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30">
-              <div className="h-[300px] sm:h-[400px] lg:h-[500px]">
-                <Line data={wellnessChartData} options={chartOptions} />
+            {/* Premium Chart Container */}
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[24px] p-[1px]">
+                <div className="h-full w-full bg-white/95 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
+                  {/* Subtle background pattern */}
+                  <div className="absolute inset-0 opacity-5">
+                    <div className="absolute inset-0" style={{
+                      backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(76,175,80,0.3) 1px, transparent 0)',
+                      backgroundSize: '20px 20px'
+                    }}></div>
+                  </div>
+                  
+                  {/* Chart */}
+                  <div className="relative z-10">
+                    <div className="h-[350px] sm:h-[450px] lg:h-[550px]">
+                      <Line data={wellnessChartData} options={chartOptions} />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+
+            {/* AI Insights Panel */}
+            <motion.div 
+              className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.6 }}
+            >
+              <div className="bg-white/90 backdrop-blur-md rounded-xl p-6 border border-white/30 shadow-lg">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-br from-[#3F51B5] to-[#5C6BC0] rounded-xl flex items-center justify-center">
+                    <div className="text-xl">😴</div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-[#2D2D2D]">Sleep Quality</h4>
+                    <p className="text-sm text-[#6C757D]">Improving trend</p>
+                  </div>
+                </div>
+                <div className="text-2xl font-bold text-[#3F51B5] mb-2">7.5 hrs</div>
+                <p className="text-sm text-[#6C757D]">+15% from last week</p>
+              </div>
+
+              <div className="bg-white/90 backdrop-blur-md rounded-xl p-6 border border-white/30 shadow-lg">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-br from-[#4CAF50] to-[#81C784] rounded-xl flex items-center justify-center">
+                    <div className="text-xl">🏃</div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-[#2D2D2D]">Activity Level</h4>
+                    <p className="text-sm text-[#6C757D]">Peak performance</p>
+                  </div>
+                </div>
+                <div className="text-2xl font-bold text-[#4CAF50] mb-2">8,542</div>
+                <p className="text-sm text-[#6C757D]">steps today</p>
+              </div>
+
+              <div className="bg-white/90 backdrop-blur-md rounded-xl p-6 border border-white/30 shadow-lg">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-br from-[#FF9800] to-[#FFB74D] rounded-xl flex items-center justify-center">
+                    <div className="text-xl">🥗</div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-[#2D2D2D]">Nutrition Score</h4>
+                    <p className="text-sm text-[#6C757D]">Excellent balance</p>
+                  </div>
+                </div>
+                <div className="text-2xl font-bold text-[#FF9800] mb-2">92/100</div>
+                <p className="text-sm text-[#6C757D]">Personal best!</p>
+              </div>
+            </motion.div>
           </motion.div>
 
             </>
