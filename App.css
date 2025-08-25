@@ -88,6 +88,25 @@
   --text-6xl: 3.75rem;
 }
 
+/* Glassmorphism Animations */
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-8px); 
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
 /* Global Styles - Modern & Clean */
 * {
   margin: 0;

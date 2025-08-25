@@ -2291,182 +2291,276 @@ const NuriAssistant = () => {
               Unlock personalized nutrition guidance with our premium features designed for your unique health journey.
             </p>
 
-            {/* Premium Feature Cards with Enhanced Design */}
+            {/* Premium Feature Cards with Stunning Glassmorphism */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {/* Recipe Generator Pro */}
               <motion.div 
-                className="bg-white rounded-3xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
-                whileHover={{ y: -4 }}
+                className="relative group cursor-pointer"
+                whileHover={{ y: -8 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.2 }}
+                style={{
+                  animation: 'float 6s ease-in-out infinite',
+                  animationDelay: '0s'
+                }}
               >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
-                    <ChefHat className="w-6 h-6 text-white" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[24px] p-[1px]">
+                  <div className="h-full w-full bg-white/15 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
+                    {/* Top gradient line */}
+                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                    
+                    {/* Pastel glass icon container - Warm Coral */}
+                    <div className="w-16 h-16 bg-gradient-to-br from-orange-400/30 to-red-500/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-white/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
+                      <ChefHat className="w-8 h-8 text-white" />
+                    </div>
+                    
+                    {/* Premium badge */}
+                    <div className="bg-yellow-400/20 backdrop-blur-[10px] border border-yellow-400/30 rounded-lg px-3 py-1 text-xs font-semibold text-yellow-700/90 inline-block mb-4">
+                      ✨ AI-Powered
+                    </div>
+                    
+                    {/* Enhanced typography */}
+                    <h3 className="text-[22px] font-bold text-white/90 mb-3 leading-tight tracking-tight" style={{textShadow: '0 1px 2px rgba(255, 255, 255, 0.5)'}}>
+                      Recipe Generator Pro
+                    </h3>
+                    <p className="text-white/80 text-sm mb-4 leading-relaxed font-medium">
+                      AI creates custom recipes based on your ingredients
+                    </p>
+                    <p className="text-white/70 text-sm mb-6 leading-relaxed">
+                      Get personalized recipes that match your dietary preferences, available ingredients, and nutritional goals.
+                    </p>
+                    
+                    {/* Premium glassmorphism button */}
+                    <motion.button
+                      className="w-full bg-gradient-to-r from-[#4CAF50]/90 to-green-600/80 backdrop-blur-[10px] border border-white/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Try Free (3 days)
+                    </motion.button>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-[#2D2D2D]">Recipe Generator Pro</h3>
-                    <p className="text-[#2D2D2D]/70 text-sm">AI creates custom recipes based on your ingredients</p>
-                  </div>
-                </div>
-                <p className="text-[#2D2D2D]/80 text-sm mb-4">Get personalized recipes that match your dietary preferences, available ingredients, and nutritional goals.</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-orange-500 text-sm font-medium">✨ AI-Powered</span>
-                  <motion.button
-                    className="bg-[#4CAF50] hover:bg-[#45a049] text-white px-4 py-2 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Try Free (3 days)
-                  </motion.button>
                 </div>
               </motion.div>
 
               {/* Health Insights Dashboard */}
               <motion.div 
-                className="bg-white rounded-3xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
-                whileHover={{ y: -4 }}
+                className="relative group cursor-pointer"
+                whileHover={{ y: -8 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.4 }}
+                style={{
+                  animation: 'float 6s ease-in-out infinite',
+                  animationDelay: '3s'
+                }}
               >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg">
-                    <BarChart3 className="w-6 h-6 text-white" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[24px] p-[1px]">
+                  <div className="h-full w-full bg-white/15 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
+                    {/* Top gradient line */}
+                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                    
+                    {/* Pastel glass icon container - Soft Purple */}
+                    <div className="w-16 h-16 bg-gradient-to-br from-blue-400/30 to-purple-500/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-white/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
+                      <BarChart3 className="w-8 h-8 text-white" />
+                    </div>
+                    
+                    {/* Premium badge */}
+                    <div className="bg-blue-400/20 backdrop-blur-[10px] border border-blue-400/30 rounded-lg px-3 py-1 text-xs font-semibold text-blue-700/90 inline-block mb-4">
+                      📊 Advanced Analytics
+                    </div>
+                    
+                    {/* Enhanced typography */}
+                    <h3 className="text-[22px] font-bold text-white/90 mb-3 leading-tight tracking-tight" style={{textShadow: '0 1px 2px rgba(255, 255, 255, 0.5)'}}>
+                      Health Insights Dashboard
+                    </h3>
+                    <p className="text-white/80 text-sm mb-4 leading-relaxed font-medium">
+                      Advanced analytics & correlations
+                    </p>
+                    <p className="text-white/70 text-sm mb-6 leading-relaxed">
+                      Discover correlations between food, mood, energy, sleep, and biomarkers with detailed analytics.
+                    </p>
+                    
+                    {/* Premium glassmorphism button */}
+                    <motion.button
+                      className="w-full bg-gradient-to-r from-[#4CAF50]/90 to-green-600/80 backdrop-blur-[10px] border border-white/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Try Free (3 days)
+                    </motion.button>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-[#2D2D2D]">Health Insights Dashboard</h3>
-                    <p className="text-[#2D2D2D]/70 text-sm">Advanced analytics & correlations</p>
-                  </div>
-                </div>
-                <p className="text-[#2D2D2D]/80 text-sm mb-4">Discover correlations between food, mood, energy, sleep, and biomarkers with detailed analytics.</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-blue-500 text-sm font-medium">📊 Advanced Analytics</span>
-                  <motion.button
-                    className="bg-[#4CAF50] hover:bg-[#45a049] text-white px-4 py-2 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Try Free (3 days)
-                  </motion.button>
                 </div>
               </motion.div>
 
               {/* Personal Nutrition Coach */}
               <motion.div 
-                className="bg-white rounded-3xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
-                whileHover={{ y: -4 }}
+                className="relative group cursor-pointer"
+                whileHover={{ y: -8 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.6 }}
+                style={{
+                  animation: 'float 6s ease-in-out infinite',
+                  animationDelay: '1.5s'
+                }}
               >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg">
-                    <Users className="w-6 h-6 text-white" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[24px] p-[1px]">
+                  <div className="h-full w-full bg-white/15 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
+                    {/* Top gradient line */}
+                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                    
+                    {/* Pastel glass icon container - Fresh Mint */}
+                    <div className="w-16 h-16 bg-gradient-to-br from-green-400/30 to-teal-500/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-white/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
+                      <Users className="w-8 h-8 text-white" />
+                    </div>
+                    
+                    {/* Premium badge */}
+                    <div className="bg-green-400/20 backdrop-blur-[10px] border border-green-400/30 rounded-lg px-3 py-1 text-xs font-semibold text-green-700/90 inline-block mb-4">
+                      👨‍⚕️ Expert Guidance
+                    </div>
+                    
+                    {/* Enhanced typography */}
+                    <h3 className="text-[22px] font-bold text-white/90 mb-3 leading-tight tracking-tight" style={{textShadow: '0 1px 2px rgba(255, 255, 255, 0.5)'}}>
+                      Personal Nutrition Coach
+                    </h3>
+                    <p className="text-white/80 text-sm mb-4 leading-relaxed font-medium">
+                      Real-time chat with certified nutritionists
+                    </p>
+                    <p className="text-white/70 text-sm mb-6 leading-relaxed">
+                      Get personalized meal plans and real-time guidance from certified nutritionists.
+                    </p>
+                    
+                    {/* Premium glassmorphism button */}
+                    <motion.button
+                      className="w-full bg-gradient-to-r from-[#4CAF50]/90 to-green-600/80 backdrop-blur-[10px] border border-white/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Try Free (3 days)
+                    </motion.button>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-[#2D2D2D]">Personal Nutrition Coach</h3>
-                    <p className="text-[#2D2D2D]/70 text-sm">Real-time chat with certified nutritionists</p>
-                  </div>
-                </div>
-                <p className="text-[#2D2D2D]/80 text-sm mb-4">Get personalized meal plans and real-time guidance from certified nutritionists.</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-green-500 text-sm font-medium">👨‍⚕️ Expert Guidance</span>
-                  <motion.button
-                    className="bg-[#4CAF50] hover:bg-[#45a049] text-white px-4 py-2 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Try Free (3 days)
-                  </motion.button>
                 </div>
               </motion.div>
 
               {/* Smart Grocery Assistant */}
               <motion.div 
-                className="bg-white rounded-3xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
-                whileHover={{ y: -4 }}
+                className="relative group cursor-pointer"
+                whileHover={{ y: -8 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.8 }}
+                style={{
+                  animation: 'float 6s ease-in-out infinite',
+                  animationDelay: '4.5s'
+                }}
               >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
-                    <ShoppingCart className="w-6 h-6 text-white" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[24px] p-[1px]">
+                  <div className="h-full w-full bg-white/15 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
+                    {/* Top gradient line */}
+                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                    
+                    {/* Pastel glass icon container - Sunny Yellow */}
+                    <div className="w-16 h-16 bg-gradient-to-br from-yellow-400/30 to-orange-500/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-white/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
+                      <ShoppingCart className="w-8 h-8 text-white" />
+                    </div>
+                    
+                    {/* Premium badge */}
+                    <div className="bg-yellow-400/20 backdrop-blur-[10px] border border-yellow-400/30 rounded-lg px-3 py-1 text-xs font-semibold text-yellow-700/90 inline-block mb-4">
+                      🛒 Smart Lists
+                    </div>
+                    
+                    {/* Enhanced typography */}
+                    <h3 className="text-[22px] font-bold text-white/90 mb-3 leading-tight tracking-tight" style={{textShadow: '0 1px 2px rgba(255, 255, 255, 0.5)'}}>
+                      Smart Grocery Assistant
+                    </h3>
+                    <p className="text-white/80 text-sm mb-4 leading-relaxed font-medium">
+                      AI-generated shopping lists & local prices
+                    </p>
+                    <p className="text-white/70 text-sm mb-6 leading-relaxed">
+                      Get smart shopping lists based on your goals, dietary restrictions, and local store prices.
+                    </p>
+                    
+                    {/* Premium glassmorphism button */}
+                    <motion.button
+                      className="w-full bg-gradient-to-r from-[#4CAF50]/90 to-green-600/80 backdrop-blur-[10px] border border-white/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Try Free (3 days)
+                    </motion.button>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-[#2D2D2D]">Smart Grocery Assistant</h3>
-                    <p className="text-[#2D2D2D]/70 text-sm">AI-generated shopping lists & local prices</p>
-                  </div>
-                </div>
-                <p className="text-[#2D2D2D]/80 text-sm mb-4">Get smart shopping lists based on your goals, dietary restrictions, and local store prices.</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-yellow-600 text-sm font-medium">🛒 Smart Lists</span>
-                  <motion.button
-                    className="bg-[#4CAF50] hover:bg-[#45a049] text-white px-4 py-2 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Try Free (3 days)
-                  </motion.button>
                 </div>
               </motion.div>
             </div>
 
-            {/* Social Proof & FOMO Elements */}
+            {/* Enhanced Social Proof Section with Glassmorphism */}
             <motion.div 
-              className="bg-white/90 backdrop-blur-md rounded-3xl p-6 border border-gray-200 shadow-lg"
+              className="relative group"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 2 }}
             >
-              <div className="text-center mb-4">
-                                  <h3 className="text-xl font-bold text-[#2D2D2D] mb-2">Join 10,000+ users transforming their health</h3>
-                <p className="text-[#2D2D2D]/80 text-sm">Limited time: Premium features 40% off</p>
-              </div>
-              
-              {/* User testimonials */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div className="bg-white/80 rounded-2xl p-4 text-center border border-gray-200">
-                  <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full mx-auto mb-2 flex items-center justify-center">
-                    <span className="text-white font-bold">A</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[28px] p-[1px]">
+                <div className="h-full w-full bg-white/12 backdrop-blur-[25px] rounded-[27px] p-10 relative overflow-hidden">
+                  {/* Subtle background pattern */}
+                  <div className="absolute inset-0 opacity-5">
+                    <div className="absolute inset-0" style={{
+                      backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)',
+                      backgroundSize: '30px 30px'
+                    }}></div>
                   </div>
-                  <p className="text-[#2D2D2D]/80 text-sm">"Ana is healthier than ever"</p>
-                  <div className="flex justify-center mt-2">
-                    {[1,2,3,4,5].map(i => <Star key={i} className="w-3 h-3 text-yellow-400 fill-current" />)}
-                  </div>
-                </div>
-                
-                <div className="bg-white/80 rounded-2xl p-4 text-center border border-gray-200">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-teal-500 rounded-full mx-auto mb-2 flex items-center justify-center">
-                    <span className="text-white font-bold">M</span>
-                  </div>
-                  <p className="text-[#2D2D2D]/80 text-sm">"Lost 15lbs in 3 months"</p>
-                  <div className="flex justify-center mt-2">
-                    {[1,2,3,4,5].map(i => <Star key={i} className="w-3 h-3 text-yellow-400 fill-current" />)}
-                  </div>
-                </div>
-                
-                <div className="bg-white/80 rounded-2xl p-4 text-center border border-gray-200">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mx-auto mb-2 flex items-center justify-center">
-                    <span className="text-white font-bold">J</span>
-                  </div>
-                  <p className="text-[#2D2D2D]/80 text-sm">"Energy levels through the roof!"</p>
-                  <div className="flex justify-center mt-2">
-                    {[1,2,3,4,5].map(i => <Star key={i} className="w-3 h-3 text-yellow-400 fill-current" />)}
-                  </div>
-                </div>
-              </div>
+                  
+                  <div className="relative z-10 text-center">
+                    <h3 className="text-[28px] font-bold text-white/90 mb-3 leading-tight" style={{textShadow: '0 2px 4px rgba(0,0,0,0.3)'}}>
+                      Join 10,000+ users transforming their health
+                    </h3>
+                    <p className="text-white/80 text-lg mb-8 font-medium">Limited time: Premium features 40% off</p>
+                    
+                    {/* Enhanced User Testimonials */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                      <div className="bg-white/15 backdrop-blur-[15px] rounded-2xl p-6 text-center border border-white/20 shadow-lg">
+                        <div className="w-14 h-14 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg border-2 border-white/30">
+                          <span className="text-white font-bold text-lg">A</span>
+                        </div>
+                        <p className="text-white/90 text-sm mb-3 font-medium">"Ana is healthier than ever"</p>
+                        <div className="flex justify-center gap-1">
+                          {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 text-yellow-300 fill-current" />)}
+                        </div>
+                      </div>
+                      
+                      <div className="bg-white/15 backdrop-blur-[15px] rounded-2xl p-6 text-center border border-white/20 shadow-lg">
+                        <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-teal-500 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg border-2 border-white/30">
+                          <span className="text-white font-bold text-lg">M</span>
+                        </div>
+                        <p className="text-white/90 text-sm mb-3 font-medium">"Lost 15lbs in 3 months"</p>
+                        <div className="flex justify-center gap-1">
+                          {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 text-yellow-300 fill-current" />)}
+                        </div>
+                      </div>
+                      
+                      <div className="bg-white/15 backdrop-blur-[15px] rounded-2xl p-6 text-center border border-white/20 shadow-lg">
+                        <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg border-2 border-white/30">
+                          <span className="text-white font-bold text-lg">J</span>
+                        </div>
+                        <p className="text-white/90 text-sm mb-3 font-medium">"Energy levels through the roof!"</p>
+                        <div className="flex justify-center gap-1">
+                          {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 text-yellow-300 fill-current" />)}
+                        </div>
+                      </div>
+                    </div>
 
-              {/* Floating Action Button */}
-              <motion.button
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full font-bold text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 mx-auto block"
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                🚀 Start Free Trial (3 days)
-              </motion.button>
+                    {/* Premium Glassmorphism CTA Button */}
+                    <motion.button
+                      className="bg-gradient-to-r from-[#4CAF50]/90 to-green-600/80 backdrop-blur-[15px] border border-white/30 text-white px-10 py-4 rounded-2xl font-bold text-lg shadow-2xl transition-all duration-300 hover:shadow-3xl"
+                      whileHover={{ scale: 1.05, y: -3 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      🚀 Start Free Trial (3 days)
+                    </motion.button>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
 
