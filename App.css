@@ -155,16 +155,16 @@ body {
 
 /* CRITICAL FIXES - GLASSMORPHISM SYSTEM */
 
-/* 1. FIX THE AWFUL BACKGROUND - Beautiful animated gradient */
+/* 1. ELEGANT HEALTH-FOCUSED BACKGROUND - Sophisticated gradient */
 body, .main-container, .dashboard {
   background: linear-gradient(-45deg, 
-    #667eea 0%, 
-    #764ba2 25%, 
-    #f093fb 50%, 
-    #f5576c 75%, 
-    #4facfe 100%) !important;
+    #2C5530 0%, 
+    #4A7C59 25%, 
+    #7FB069 50%, 
+    #A8D5BA 75%, 
+    #E8F5E8 100%) !important;
   background-size: 400% 400% !important;
-  animation: gradientFlow 15s ease infinite !important;
+  animation: gradientFlow 20s ease infinite !important;
   min-height: 100vh !important;
 }
 
@@ -209,7 +209,7 @@ body, .main-container, .dashboard {
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-/* ADD COLORED OVERLAYS */
+/* ADD ELEGANT COLORED OVERLAYS */
 .sleep-card::before {
   content: '';
   position: absolute;
@@ -218,8 +218,8 @@ body, .main-container, .dashboard {
   right: 0;
   bottom: 0;
   background: linear-gradient(135deg, 
-    rgba(147, 51, 234, 0.1) 0%, 
-    rgba(79, 70, 229, 0.1) 100%);
+    rgba(44, 85, 48, 0.15) 0%, 
+    rgba(74, 124, 89, 0.1) 100%);
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
@@ -232,8 +232,8 @@ body, .main-container, .dashboard {
   right: 0;
   bottom: 0;
   background: linear-gradient(135deg, 
-    rgba(34, 197, 94, 0.1) 0%, 
-    rgba(16, 185, 129, 0.1) 100%);
+    rgba(127, 176, 105, 0.15) 0%, 
+    rgba(168, 213, 186, 0.1) 100%);
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
@@ -246,8 +246,8 @@ body, .main-container, .dashboard {
   right: 0;
   bottom: 0;
   background: linear-gradient(135deg, 
-    rgba(249, 115, 22, 0.1) 0%, 
-    rgba(245, 101, 101, 0.1) 100%);
+    rgba(232, 245, 232, 0.15) 0%, 
+    rgba(168, 213, 186, 0.1) 100%);
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
@@ -324,39 +324,245 @@ body, .main-container, .dashboard {
   color: white !important;
 }
 
-/* 7. AI STATUS INDICATOR (replace greeting card) */
-.ai-status-indicator {
-  position: fixed;
-  top: 20px;
-  right: 20px;
+/* 7. NURI WELCOME SECTION - Elegant and Classy */
+.nuri-welcome-section {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(34, 197, 94, 0.1);
-  backdrop-filter: blur(15px);
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: 1px solid rgba(34, 197, 94, 0.2);
-  z-index: 100;
+  gap: 3rem;
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  margin-bottom: 3rem;
 }
 
-.ai-pulse {
+.nuri-avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nuri-avatar {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, rgba(127, 176, 105, 0.2), rgba(168, 213, 186, 0.2));
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  transition: all 0.3s ease;
+}
+
+.nuri-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.15);
+}
+
+.nuri-face {
+  font-size: 3rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.nuri-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(127, 176, 105, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(127, 176, 105, 0.2);
+}
+
+.status-dot {
   width: 8px;
   height: 8px;
-  background: #22c55e;
+  background: #7FB069;
   border-radius: 50%;
   animation: pulse 2s infinite;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.2); }
+.nuri-greeting {
+  flex: 1;
+  text-align: left;
 }
 
-.ai-text {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 12px;
+.greeting-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.greeting-subtitle {
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.chat-trigger {
+  display: flex;
+  gap: 1rem;
+}
+
+.elegant-chat-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, rgba(127, 176, 105, 0.2), rgba(168, 213, 186, 0.2));
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 1rem 2rem;
+  color: rgba(255, 255, 255, 0.95);
   font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(31, 38, 135, 0.1);
+}
+
+.elegant-chat-btn:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, rgba(127, 176, 105, 0.3), rgba(168, 213, 186, 0.3));
+  box-shadow: 0 8px 30px rgba(31, 38, 135, 0.15);
+}
+
+.chat-icon {
+  font-size: 1.25rem;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+/* 8. PREMIUM FEATURES MODAL - Elegant Design */
+.feature-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.feature-card:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.15);
+}
+
+.feature-card .icon-container {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, rgba(127, 176, 105, 0.2), rgba(168, 213, 186, 0.2));
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.feature-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.feature-description {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.feature-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.feature-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.cta-button {
+  background: linear-gradient(135deg, #7FB069, #A8D5BA);
+  border: none;
+  border-radius: 16px;
+  padding: 1.25rem 3rem;
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 30px rgba(127, 176, 105, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button:hover {
+  background: linear-gradient(135deg, #E8C547, #F4D03F);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(232, 197, 71, 0.4);
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.cta-button:hover::before {
+  left: 100%;
+}
+
+/* Add Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap');
+
+/* 9. PREMIUM FEATURES BUTTON */
+.premium-features-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, rgba(127, 176, 105, 0.2), rgba(168, 213, 186, 0.2));
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 1rem 2rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(31, 38, 135, 0.1);
+}
+
+.premium-features-btn:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, rgba(127, 176, 105, 0.3), rgba(168, 213, 186, 0.3));
+  box-shadow: 0 8px 30px rgba(31, 38, 135, 0.15);
 }
 
 /* Fix text readability for glass elements */

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronRight, Sparkles, Leaf, Heart, Sun, Target, Zap, MessageCircle, Plus, Camera, Search, Trophy, Users, Calendar, TrendingUp, Droplets, Apple, Utensils, Coffee, ChefHat, BarChart3, ShoppingCart, Clock, Star } from 'lucide-react'
+import PremiumFeaturesModal from '../ui/PremiumFeaturesModal'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -69,6 +70,8 @@ const NuriAssistant = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [timePeriod, setTimePeriod] = useState('week') // 'week', 'month', 'quarter'
   const [showQuickActions, setShowQuickActions] = useState(false)
+  const [showPremiumModal, setShowPremiumModal] = useState(false)
+  const [showChat, setShowChat] = useState(false)
 
   // Onboarding questions flow
   const onboardingQuestions = [
@@ -1882,10 +1885,32 @@ const NuriAssistant = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            {/* AI Status Indicator - Replaces the awful greeting card */}
-            <div className="ai-status-indicator">
-              <div className="ai-pulse"></div>
-              <span className="ai-text">Nuri is analyzing your data</span>
+            {/* Nuri's Welcome Section with Elegant Chat Integration */}
+            <div className="nuri-welcome-section">
+              <div className="nuri-avatar-container">
+                <div className="nuri-avatar">
+                  <span className="nuri-face">🌱</span>
+                </div>
+                <div className="nuri-status">
+                  <div className="status-dot"></div>
+                  <span>Ready to help</span>
+                </div>
+              </div>
+              
+              <div className="nuri-greeting">
+                <h2 className="greeting-title">Welcome to Nutriwell</h2>
+                <p className="greeting-subtitle">Your AI wellness companion is here to guide your health journey</p>
+                
+                <div className="chat-trigger">
+                  <button 
+                    className="elegant-chat-btn"
+                    onClick={() => setShowChat(true)}
+                  >
+                    <span className="chat-icon">💬</span>
+                    <span>Start Your Wellness Journey</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </motion.div>
 
@@ -1899,6 +1924,17 @@ const NuriAssistant = () => {
             <div className="section-header text-center mb-12">
               <h2 className="wellness-journey-title">Smart Wellness Actions</h2>
               <p className="wellness-journey-subtitle">AI-powered insights to optimize your health journey with personalized recommendations</p>
+              
+              {/* Premium Features Button */}
+              <div className="mt-6">
+                <button 
+                  onClick={() => setShowPremiumModal(true)}
+                  className="premium-features-btn"
+                >
+                  <Sparkles className="w-5 h-5" />
+                  <span>Explore Premium Features</span>
+                </button>
+              </div>
             </div>
             <div className="wellness-actions-grid">
               {/* Recipe Generator Pro Card */}
@@ -2578,15 +2614,11 @@ const NuriAssistant = () => {
 
         </div>
 
-
-
-
-
-
-
-
-
-
+        {/* Premium Features Modal */}
+        <PremiumFeaturesModal 
+          isOpen={showPremiumModal} 
+          onClose={() => setShowPremiumModal(false)} 
+        />
 
       </div>
     </div>
