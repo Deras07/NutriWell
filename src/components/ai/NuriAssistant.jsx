@@ -1730,23 +1730,29 @@ const NuriAssistant = () => {
           </motion.button>
         </div>
 
-        {/* Floating Quick Actions - 2025 UX Pattern */}
-        <div className="quick-actions-fab">
-          <button className="fab-main" onClick={() => setShowQuickActions(!showQuickActions)}>
-            <span className="fab-icon">{showQuickActions ? '✕' : '⚡'}</span>
+        {/* Floating AI Assistant - Replaces Chat Interface */}
+        <div className="floating-ai">
+          <button className="ai-fab" onClick={() => setShowQuickActions(!showQuickActions)}>
+            <div className="ai-pulse"></div>
+            <span className="ai-icon">🤖</span>
           </button>
           
           {showQuickActions && (
-            <div className="fab-menu">
-              <button className="fab-action" title="Log Meal">
-                <span>🍽️</span>
-              </button>
-              <button className="fab-action" title="Chat with Nuri">
-                <span>💬</span>
-              </button>
-              <button className="fab-action" title="Quick Check-in">
-                <span>📊</span>
-              </button>
+            <div className="ai-overlay">
+              <div className="ai-overlay-content">
+                <div className="ai-overlay-header">
+                  <h3>Nuri AI Assistant</h3>
+                  <button className="ai-close" onClick={() => setShowQuickActions(false)}>✕</button>
+                </div>
+                <div className="ai-overlay-body">
+                  <p>How can I help you today?</p>
+                  <div className="ai-quick-actions">
+                    <button className="ai-action-btn">🍽️ Log Meal</button>
+                    <button className="ai-action-btn">📊 Check Progress</button>
+                    <button className="ai-action-btn">🎯 Get Recommendations</button>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -1869,83 +1875,17 @@ const NuriAssistant = () => {
 
 
 
-          {/* Enhanced AI Assistant - Contextual Nuri */}
+          {/* Contextual AI Tooltips - Replaces Chat Interface */}
           <motion.div 
-            className="w-full max-w-4xl mx-auto mb-12"
+            className="ai-tooltips-container"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <div className="ai-assistant-container">
-              {/* Proactive Insight Badge */}
-              <div className="insight-badge">
-                <span className="insight-icon">✨</span>
-                <span>AI Insight Ready</span>
-              </div>
-              
-              {/* Main AI Chat Interface */}
-              <div className="ai-chat-card">
-                <div className="ai-header">
-                  <div className="nuri-avatar-modern">
-                    <div className="avatar-ring">
-                      <div className="avatar-core">
-                        <span>🌱</span>
-                      </div>
-                    </div>
-                    <div className="ai-status">
-                      <div className="status-dot"></div>
-                      <span>Active</span>
-                    </div>
-                  </div>
-                  
-                  <div className="ai-intro">
-                    <h3>Hi! I'm Nuri, your AI wellness coach</h3>
-                    <p>I've analyzed your progress and have personalized insights ready</p>
-                  </div>
-                </div>
-
-                {/* Contextual AI Messages */}
-                <div className="ai-insights-grid">
-                  <div className="ai-insight-card">
-                    <div className="insight-icon-bg">🎯</div>
-                    <div className="insight-content">
-                      <h4>Today's Focus</h4>
-                      <p>Your sleep improved 15%! Let's optimize your morning nutrition to maintain this energy.</p>
-                    </div>
-                  </div>
-                  
-                  <div className="ai-insight-card">
-                    <div className="insight-icon-bg">📊</div>
-                    <div className="insight-content">
-                      <h4>Trend Alert</h4>
-                      <p>You're exceeding activity goals by 285%. Consider adding recovery meals to your plan.</p>
-                    </div>
-                  </div>
-                  
-                  <div className="ai-insight-card">
-                    <div className="insight-icon-bg">🥗</div>
-                    <div className="insight-content">
-                      <h4>Nutrition Win</h4>
-                      <p>Your 92/100 score puts you in the top 15%! I recommend omega-3 rich foods for brain health.</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Quick Action Interface */}
-                <div className="ai-quick-actions">
-                  <button className="ai-action-btn primary">
-                    <span>💬</span>
-                    <span>Chat with Nuri</span>
-                  </button>
-                  <button className="ai-action-btn secondary">
-                    <span>📱</span>
-                    <span>Quick Log</span>
-                  </button>
-                  <button className="ai-action-btn secondary">
-                    <span>🎯</span>
-                    <span>Get Recommendations</span>
-                  </button>
-                </div>
+            <div className="ai-tooltip" data-ai-insight="true">
+              <div className="ai-avatar">🤖</div>
+              <div className="ai-suggestion">
+                <span className="ai-text">Nuri suggests: Add 10 minutes to your workout tomorrow!</span>
               </div>
             </div>
           </motion.div>
@@ -2142,135 +2082,78 @@ const NuriAssistant = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.6 }}
             >
-              {/* Sleep Quality Metric */}
-              <div className="stat-card">
-                <div className="metric-header">
-                  <div className="metric-icon">😴</div>
+              {/* Sleep Quality Metric - Glassmorphism */}
+              <div className="metric-card sleep-card">
+                <div className="card-header">
+                  <div className="icon-container">
+                    <div className="metric-icon">😴</div>
+                  </div>
                   <div className="metric-info">
-                    <h4>Sleep Quality</h4>
-                    <p>Excellent! 15% better than last week</p>
+                    <h3>Sleep Quality</h3>
+                    <p className="metric-status">Excellent! 15% better than last week</p>
                   </div>
                 </div>
                 
-                <div className="progress-ring">
-                  <svg viewBox="0 0 120 120">
-                    <circle className="progress-ring-bg" cx="60" cy="60" r="52" />
-                    <circle 
-                      className="progress-ring-fill" 
-                      cx="60" 
-                      cy="60" 
-                      r="52"
-                      style={{
-                        strokeDasharray: `${(7.5/10) * 327} 327`,
-                        stroke: '#3F51B5'
-                      }}
-                    />
-                  </svg>
-                  <div className="progress-value">
-                    <div className="progress-number">7.5</div>
-                    <div className="progress-label">hours</div>
+                <div className="metric-visual">
+                  <div className="circular-progress" data-progress="75">
+                    <div className="metric-value">7.5<span className="unit">HOURS</span></div>
                   </div>
                 </div>
-
-                <div className="trend-indicator trend-up">
-                  <span className="trend-arrow">↗</span>
-                  <span>+15% improvement</span>
-                </div>
-
-                <div className="actionable-insight">
+                
+                <div className="insight-card">
+                  <div className="trend-indicator positive">↗ +15% improvement</div>
                   <p className="insight-text">Your consistent bedtime routine is paying off! Try to maintain this schedule for even better results.</p>
-                  <button className="quick-action-btn">
-                    <span>📊</span>
-                    <span>View Details</span>
-                  </button>
+                  <button className="action-btn glass-btn">📊 View Details</button>
                 </div>
               </div>
 
-              {/* Activity Level Metric */}
-              <div className="stat-card">
-                <div className="metric-header">
-                  <div className="metric-icon">🏃</div>
+              {/* Activity Level Metric - Glassmorphism */}
+              <div className="metric-card activity-card">
+                <div className="card-header">
+                  <div className="icon-container">
+                    <div className="metric-icon">🏃</div>
+                  </div>
                   <div className="metric-info">
-                    <h4>Daily Activity</h4>
-                    <p>Goal exceeded! You're crushing it today</p>
+                    <h3>Daily Activity</h3>
+                    <p className="metric-status">Goal exceeded! You're crushing it today</p>
                   </div>
                 </div>
                 
-                <div className="progress-ring">
-                  <svg viewBox="0 0 120 120">
-                    <circle className="progress-ring-bg" cx="60" cy="60" r="52" />
-                    <circle 
-                      className="progress-ring-fill" 
-                      cx="60" 
-                      cy="60" 
-                      r="52"
-                      style={{
-                        strokeDasharray: `${(8542/10000) * 327} 327`,
-                        stroke: '#27AE60'
-                      }}
-                    />
-                  </svg>
-                  <div className="progress-value">
-                    <div className="progress-number">8,542</div>
-                    <div className="progress-label">steps</div>
+                <div className="metric-visual">
+                  <div className="circular-progress" data-progress="85">
+                    <div className="metric-value">8,542<span className="unit">STEPS</span></div>
                   </div>
                 </div>
-
-                <div className="trend-indicator trend-up">
-                  <span className="trend-arrow">↗</span>
-                  <span>285% of daily goal</span>
-                </div>
-
-                <div className="actionable-insight">
+                
+                <div className="insight-card">
+                  <div className="trend-indicator positive">↗ 285% of daily goal</div>
                   <p className="insight-text">Amazing! You're ahead of 92% of users. Keep up this momentum with a post-workout stretch.</p>
-                  <button className="quick-action-btn">
-                    <span>🎯</span>
-                    <span>Log Workout</span>
-                  </button>
+                  <button className="action-btn glass-btn">🎯 Log Workout</button>
                 </div>
               </div>
 
-              {/* Nutrition Score Metric */}
-              <div className="stat-card">
-                <div className="metric-header">
-                  <div className="metric-icon">🥗</div>
+              {/* Nutrition Score Metric - Glassmorphism */}
+              <div className="metric-card nutrition-card">
+                <div className="card-header">
+                  <div className="icon-container">
+                    <div className="metric-icon">🥗</div>
+                  </div>
                   <div className="metric-info">
-                    <h4>Nutrition Score</h4>
-                    <p>Outstanding! On track for weight goal</p>
+                    <h3>Nutrition Score</h3>
+                    <p className="metric-status">Outstanding! On track for weight goal</p>
                   </div>
                 </div>
                 
-                <div className="progress-ring">
-                  <svg viewBox="0 0 120 120">
-                    <circle className="progress-ring-bg" cx="60" cy="60" r="52" />
-                    <circle 
-                      className="progress-ring-fill" 
-                      cx="60" 
-                      cy="60" 
-                      r="52"
-                      style={{
-                        strokeDasharray: `${(92/100) * 327} 327`,
-                        stroke: '#16A085'
-                      }}
-                    />
-                  </svg>
-                  <div className="progress-value">
-                    <div className="progress-number">92</div>
-                    <div className="progress-label">score</div>
+                <div className="metric-visual">
+                  <div className="circular-progress" data-progress="92">
+                    <div className="metric-value">92<span className="unit">SCORE</span></div>
                   </div>
                 </div>
-
-                <div className="trend-indicator trend-up">
-                  <span className="trend-arrow">↗</span>
-                  <span>Personal best!</span>
-                </div>
-
-                <div className="actionable-insight">
+                
+                <div className="insight-card">
+                  <div className="trend-indicator positive">↗ Personal best!</div>
                   <p className="insight-text">Excellent nutrition today! You're ahead of 85% of users. Consider adding more omega-3 rich foods.</p>
-                  <button className="quick-action-btn">
-                    <span>🍽️</span>
-                    <span>Log Meal</span>
-                  </button>
+                  <button className="action-btn glass-btn">🍽️ Log Meal</button>
                 </div>
               </div>
             </motion.div>
