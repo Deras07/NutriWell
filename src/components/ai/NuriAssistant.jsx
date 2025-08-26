@@ -68,6 +68,7 @@ const NuriAssistant = () => {
   const [currentView, setCurrentView] = useState('dashboard') // 'dashboard', 'services', 'chat', 'profile'
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [timePeriod, setTimePeriod] = useState('week') // 'week', 'month', 'quarter'
+  const [showQuickActions, setShowQuickActions] = useState(false)
 
   // Onboarding questions flow
   const onboardingQuestions = [
@@ -1729,6 +1730,27 @@ const NuriAssistant = () => {
           </motion.button>
         </div>
 
+        {/* Floating Quick Actions - 2025 UX Pattern */}
+        <div className="quick-actions-fab">
+          <button className="fab-main" onClick={() => setShowQuickActions(!showQuickActions)}>
+            <span className="fab-icon">{showQuickActions ? '✕' : '⚡'}</span>
+          </button>
+          
+          {showQuickActions && (
+            <div className="fab-menu">
+              <button className="fab-action" title="Log Meal">
+                <span>🍽️</span>
+              </button>
+              <button className="fab-action" title="Chat with Nuri">
+                <span>💬</span>
+              </button>
+              <button className="fab-action" title="Quick Check-in">
+                <span>📊</span>
+              </button>
+            </div>
+          )}
+        </div>
+
         {/* Center Column - Main Content */}
         <div className="flex-1 flex flex-col px-4 sm:px-6 lg:px-8 pt-6 md:pt-10 pb-32 relative z-20 max-w-7xl mx-auto">
           
@@ -1847,28 +1869,82 @@ const NuriAssistant = () => {
 
 
 
-          {/* Elegant Nuri Chat Bubble */}
+          {/* Enhanced AI Assistant - Contextual Nuri */}
           <motion.div 
-            className="w-full max-w-lg mx-auto mb-8"
+            className="w-full max-w-4xl mx-auto mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <div className="relative">
-              {/* Chat bubble tail */}
-              <div className="absolute left-4 top-6 w-4 h-4 bg-white/90 border border-white/30 transform rotate-45 backdrop-blur-[25px]"></div>
+            <div className="ai-assistant-container">
+              {/* Proactive Insight Badge */}
+              <div className="insight-badge">
+                <span className="insight-icon">✨</span>
+                <span>AI Insight Ready</span>
+              </div>
               
-              {/* Main chat bubble */}
-              <div className="nuri-chat-bubble bg-white/90 backdrop-blur-[25px] border border-white/30 rounded-[20px] p-6 ml-8 shadow-[0_8px_32px_rgba(0,0,0,0.1)] relative">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-teal-500 rounded-full flex items-center justify-center shadow-lg border-2 border-white/50 flex-shrink-0">
-                    <div className="text-lg">🌱</div>
+              {/* Main AI Chat Interface */}
+              <div className="ai-chat-card">
+                <div className="ai-header">
+                  <div className="nuri-avatar-modern">
+                    <div className="avatar-ring">
+                      <div className="avatar-core">
+                        <span>🌱</span>
+                      </div>
+                    </div>
+                    <div className="ai-status">
+                      <div className="status-dot"></div>
+                      <span>Active</span>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <p className="text-[#2D2D2D] text-[16px] leading-relaxed font-medium">
-                      Good morning! 😊 I'm Nuri, your personal nutrition assistant. Let's start with a few quick questions to personalize your plan!
-                    </p>
+                  
+                  <div className="ai-intro">
+                    <h3>Hi! I'm Nuri, your AI wellness coach</h3>
+                    <p>I've analyzed your progress and have personalized insights ready</p>
                   </div>
+                </div>
+
+                {/* Contextual AI Messages */}
+                <div className="ai-insights-grid">
+                  <div className="ai-insight-card">
+                    <div className="insight-icon-bg">🎯</div>
+                    <div className="insight-content">
+                      <h4>Today's Focus</h4>
+                      <p>Your sleep improved 15%! Let's optimize your morning nutrition to maintain this energy.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="ai-insight-card">
+                    <div className="insight-icon-bg">📊</div>
+                    <div className="insight-content">
+                      <h4>Trend Alert</h4>
+                      <p>You're exceeding activity goals by 285%. Consider adding recovery meals to your plan.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="ai-insight-card">
+                    <div className="insight-icon-bg">🥗</div>
+                    <div className="insight-content">
+                      <h4>Nutrition Win</h4>
+                      <p>Your 92/100 score puts you in the top 15%! I recommend omega-3 rich foods for brain health.</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick Action Interface */}
+                <div className="ai-quick-actions">
+                  <button className="ai-action-btn primary">
+                    <span>💬</span>
+                    <span>Chat with Nuri</span>
+                  </button>
+                  <button className="ai-action-btn secondary">
+                    <span>📱</span>
+                    <span>Quick Log</span>
+                  </button>
+                  <button className="ai-action-btn secondary">
+                    <span>🎯</span>
+                    <span>Get Recommendations</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -2066,46 +2142,136 @@ const NuriAssistant = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.6 }}
             >
+              {/* Sleep Quality Metric */}
               <div className="stat-card">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#3F51B5] to-[#5C6BC0] rounded-xl flex items-center justify-center shadow-lg">
-                    <div className="text-2xl">😴</div>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-[#2D2D2D] text-lg">Sleep Quality</h4>
-                    <p className="text-sm text-[#6C757D]">Improving trend</p>
+                <div className="metric-header">
+                  <div className="metric-icon">😴</div>
+                  <div className="metric-info">
+                    <h4>Sleep Quality</h4>
+                    <p>Excellent! 15% better than last week</p>
                   </div>
                 </div>
-                <div className="stat-number text-3xl font-bold text-[#3F51B5] mb-3">7.5 hrs</div>
-                <p className="text-sm text-[#6C757D]">+15% from last week</p>
+                
+                <div className="progress-ring">
+                  <svg viewBox="0 0 120 120">
+                    <circle className="progress-ring-bg" cx="60" cy="60" r="52" />
+                    <circle 
+                      className="progress-ring-fill" 
+                      cx="60" 
+                      cy="60" 
+                      r="52"
+                      style={{
+                        strokeDasharray: `${(7.5/10) * 327} 327`,
+                        stroke: '#3F51B5'
+                      }}
+                    />
+                  </svg>
+                  <div className="progress-value">
+                    <div className="progress-number">7.5</div>
+                    <div className="progress-label">hours</div>
+                  </div>
+                </div>
+
+                <div className="trend-indicator trend-up">
+                  <span className="trend-arrow">↗</span>
+                  <span>+15% improvement</span>
+                </div>
+
+                <div className="actionable-insight">
+                  <p className="insight-text">Your consistent bedtime routine is paying off! Try to maintain this schedule for even better results.</p>
+                  <button className="quick-action-btn">
+                    <span>📊</span>
+                    <span>View Details</span>
+                  </button>
+                </div>
               </div>
 
+              {/* Activity Level Metric */}
               <div className="stat-card">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#4CAF50] to-[#81C784] rounded-xl flex items-center justify-center shadow-lg">
-                    <div className="text-2xl">🏃</div>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-[#2D2D2D] text-lg">Activity Level</h4>
-                    <p className="text-sm text-[#6C757D]">Peak performance</p>
+                <div className="metric-header">
+                  <div className="metric-icon">🏃</div>
+                  <div className="metric-info">
+                    <h4>Daily Activity</h4>
+                    <p>Goal exceeded! You're crushing it today</p>
                   </div>
                 </div>
-                <div className="stat-number text-3xl font-bold text-[#4CAF50] mb-3">8,542</div>
-                <p className="text-sm text-[#6C757D]">steps today</p>
+                
+                <div className="progress-ring">
+                  <svg viewBox="0 0 120 120">
+                    <circle className="progress-ring-bg" cx="60" cy="60" r="52" />
+                    <circle 
+                      className="progress-ring-fill" 
+                      cx="60" 
+                      cy="60" 
+                      r="52"
+                      style={{
+                        strokeDasharray: `${(8542/10000) * 327} 327`,
+                        stroke: '#27AE60'
+                      }}
+                    />
+                  </svg>
+                  <div className="progress-value">
+                    <div className="progress-number">8,542</div>
+                    <div className="progress-label">steps</div>
+                  </div>
+                </div>
+
+                <div className="trend-indicator trend-up">
+                  <span className="trend-arrow">↗</span>
+                  <span>285% of daily goal</span>
+                </div>
+
+                <div className="actionable-insight">
+                  <p className="insight-text">Amazing! You're ahead of 92% of users. Keep up this momentum with a post-workout stretch.</p>
+                  <button className="quick-action-btn">
+                    <span>🎯</span>
+                    <span>Log Workout</span>
+                  </button>
+                </div>
               </div>
 
+              {/* Nutrition Score Metric */}
               <div className="stat-card">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#FF9800] to-[#FFB74D] rounded-xl flex items-center justify-center shadow-lg">
-                    <div className="text-2xl">🥗</div>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-[#2D2D2D] text-lg">Nutrition Score</h4>
-                    <p className="text-sm text-[#6C757D]">Excellent balance</p>
+                <div className="metric-header">
+                  <div className="metric-icon">🥗</div>
+                  <div className="metric-info">
+                    <h4>Nutrition Score</h4>
+                    <p>Outstanding! On track for weight goal</p>
                   </div>
                 </div>
-                <div className="stat-number text-3xl font-bold text-[#FF9800] mb-3">92/100</div>
-                <p className="text-sm text-[#6C757D]">Personal best!</p>
+                
+                <div className="progress-ring">
+                  <svg viewBox="0 0 120 120">
+                    <circle className="progress-ring-bg" cx="60" cy="60" r="52" />
+                    <circle 
+                      className="progress-ring-fill" 
+                      cx="60" 
+                      cy="60" 
+                      r="52"
+                      style={{
+                        strokeDasharray: `${(92/100) * 327} 327`,
+                        stroke: '#16A085'
+                      }}
+                    />
+                  </svg>
+                  <div className="progress-value">
+                    <div className="progress-number">92</div>
+                    <div className="progress-label">score</div>
+                  </div>
+                </div>
+
+                <div className="trend-indicator trend-up">
+                  <span className="trend-arrow">↗</span>
+                  <span>Personal best!</span>
+                </div>
+
+                <div className="actionable-insight">
+                  <p className="insight-text">Excellent nutrition today! You're ahead of 85% of users. Consider adding more omega-3 rich foods.</p>
+                  <button className="quick-action-btn">
+                    <span>🍽️</span>
+                    <span>Log Meal</span>
+                  </button>
+                </div>
               </div>
             </motion.div>
           </motion.div>
