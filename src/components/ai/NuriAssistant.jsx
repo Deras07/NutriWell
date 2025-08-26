@@ -1882,77 +1882,10 @@ const NuriAssistant = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <div className="ai-assistant-container">
-              {/* Proactive Insight Badge */}
-              <div className="insight-badge">
-                <span className="insight-icon">✨</span>
-                <span>AI Insight Ready</span>
-              </div>
-              
-              {/* Main AI Chat Interface with Glass Effect */}
-              <div className="ai-chat-card">
-                <div className="ai-header">
-                  <div className="nuri-avatar-modern">
-                    <div className="avatar-ring">
-                      <div className="avatar-core">
-                        <span>🌱</span>
-                      </div>
-                    </div>
-                    <div className="ai-status">
-                      <div className="status-dot"></div>
-                      <span>Active</span>
-                    </div>
-                  </div>
-                  
-                  <div className="ai-intro">
-                    <h3>Hi! I'm Nuri, your AI wellness coach</h3>
-                    <p>I've analyzed your progress and have personalized insights ready</p>
-                  </div>
-                </div>
-
-                {/* Contextual AI Messages */}
-                <div className="ai-insights-grid">
-                  <div className="ai-insight-card">
-                    <div className="insight-icon-bg">🎯</div>
-                    <div className="insight-content">
-                      <h4>Today's Focus</h4>
-                      <p>Your sleep improved 15%! Let's optimize your morning nutrition to maintain this energy.</p>
-                    </div>
-                  </div>
-                  
-                  <div className="ai-insight-card">
-                    <div className="insight-icon-bg">📊</div>
-                    <div className="insight-content">
-                      <h4>Trend Alert</h4>
-                      <p>You're exceeding activity goals by 285%. Consider adding recovery meals to your plan.</p>
-                    </div>
-                  </div>
-                  
-                  <div className="ai-insight-card">
-                    <div className="insight-icon-bg">🥗</div>
-                    <div className="insight-content">
-                      <h4>Nutrition Win</h4>
-                      <p>Your 92/100 score puts you in the top 15%! I recommend omega-3 rich foods for brain health.</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Quick Action Interface */}
-                <div className="ai-quick-actions">
-                  <button className="ai-action-btn primary">
-                    <span>💬</span>
-                    <span>Chat with Nuri</span>
-                  </button>
-                  <button className="ai-action-btn secondary">
-                    <span>📱</span>
-                    <span>Quick Log</span>
-                  </button>
-                  <button className="ai-action-btn secondary">
-                    <span>🎯</span>
-                    <span>Get Recommendations</span>
-                  </button>
-                </div>
-              </div>
+            {/* AI Status Indicator - Replaces the awful greeting card */}
+            <div className="ai-status-indicator">
+              <div className="ai-pulse"></div>
+              <span className="ai-text">Nuri is analyzing your data</span>
             </div>
           </motion.div>
 
@@ -1964,13 +1897,13 @@ const NuriAssistant = () => {
             transition={{ duration: 0.8, delay: 0.8 }}
           >
             <div className="section-header text-center mb-12">
-              <h2 className="section-title text-[28px] sm:text-[32px] font-bold text-[#2D2D2D] mb-4 leading-tight">Smart Wellness Actions</h2>
-              <p className="section-subtitle text-[16px] text-[#6C757D] leading-relaxed max-w-2xl mx-auto">AI-powered insights to optimize your health journey with personalized recommendations</p>
+              <h2 className="wellness-journey-title">Smart Wellness Actions</h2>
+              <p className="wellness-journey-subtitle">AI-powered insights to optimize your health journey with personalized recommendations</p>
             </div>
             <div className="wellness-actions-grid">
               {/* Recipe Generator Pro Card */}
               <motion.div
-                className="action-card"
+                className="metric-card nutrition-card"
                 whileHover={{ y: -12 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
@@ -1978,28 +1911,24 @@ const NuriAssistant = () => {
                 transition={{ delay: 0.1 }}
               >
                 <div className="card-header">
-                  <div className="icon-container recipe-icon">
-                    🍳
+                  <div className="icon-container">
+                    <span>🍳</span>
                   </div>
-                  <h3 className="card-title">Recipe Generator Pro</h3>
-                  <p className="card-subtitle">AI creates custom recipes</p>
-                </div>
-                
-                <div className="card-content">
-                  <p className="card-description">Get personalized recipes that match your dietary preferences, available ingredients, and nutritional goals.</p>
-                  <div className="card-features">
-                    <span className="feature-badge ai-powered">✨ AI-Powered</span>
+                  <div className="metric-info">
+                    <h3>Recipe Generator Pro</h3>
+                    <p className="metric-status">AI creates custom recipes</p>
                   </div>
                 </div>
                 
-                <div className="card-footer">
-                  <button className="try-free-btn">Try Free (3 days)</button>
+                <div className="insight-card">
+                  <p className="insight-text">Get personalized recipes that match your dietary preferences, available ingredients, and nutritional goals.</p>
+                  <button className="action-btn glass-btn">Try Free (3 days)</button>
                 </div>
               </motion.div>
 
               {/* Health Insights Dashboard Card */}
               <motion.div
-                className="action-card"
+                className="metric-card nutrition-card"
                 whileHover={{ y: -12 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
@@ -2007,28 +1936,24 @@ const NuriAssistant = () => {
                 transition={{ delay: 0.2 }}
               >
                 <div className="card-header">
-                  <div className="icon-container insights-icon">
-                    📊
+                  <div className="icon-container">
+                    <span>📊</span>
                   </div>
-                  <h3 className="card-title">Health Insights Dashboard</h3>
-                  <p className="card-subtitle">Advanced analytics & correlations</p>
-                </div>
-                
-                <div className="card-content">
-                  <p className="card-description">Discover correlations between food, mood, energy, sleep, and biomarkers with detailed analytics.</p>
-                  <div className="card-features">
-                    <span className="feature-badge analytics">📈 Advanced Analytics</span>
+                  <div className="metric-info">
+                    <h3>Health Insights Dashboard</h3>
+                    <p className="metric-status">Advanced analytics & correlations</p>
                   </div>
                 </div>
                 
-                <div className="card-footer">
-                  <button className="try-free-btn">Try Free (3 days)</button>
+                <div className="insight-card">
+                  <p className="insight-text">Discover correlations between food, mood, energy, sleep, and biomarkers with detailed analytics.</p>
+                  <button className="action-btn glass-btn">Try Free (3 days)</button>
                 </div>
               </motion.div>
 
               {/* Personal Nutrition Coach Card */}
               <motion.div
-                className="action-card"
+                className="metric-card sleep-card"
                 whileHover={{ y: -12 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
@@ -2036,28 +1961,24 @@ const NuriAssistant = () => {
                 transition={{ delay: 0.3 }}
               >
                 <div className="card-header">
-                  <div className="icon-container coach-icon">
-                    👥
+                  <div className="icon-container">
+                    <span>👥</span>
                   </div>
-                  <h3 className="card-title">Personal Nutrition Coach</h3>
-                  <p className="card-subtitle">Real-time chat with certified nutritionists</p>
-                </div>
-                
-                <div className="card-content">
-                  <p className="card-description">Get personalized meal plans and real-time guidance from certified nutritionists.</p>
-                  <div className="card-features">
-                    <span className="feature-badge expert">🏆 Expert Guidance</span>
+                  <div className="metric-info">
+                    <h3>Personal Nutrition Coach</h3>
+                    <p className="metric-status">Real-time chat with certified nutritionists</p>
                   </div>
                 </div>
                 
-                <div className="card-footer">
-                  <button className="try-free-btn">Try Free (3 days)</button>
+                <div className="insight-card">
+                  <p className="insight-text">Get personalized meal plans and real-time guidance from certified nutritionists.</p>
+                  <button className="action-btn glass-btn">Try Free (3 days)</button>
                 </div>
               </motion.div>
 
               {/* Smart Grocery Assistant Card */}
               <motion.div
-                className="action-card"
+                className="metric-card activity-card"
                 whileHover={{ y: -12 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
@@ -2065,22 +1986,18 @@ const NuriAssistant = () => {
                 transition={{ delay: 0.4 }}
               >
                 <div className="card-header">
-                  <div className="icon-container grocery-icon">
-                    🛒
+                  <div className="icon-container">
+                    <span>🛒</span>
                   </div>
-                  <h3 className="card-title">Smart Grocery Assistant</h3>
-                  <p className="card-subtitle">AI-generated shopping lists & local prices</p>
-                </div>
-                
-                <div className="card-content">
-                  <p className="card-description">Get smart shopping lists based on your goals, dietary restrictions, and local store prices.</p>
-                  <div className="card-features">
-                    <span className="feature-badge smart-lists">🛍️ Smart Lists</span>
+                  <div className="metric-info">
+                    <h3>Smart Grocery Assistant</h3>
+                    <p className="metric-status">AI-generated shopping lists & local prices</p>
                   </div>
                 </div>
                 
-                <div className="card-footer">
-                  <button className="try-free-btn">Try Free (3 days)</button>
+                <div className="insight-card">
+                  <p className="insight-text">Get smart shopping lists based on your goals, dietary restrictions, and local store prices.</p>
+                  <button className="action-btn glass-btn">Try Free (3 days)</button>
                 </div>
               </motion.div>
             </div>
@@ -2096,10 +2013,10 @@ const NuriAssistant = () => {
             <div className="section-header text-center mb-12">
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#4CAF50]/20 to-green-100/80 rounded-full px-4 py-2 mb-6">
                 <span className="text-sm">✨</span>
-                <span className="text-sm font-medium text-[#4CAF50]">AI Insights</span>
+                <span className="text-sm font-medium text-white">AI Insights</span>
               </div>
-              <h2 className="section-title text-[32px] sm:text-[36px] font-bold text-[#2D2D2D] mb-4 leading-tight">Your Wellness Journey</h2>
-              <p className="section-subtitle text-[16px] text-[#6C757D] leading-relaxed max-w-3xl mx-auto mb-8">Advanced analytics powered by machine learning to track your health progress</p>
+              <h2 className="wellness-journey-title">Your Wellness Journey</h2>
+              <p className="wellness-journey-subtitle">Advanced analytics powered by machine learning to track your health progress</p>
               
               {/* Time Period Selector */}
               <div className="time-selector">
