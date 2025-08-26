@@ -1885,7 +1885,7 @@ const NuriAssistant = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            {/* Nuri's Welcome Section with Elegant Chat Integration */}
+            {/* Premium Nuri Welcome Section - Magazine Style */}
             <div className="nuri-welcome-section">
               <div className="nuri-avatar-container">
                 <div className="nuri-avatar">
@@ -1899,7 +1899,7 @@ const NuriAssistant = () => {
               
               <div className="nuri-greeting">
                 <h2 className="greeting-title">Welcome to Nutriwell</h2>
-                <p className="greeting-subtitle">Your AI wellness companion is here to guide your health journey</p>
+                <p className="greeting-subtitle">Your premium AI wellness companion is here to guide your health journey with personalized insights and beautiful design</p>
                 
                 <div className="chat-trigger">
                   <button 
@@ -2327,15 +2327,15 @@ const NuriAssistant = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
           >
-            <div className="bg-gradient-to-r from-[#7FB069]/20 to-[#A8D5BA]/20 backdrop-blur-md rounded-3xl p-4 mb-6 inline-block border border-white/30">
+            <div className="bg-gradient-to-r from-[#FF6B6B]/20 to-[#FF8E8E]/20 backdrop-blur-md rounded-3xl p-4 mb-6 inline-block border border-[#FF6B6B]/20">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-[#7FB069]" />
-                <span className="text-sm font-medium text-white">Premium Features</span>
+                <Sparkles className="w-5 h-5 text-[#FF6B6B]" />
+                <span className="text-sm font-medium text-[#2C2C2C]">Premium Features</span>
               </div>
             </div>
             
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>Your Personal Health Symphony</h2>
-            <p className="text-xl text-white/90 mb-8 leading-relaxed max-w-3xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-[#2C2C2C] mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>Your Personal Health Symphony</h2>
+            <p className="text-xl text-[#6B7280] mb-8 leading-relaxed max-w-3xl mx-auto">
               Unlock AI-tailored meal plans, advanced analytics, and Zen Mode. Join an elite circle of 10,000+ thriving users.
             </p>
 

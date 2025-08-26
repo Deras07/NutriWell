@@ -156,29 +156,30 @@ body {
 
 /* CRITICAL FIXES - GLASSMORPHISM SYSTEM */
 
-/* 1. ELEGANT HEALTH-FOCUSED BACKGROUND - Sophisticated gradient */
+/* 1. PREMIUM MODERN BACKGROUND - Warm & Sophisticated */
 body, .main-container, .dashboard, #root {
-  background: linear-gradient(-45deg, 
-    #2C5530 0%, 
-    #4A7C59 25%, 
-    #7FB069 50%, 
-    #A8D5BA 75%, 
-    #E8F5E8 100%) !important;
+  background: linear-gradient(135deg, 
+    #FFF8F5 0%, 
+    #F7F3F0 25%, 
+    #F5F3F0 50%, 
+    #E8E6E3 75%, 
+    #FEFEFE 100%) !important;
   background-size: 400% 400% !important;
-  animation: gradientFlow 20s ease infinite !important;
+  animation: gradientFlow 25s ease infinite !important;
   min-height: 100vh !important;
+  color: #2C2C2C !important;
 }
 
 /* Force background on all containers */
 .app-container, .dashboard-container, .main-content {
-  background: linear-gradient(-45deg, 
-    #2C5530 0%, 
-    #4A7C59 25%, 
-    #7FB069 50%, 
-    #A8D5BA 75%, 
-    #E8F5E8 100%) !important;
+  background: linear-gradient(135deg, 
+    #FFF8F5 0%, 
+    #F7F3F0 25%, 
+    #F5F3F0 50%, 
+    #E8E6E3 75%, 
+    #FEFEFE 100%) !important;
   background-size: 400% 400% !important;
-  animation: gradientFlow 20s ease infinite !important;
+  animation: gradientFlow 25s ease infinite !important;
   min-height: 100vh !important;
 }
 
@@ -199,31 +200,33 @@ body, .main-container, .dashboard, #root {
   background-color: transparent !important;
 }
 
-/* 3. MAKE CARDS ACTUALLY GLASS-LIKE WITH COLOR */
+/* 3. PREMIUM MODERN CARD STYLES */
 .metric-card {
-  background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  border-radius: 24px !important;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 248, 245, 0.9)) !important;
+  border: 1px solid rgba(255, 107, 107, 0.1) !important;
+  border-radius: 20px !important;
   box-shadow: 
-    0 8px 32px rgba(31, 38, 135, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(255, 107, 107, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
   position: relative !important;
   overflow: hidden !important;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  color: #2C2C2C !important;
+  padding: 2rem !important;
 }
 
 .metric-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  background: rgba(255, 255, 255, 0.12) !important;
+  transform: translateY(-4px) scale(1.02);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 248, 245, 0.95)) !important;
   box-shadow: 
-    0 20px 60px rgba(31, 38, 135, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    0 12px 40px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(255, 107, 107, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-/* ADD ELEGANT COLORED OVERLAYS */
+/* ADD PREMIUM COLORED OVERLAYS */
 .sleep-card::before {
   content: '';
   position: absolute;
@@ -232,8 +235,8 @@ body, .main-container, .dashboard, #root {
   right: 0;
   bottom: 0;
   background: linear-gradient(135deg, 
-    rgba(44, 85, 48, 0.15) 0%, 
-    rgba(74, 124, 89, 0.1) 100%);
+    rgba(255, 107, 107, 0.08) 0%, 
+    rgba(255, 142, 142, 0.05) 100%);
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
@@ -246,8 +249,8 @@ body, .main-container, .dashboard, #root {
   right: 0;
   bottom: 0;
   background: linear-gradient(135deg, 
-    rgba(127, 176, 105, 0.15) 0%, 
-    rgba(168, 213, 186, 0.1) 100%);
+    rgba(149, 201, 155, 0.08) 0%, 
+    rgba(168, 213, 168, 0.05) 100%);
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
@@ -260,8 +263,8 @@ body, .main-container, .dashboard, #root {
   right: 0;
   bottom: 0;
   background: linear-gradient(135deg, 
-    rgba(232, 245, 232, 0.15) 0%, 
-    rgba(168, 213, 186, 0.1) 100%);
+    rgba(255, 142, 142, 0.08) 0%, 
+    rgba(255, 248, 245, 0.05) 100%);
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
@@ -289,8 +292,8 @@ body, .main-container, .dashboard, #root {
 
 .wellness-journey-title, 
 .page-title {
-  color: rgba(255, 255, 255, 0.95) !important;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+  color: #2C2C2C !important;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8) !important;
   font-weight: 700 !important;
   margin: 0 !important;
   padding: 20px 0 !important;
@@ -298,7 +301,7 @@ body, .main-container, .dashboard, #root {
 }
 
 .wellness-journey-subtitle {
-  color: rgba(255, 255, 255, 0.75) !important;
+  color: #6B7280 !important;
   background: transparent !important;
 }
 
@@ -338,17 +341,34 @@ body, .main-container, .dashboard, #root {
   color: white !important;
 }
 
-/* 7. NURI WELCOME SECTION - Elegant and Classy */
+/* 7. PREMIUM NURI WELCOME SECTION - Magazine Style */
 .nuri-welcome-section {
   display: flex;
   align-items: center;
   gap: 3rem;
   padding: 3rem;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 248, 245, 0.9));
+  border: 1px solid rgba(255, 107, 107, 0.1);
   border-radius: 24px;
   margin-bottom: 3rem;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 4px 16px rgba(255, 107, 107, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.nuri-welcome-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(255, 107, 107, 0.05) 0%, 
+    rgba(255, 142, 142, 0.03) 100%);
+  pointer-events: none;
 }
 
 .nuri-avatar-container {
@@ -361,20 +381,25 @@ body, .main-container, .dashboard, #root {
 .nuri-avatar {
   width: 120px;
   height: 120px;
-  background: linear-gradient(135deg, rgba(127, 176, 105, 0.2), rgba(168, 213, 186, 0.2));
-  backdrop-filter: blur(15px);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 142, 142, 0.1));
+  border: 2px solid rgba(255, 107, 107, 0.2);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(255, 107, 107, 0.15),
+    0 4px 16px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
 }
 
 .nuri-avatar:hover {
   transform: scale(1.05);
-  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.15);
+  box-shadow: 
+    0 12px 40px rgba(255, 107, 107, 0.2),
+    0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .nuri-face {
@@ -386,16 +411,18 @@ body, .main-container, .dashboard, #root {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(127, 176, 105, 0.1);
+  background: rgba(255, 107, 107, 0.1);
   padding: 0.5rem 1rem;
   border-radius: 20px;
-  border: 1px solid rgba(127, 176, 105, 0.2);
+  border: 1px solid rgba(255, 107, 107, 0.2);
+  position: relative;
+  z-index: 2;
 }
 
 .status-dot {
   width: 8px;
   height: 8px;
-  background: #7FB069;
+  background: #FF6B6B;
   border-radius: 50%;
   animation: pulse 2s infinite;
 }
@@ -403,19 +430,21 @@ body, .main-container, .dashboard, #root {
 .nuri-greeting {
   flex: 1;
   text-align: left;
+  position: relative;
+  z-index: 2;
 }
 
 .greeting-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.95);
+  color: #2C2C2C;
   margin-bottom: 1rem;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .greeting-subtitle {
   font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #6B7280;
   margin-bottom: 2rem;
   line-height: 1.6;
 }
@@ -429,23 +458,28 @@ body, .main-container, .dashboard, #root {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: linear-gradient(135deg, rgba(127, 176, 105, 0.2), rgba(168, 213, 186, 0.2));
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+  border: none;
   border-radius: 16px;
   padding: 1rem 2rem;
-  color: rgba(255, 255, 255, 0.95);
+  color: white;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(31, 38, 135, 0.1);
+  box-shadow: 
+    0 4px 20px rgba(255, 107, 107, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
 }
 
 .elegant-chat-btn:hover {
   transform: translateY(-2px);
-  background: linear-gradient(135deg, rgba(127, 176, 105, 0.3), rgba(168, 213, 186, 0.3));
-  box-shadow: 0 8px 30px rgba(31, 38, 135, 0.15);
+  background: linear-gradient(135deg, #FF8E8E, #FF6B6B);
+  box-shadow: 
+    0 8px 30px rgba(255, 107, 107, 0.4),
+    0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 .chat-icon {
@@ -457,67 +491,73 @@ body, .main-container, .dashboard, #root {
   50% { opacity: 0.7; transform: scale(1.1); }
 }
 
-/* 8. PREMIUM FEATURES MODAL - Elegant Design */
+/* 8. PREMIUM FEATURES MODAL - Magazine Style Design */
 .feature-card {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 248, 245, 0.9));
+  border: 1px solid rgba(255, 107, 107, 0.1);
   border-radius: 20px;
   padding: 2rem;
   text-align: center;
   transition: all 0.3s ease;
   cursor: pointer;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(255, 107, 107, 0.05);
 }
 
 .feature-card:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 248, 245, 0.95));
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.15);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(255, 107, 107, 0.08);
 }
 
 .feature-card .icon-container {
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, rgba(127, 176, 105, 0.2), rgba(168, 213, 186, 0.2));
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 142, 142, 0.1));
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 107, 107, 0.2);
 }
 
 .feature-title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: white;
+  color: #2C2C2C;
   margin-bottom: 1rem;
 }
 
 .feature-description {
-  color: rgba(255, 255, 255, 0.8);
+  color: #6B7280;
   line-height: 1.6;
   margin-bottom: 1.5rem;
 }
 
 .feature-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+  border: none;
   border-radius: 12px;
   padding: 0.75rem 1.5rem;
   color: white;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.2);
 }
 
 .feature-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #FF8E8E, #FF6B6B);
   transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(255, 107, 107, 0.3);
 }
 
 .cta-button {
-  background: linear-gradient(135deg, #7FB069, #A8D5BA);
+  background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
   border: none;
   border-radius: 16px;
   padding: 1.25rem 3rem;
@@ -526,15 +566,15 @@ body, .main-container, .dashboard, #root {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 8px 30px rgba(127, 176, 105, 0.3);
+  box-shadow: 0 8px 30px rgba(255, 107, 107, 0.3);
   position: relative;
   overflow: hidden;
 }
 
 .cta-button:hover {
-  background: linear-gradient(135deg, #E8C547, #F4D03F);
+  background: linear-gradient(135deg, #FF8E8E, #FF6B6B);
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(232, 197, 71, 0.4);
+  box-shadow: 0 12px 40px rgba(255, 107, 107, 0.4);
 }
 
 .cta-button::before {
@@ -557,23 +597,26 @@ body, .main-container, .dashboard, #root {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  background: linear-gradient(135deg, rgba(127, 176, 105, 0.2), rgba(168, 213, 186, 0.2));
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+  border: none;
   border-radius: 16px;
   padding: 1rem 2rem;
-  color: rgba(255, 255, 255, 0.95);
+  color: white;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(31, 38, 135, 0.1);
+  box-shadow: 
+    0 4px 20px rgba(255, 107, 107, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .premium-features-btn:hover {
   transform: translateY(-2px);
-  background: linear-gradient(135deg, rgba(127, 176, 105, 0.3), rgba(168, 213, 186, 0.3));
-  box-shadow: 0 8px 30px rgba(31, 38, 135, 0.15);
+  background: linear-gradient(135deg, #FF8E8E, #FF6B6B);
+  box-shadow: 
+    0 8px 30px rgba(255, 107, 107, 0.4),
+    0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 /* Fix text readability for glass elements */
