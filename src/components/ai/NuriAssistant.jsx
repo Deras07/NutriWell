@@ -1875,17 +1875,83 @@ const NuriAssistant = () => {
 
 
 
-          {/* Contextual AI Tooltips - Replaces Chat Interface */}
+          {/* Enhanced AI Assistant with Glassmorphism */}
           <motion.div 
-            className="ai-tooltips-container"
+            className="w-full max-w-4xl mx-auto mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <div className="ai-tooltip" data-ai-insight="true">
-              <div className="ai-avatar">🤖</div>
-              <div className="ai-suggestion">
-                <span className="ai-text">Nuri suggests: Add 10 minutes to your workout tomorrow!</span>
+            <div className="ai-assistant-container">
+              {/* Proactive Insight Badge */}
+              <div className="insight-badge">
+                <span className="insight-icon">✨</span>
+                <span>AI Insight Ready</span>
+              </div>
+              
+              {/* Main AI Chat Interface with Glass Effect */}
+              <div className="ai-chat-card">
+                <div className="ai-header">
+                  <div className="nuri-avatar-modern">
+                    <div className="avatar-ring">
+                      <div className="avatar-core">
+                        <span>🌱</span>
+                      </div>
+                    </div>
+                    <div className="ai-status">
+                      <div className="status-dot"></div>
+                      <span>Active</span>
+                    </div>
+                  </div>
+                  
+                  <div className="ai-intro">
+                    <h3>Hi! I'm Nuri, your AI wellness coach</h3>
+                    <p>I've analyzed your progress and have personalized insights ready</p>
+                  </div>
+                </div>
+
+                {/* Contextual AI Messages */}
+                <div className="ai-insights-grid">
+                  <div className="ai-insight-card">
+                    <div className="insight-icon-bg">🎯</div>
+                    <div className="insight-content">
+                      <h4>Today's Focus</h4>
+                      <p>Your sleep improved 15%! Let's optimize your morning nutrition to maintain this energy.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="ai-insight-card">
+                    <div className="insight-icon-bg">📊</div>
+                    <div className="insight-content">
+                      <h4>Trend Alert</h4>
+                      <p>You're exceeding activity goals by 285%. Consider adding recovery meals to your plan.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="ai-insight-card">
+                    <div className="insight-icon-bg">🥗</div>
+                    <div className="insight-content">
+                      <h4>Nutrition Win</h4>
+                      <p>Your 92/100 score puts you in the top 15%! I recommend omega-3 rich foods for brain health.</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick Action Interface */}
+                <div className="ai-quick-actions">
+                  <button className="ai-action-btn primary">
+                    <span>💬</span>
+                    <span>Chat with Nuri</span>
+                  </button>
+                  <button className="ai-action-btn secondary">
+                    <span>📱</span>
+                    <span>Quick Log</span>
+                  </button>
+                  <button className="ai-action-btn secondary">
+                    <span>🎯</span>
+                    <span>Get Recommendations</span>
+                  </button>
+                </div>
               </div>
             </div>
           </motion.div>
