@@ -2327,16 +2327,16 @@ const NuriAssistant = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
           >
-            <div className="bg-gradient-to-r from-purple-200/30 to-pink-200/30 backdrop-blur-md rounded-3xl p-4 mb-6 inline-block border border-white/30">
+            <div className="bg-gradient-to-r from-[#7FB069]/20 to-[#A8D5BA]/20 backdrop-blur-md rounded-3xl p-4 mb-6 inline-block border border-white/30">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-purple-300" />
+                <Sparkles className="w-5 h-5 text-[#7FB069]" />
                 <span className="text-sm font-medium text-white">Premium Features</span>
               </div>
             </div>
             
-            <h2 className="text-3xl font-bold text-white mb-3">Transform Your Health Journey</h2>
-            <p className="text-white/80 mb-8 leading-relaxed">
-              Unlock personalized nutrition guidance with our premium features designed for your unique health journey.
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>Your Personal Health Symphony</h2>
+            <p className="text-xl text-white/90 mb-8 leading-relaxed max-w-3xl mx-auto">
+              Unlock AI-tailored meal plans, advanced analytics, and Zen Mode. Join an elite circle of 10,000+ thriving users.
             </p>
 
             {/* Premium Feature Cards with Stunning Glassmorphism */}
@@ -2353,18 +2353,18 @@ const NuriAssistant = () => {
                   animationDelay: '0s'
                 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[24px] p-[1px]">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#2C5530] via-[#4A7C59] to-[#7FB069] rounded-[24px] p-[1px]">
                   <div className="h-full w-full bg-white/15 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
                     {/* Top gradient line */}
                     <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
                     
-                    {/* Pastel glass icon container - Warm Coral */}
-                    <div className="w-16 h-16 bg-gradient-to-br from-orange-400/30 to-red-500/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-white/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
+                    {/* Pastel glass icon container - Health Green */}
+                    <div className="w-16 h-16 bg-gradient-to-br from-[#7FB069]/30 to-[#A8D5BA]/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-white/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
                       <ChefHat className="w-8 h-8 text-white" />
                     </div>
                     
                     {/* Premium badge */}
-                    <div className="bg-yellow-400/20 backdrop-blur-[10px] border border-yellow-400/30 rounded-lg px-3 py-1 text-xs font-semibold text-yellow-700/90 inline-block mb-4">
+                    <div className="bg-[#7FB069]/20 backdrop-blur-[10px] border border-[#7FB069]/30 rounded-lg px-3 py-1 text-xs font-semibold text-white/90 inline-block mb-4">
                       ✨ AI-Powered
                     </div>
                     
@@ -2381,7 +2381,7 @@ const NuriAssistant = () => {
                     
                     {/* Premium glassmorphism button */}
                     <motion.button
-                      className="w-full bg-gradient-to-r from-[#4CAF50]/90 to-green-600/80 backdrop-blur-[10px] border border-white/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
+                      className="w-full bg-gradient-to-r from-[#7FB069]/90 to-[#A8D5BA]/80 backdrop-blur-[10px] border border-white/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
                       whileHover={{ y: -2 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -2403,18 +2403,18 @@ const NuriAssistant = () => {
                   animationDelay: '3s'
                 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[24px] p-[1px]">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#2C5530] via-[#4A7C59] to-[#7FB069] rounded-[24px] p-[1px]">
                   <div className="h-full w-full bg-white/15 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
                     {/* Top gradient line */}
                     <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
                     
-                    {/* Pastel glass icon container - Soft Purple */}
-                    <div className="w-16 h-16 bg-gradient-to-br from-blue-400/30 to-purple-500/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-white/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
+                    {/* Pastel glass icon container - Health Green */}
+                    <div className="w-16 h-16 bg-gradient-to-br from-[#7FB069]/30 to-[#A8D5BA]/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-white/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
                       <BarChart3 className="w-8 h-8 text-white" />
                     </div>
                     
                     {/* Premium badge */}
-                    <div className="bg-blue-400/20 backdrop-blur-[10px] border border-blue-400/30 rounded-lg px-3 py-1 text-xs font-semibold text-blue-700/90 inline-block mb-4">
+                    <div className="bg-[#7FB069]/20 backdrop-blur-[10px] border border-[#7FB069]/30 rounded-lg px-3 py-1 text-xs font-semibold text-white/90 inline-block mb-4">
                       📊 Advanced Analytics
                     </div>
                     
@@ -2431,7 +2431,7 @@ const NuriAssistant = () => {
                     
                     {/* Premium glassmorphism button */}
                     <motion.button
-                      className="w-full bg-gradient-to-r from-[#4CAF50]/90 to-green-600/80 backdrop-blur-[10px] border border-white/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
+                      className="w-full bg-gradient-to-r from-[#7FB069]/90 to-[#A8D5BA]/80 backdrop-blur-[10px] border border-white/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
                       whileHover={{ y: -2 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -2503,18 +2503,18 @@ const NuriAssistant = () => {
                   animationDelay: '4.5s'
                 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[24px] p-[1px]">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#2C5530] via-[#4A7C59] to-[#7FB069] rounded-[24px] p-[1px]">
                   <div className="h-full w-full bg-white/15 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
                     {/* Top gradient line */}
                     <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
                     
-                    {/* Pastel glass icon container - Sunny Yellow */}
-                    <div className="w-16 h-16 bg-gradient-to-br from-yellow-400/30 to-orange-500/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-white/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
+                    {/* Pastel glass icon container - Health Green */}
+                    <div className="w-16 h-16 bg-gradient-to-br from-[#7FB069]/30 to-[#A8D5BA]/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-white/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
                       <ShoppingCart className="w-8 h-8 text-white" />
                     </div>
                     
                     {/* Premium badge */}
-                    <div className="bg-yellow-400/20 backdrop-blur-[10px] border border-yellow-400/30 rounded-lg px-3 py-1 text-xs font-semibold text-yellow-700/90 inline-block mb-4">
+                    <div className="bg-[#7FB069]/20 backdrop-blur-[10px] border border-[#7FB069]/30 rounded-lg px-3 py-1 text-xs font-semibold text-white/90 inline-block mb-4">
                       🛒 Smart Lists
                     </div>
                     
@@ -2531,7 +2531,7 @@ const NuriAssistant = () => {
                     
                     {/* Premium glassmorphism button */}
                     <motion.button
-                      className="w-full bg-gradient-to-r from-[#4CAF50]/90 to-green-600/80 backdrop-blur-[10px] border border-white/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
+                      className="w-full bg-gradient-to-r from-[#7FB069]/90 to-[#A8D5BA]/80 backdrop-blur-[10px] border border-white/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
                       whileHover={{ y: -2 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -2549,7 +2549,7 @@ const NuriAssistant = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 2 }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[28px] p-[1px]">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#2C5530] via-[#4A7C59] to-[#7FB069] rounded-[28px] p-[1px]">
                 <div className="h-full w-full bg-white/12 backdrop-blur-[25px] rounded-[27px] p-10 relative overflow-hidden">
                   {/* Subtle background pattern */}
                   <div className="absolute inset-0 opacity-5">
@@ -2600,7 +2600,7 @@ const NuriAssistant = () => {
 
                     {/* Premium Glassmorphism CTA Button */}
                     <motion.button
-                      className="bg-gradient-to-r from-[#4CAF50]/90 to-green-600/80 backdrop-blur-[15px] border border-white/30 text-white px-10 py-4 rounded-2xl font-bold text-lg shadow-2xl transition-all duration-300 hover:shadow-3xl"
+                      className="bg-gradient-to-r from-[#7FB069]/90 to-[#A8D5BA]/80 backdrop-blur-[15px] border border-white/30 text-white px-10 py-4 rounded-2xl font-bold text-lg shadow-2xl transition-all duration-300 hover:shadow-3xl"
                       whileHover={{ scale: 1.05, y: -3 }}
                       whileTap={{ scale: 0.98 }}
                     >
