@@ -1889,7 +1889,13 @@ const NuriAssistant = () => {
             <div className="nuri-welcome-section">
               <div className="nuri-avatar-container">
                 <div className="nuri-avatar">
-                  <span className="nuri-face">🌱</span>
+                  <div className="nuri-face">
+                    <div className="nuri-eyes">
+                      <div className="nuri-eye left"></div>
+                      <div className="nuri-eye right"></div>
+                    </div>
+                    <div className="nuri-smile"></div>
+                  </div>
                 </div>
                 <div className="nuri-status">
                   <div className="status-dot"></div>

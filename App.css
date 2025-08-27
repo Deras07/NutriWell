@@ -224,6 +224,11 @@ body, .main-container, .dashboard, #root {
     0 12px 40px rgba(0, 0, 0, 0.12),
     0 4px 16px rgba(255, 107, 107, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  color: #2C2C2C !important;
+}
+
+.metric-card:hover * {
+  color: #2C2C2C !important;
 }
 
 /* ADD PREMIUM COLORED OVERLAYS */
@@ -403,8 +408,53 @@ body, .main-container, .dashboard, #root {
 }
 
 .nuri-face {
-  font-size: 3rem;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.nuri-eyes {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.nuri-eye {
+  width: 12px;
+  height: 12px;
+  background: #2C2C2C;
+  border-radius: 50%;
+  position: relative;
+  animation: blink 4s infinite;
+}
+
+.nuri-eye::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+}
+
+.nuri-smile {
+  width: 20px;
+  height: 10px;
+  border: 2px solid #2C2C2C;
+  border-top: none;
+  border-radius: 0 0 20px 20px;
+  margin-top: 0.25rem;
+}
+
+@keyframes blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
 }
 
 .nuri-status {
