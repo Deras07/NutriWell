@@ -1885,27 +1885,11 @@ const NuriAssistant = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            {/* Premium Nuri Welcome Section - Magazine Style */}
-            <div className="nuri-welcome-section">
-              <div className="nuri-avatar-container">
-                <div className="nuri-avatar">
-                  <div className="nuri-face">
-                    <div className="nuri-eyes">
-                      <div className="nuri-eye left"></div>
-                      <div className="nuri-eye right"></div>
-                    </div>
-                    <div className="nuri-smile"></div>
-                  </div>
-                </div>
-                <div className="nuri-status">
-                  <div className="status-dot"></div>
-                  <span>Ready to help</span>
-                </div>
-              </div>
-              
-              <div className="nuri-greeting">
-                <h2 className="greeting-title">Welcome to Nutriwell</h2>
-                <p className="greeting-subtitle">Your premium AI wellness companion is here to guide your health journey with personalized insights and beautiful design</p>
+            {/* Welcome Section - Magazine Style */}
+            <div className="welcome-section">
+              <div className="welcome-content">
+                <h2 className="welcome-title">Welcome to Nutriwell</h2>
+                <p className="welcome-subtitle">Your premium AI wellness companion is here to guide your health journey with personalized insights and beautiful design</p>
                 
                 <div className="chat-trigger">
                   <button 
@@ -2360,34 +2344,34 @@ const NuriAssistant = () => {
                 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B] via-[#FF8E8E] to-[#95C99B] rounded-[24px] p-[1px]">
-                  <div className="h-full w-full bg-white/15 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
+                  <div className="h-full w-full bg-white/90 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
                     {/* Top gradient line */}
-                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#FF6B6B]/40 to-transparent"></div>
                     
                     {/* Pastel glass icon container - Coral */}
-                    <div className="w-16 h-16 bg-gradient-to-br from-[#FF6B6B]/30 to-[#FF8E8E]/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-white/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
+                    <div className="w-16 h-16 bg-gradient-to-br from-[#FF6B6B]/30 to-[#FF8E8E]/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-[#FF6B6B]/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
                       <ChefHat className="w-8 h-8 text-white" />
                     </div>
                     
                     {/* Premium badge */}
-                    <div className="bg-[#FF6B6B]/20 backdrop-blur-[10px] border border-[#FF6B6B]/30 rounded-lg px-3 py-1 text-xs font-semibold text-white/90 inline-block mb-4">
+                    <div className="bg-[#FF6B6B]/20 backdrop-blur-[10px] border border-[#FF6B6B]/30 rounded-lg px-3 py-1 text-xs font-semibold text-[#FF6B6B] inline-block mb-4">
                       ✨ AI-Powered
                     </div>
                     
                     {/* Enhanced typography */}
-                    <h3 className="text-[22px] font-bold text-white/90 mb-3 leading-tight tracking-tight" style={{textShadow: '0 1px 2px rgba(255, 255, 255, 0.5)'}}>
+                    <h3 className="text-[22px] font-bold text-[#2C2C2C] mb-3 leading-tight tracking-tight">
                       Recipe Generator Pro
                     </h3>
-                    <p className="text-white/80 text-sm mb-4 leading-relaxed font-medium">
+                    <p className="text-[#6B7280] text-sm mb-4 leading-relaxed font-medium">
                       AI creates custom recipes based on your ingredients
                     </p>
-                    <p className="text-white/70 text-sm mb-6 leading-relaxed">
+                    <p className="text-[#6B7280] text-sm mb-6 leading-relaxed">
                       Get personalized recipes that match your dietary preferences, available ingredients, and nutritional goals.
                     </p>
                     
                     {/* Premium glassmorphism button */}
                     <motion.button
-                      className="w-full bg-gradient-to-r from-[#FF6B6B]/90 to-[#FF8E8E]/80 backdrop-blur-[10px] border border-white/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
+                      className="w-full bg-gradient-to-r from-[#FF6B6B]/90 to-[#FF8E8E]/80 backdrop-blur-[10px] border border-[#FF6B6B]/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
                       whileHover={{ y: -2 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -2410,28 +2394,28 @@ const NuriAssistant = () => {
                 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B] via-[#FF8E8E] to-[#95C99B] rounded-[24px] p-[1px]">
-                  <div className="h-full w-full bg-white/15 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
+                  <div className="h-full w-full bg-white/90 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
                     {/* Top gradient line */}
-                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#FF6B6B]/40 to-transparent"></div>
                     
                     {/* Pastel glass icon container - Coral */}
-                    <div className="w-16 h-16 bg-gradient-to-br from-[#FF6B6B]/30 to-[#FF8E8E]/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-white/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
+                    <div className="w-16 h-16 bg-gradient-to-br from-[#FF6B6B]/30 to-[#FF8E8E]/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-[#FF6B6B]/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
                       <BarChart3 className="w-8 h-8 text-white" />
                     </div>
                     
                     {/* Premium badge */}
-                    <div className="bg-[#FF6B6B]/20 backdrop-blur-[10px] border border-[#FF6B6B]/30 rounded-lg px-3 py-1 text-xs font-semibold text-white/90 inline-block mb-4">
+                    <div className="bg-[#FF6B6B]/20 backdrop-blur-[10px] border border-[#FF6B6B]/30 rounded-lg px-3 py-1 text-xs font-semibold text-[#FF6B6B] inline-block mb-4">
                       📊 Advanced Analytics
                     </div>
                     
                     {/* Enhanced typography */}
-                    <h3 className="text-[22px] font-bold text-white/90 mb-3 leading-tight tracking-tight" style={{textShadow: '0 1px 2px rgba(255, 255, 255, 0.5)'}}>
+                    <h3 className="text-[22px] font-bold text-[#2C2C2C] mb-3 leading-tight tracking-tight">
                       Health Insights Dashboard
                     </h3>
-                    <p className="text-white/80 text-sm mb-4 leading-relaxed font-medium">
+                    <p className="text-[#6B7280] text-sm mb-4 leading-relaxed font-medium">
                       Advanced analytics & correlations
                     </p>
-                    <p className="text-white/70 text-sm mb-6 leading-relaxed">
+                    <p className="text-[#6B7280] text-sm mb-6 leading-relaxed">
                       Discover correlations between food, mood, energy, sleep, and biomarkers with detailed analytics.
                     </p>
                     
