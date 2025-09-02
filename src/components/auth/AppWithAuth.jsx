@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useAuth } from '../../providers/PrivyProvider'
-import AuthFlow from './AuthFlow'
+import SimpleAuth from './SimpleAuth'
 import AuthNavigation from './AuthNavigation'
 import UserProfileManager from './UserProfileManager'
 import NuriAssistant from '../ai/NuriAssistant'
+import LandingPage from './LandingPage'
 
 export default function AppWithAuth() {
   const { ready, authenticated, user, dbUser, loading } = useAuth()
+  const [showAuth, setShowAuth] = useState(false)
 
   if (!ready || loading) {
     return (
@@ -22,12 +24,14 @@ export default function AppWithAuth() {
     )
   }
 
-  if (!authenticated) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-[#E8B4B8] via-[#EED6D3] to-[#E8D5C4]">
-        <AuthFlow />
-      </div>
-    )
+  // Show landing page if not authenticated and auth not requested
+  if (!authenticated && !showAuth) {
+    return <LandingPage onGetStarted={() => setShowAuth(true)} />
+  }
+
+  // Show authentication flow if not authenticated but auth requested
+  if (!authenticated && showAuth) {
+    return <SimpleAuth />
   }
 
   // User is authenticated - show main app

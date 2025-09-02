@@ -1,6 +1,6 @@
 import React from 'react'
-import NuriAssistant from './src/components/ai/NuriAssistant'
-// import { AuthProvider } from './src/providers/PrivyProvider'
+import { AuthProvider } from './src/providers/PrivyProvider'
+import AppWithAuth from './src/components/auth/AppWithAuth'
 import './App.css'
 
 function App() {
@@ -11,9 +11,9 @@ function App() {
         Skip to content
       </a>
       
-      {/* <AuthProvider> */}
-        <NuriAssistant />
-      {/* </AuthProvider> */}
+      <AuthProvider>
+        <AppWithAuth />
+      </AuthProvider>
     </>
   )
 }
