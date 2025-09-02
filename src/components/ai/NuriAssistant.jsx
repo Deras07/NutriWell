@@ -436,13 +436,13 @@ const NuriAssistant = () => {
       {
         label: 'Activity Level',
         data: wellnessData.activity,
-        borderColor: '#4CAF50',
+        borderColor: '#E8B4B8',
         backgroundColor: 'rgba(76, 175, 80, 0.1)',
         tension: 0.4,
         borderWidth: 3,
         pointRadius: 6,
         pointHoverRadius: 8,
-        pointBackgroundColor: '#4CAF50',
+        pointBackgroundColor: '#E8B4B8',
         pointBorderColor: '#fff',
         pointBorderWidth: 2,
         fill: true,
@@ -641,7 +641,7 @@ const NuriAssistant = () => {
         </div>
 
         {/* Mobile Bottom Drawer for Sidebar Content */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-white/30 shadow-lg">
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 border-t border-[#E8B4B8] shadow-lg">
           <div className="px-4 py-3">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-[16px] font-medium text-[#2D2D2D]">Today's Progress</h3>
@@ -652,7 +652,7 @@ const NuriAssistant = () => {
             
             {/* Mobile Progress Cards */}
                           <div className="grid grid-cols-3 gap-3">
-                <div className="bg-white/90 backdrop-blur-md rounded-xl p-3 border border-white/30 shadow-sm">
+                <div className="bg-white/90 rounded-xl p-3 border border-[#E8B4B8] shadow-sm">
                   <div className="flex items-center gap-2 mb-2">
                     <Zap className="w-4 h-4 text-orange-500" />
                     <span className="text-[12px] font-medium text-[#2D2D2D]">Energy</span>
@@ -660,7 +660,7 @@ const NuriAssistant = () => {
                   <span className="bg-orange-100 text-orange-600 px-2 py-1 rounded-full text-xs font-medium">Moderate</span>
                 </div>
                 
-                <div className="bg-white/90 backdrop-blur-md rounded-xl p-3 border border-white/30 shadow-sm">
+                <div className="bg-white/90 rounded-xl p-3 border border-[#E8B4B8] shadow-sm">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="text-lg">😊</div>
                     <span className="text-[12px] font-medium text-[#2D2D2D]">Mood</span>
@@ -668,7 +668,7 @@ const NuriAssistant = () => {
                   <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs font-medium">High</span>
                 </div>
                 
-                <div className="bg-white/90 backdrop-blur-md rounded-xl p-3 border border-white/30 shadow-sm">
+                <div className="bg-white/90 rounded-xl p-3 border border-[#E8B4B8] shadow-sm">
                   <div className="flex items-center gap-2 mb-2">
                     <Target className="w-4 h-4 text-pink-500" />
                     <span className="text-[12px] font-medium text-[#2D2D2D]">Focus</span>
@@ -713,16 +713,16 @@ const NuriAssistant = () => {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#E8B4B8] via-[#EED6D3] to-[#E8D5C4]">
 
 
       {/* Responsive Navigation */}
-      <div className="fixed top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-white/30 shadow-sm">
+      <div className="fixed top-0 left-0 right-0 z-40 bg-white/95 border-b border-[#E8B4B8] shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-[#4CAF50] to-green-600 rounded-full flex items-center justify-center shadow-md">
+              <div className="w-8 h-8 bg-gradient-to-br from-[#E8B4B8] to-[#EED6D3] rounded-full flex items-center justify-center shadow-md">
                 <Leaf className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold text-[#2D2D2D] tracking-tight">Nutriwell</span>
@@ -741,7 +741,7 @@ const NuriAssistant = () => {
                   onClick={() => setCurrentView(tab.id)}
                   className={`px-4 sm:px-6 py-3 rounded-xl font-medium transition-all duration-200 flex items-center gap-2 ${
                     currentView === tab.id
-                      ? 'bg-[#4CAF50] text-white shadow-md'
+                      ? 'bg-[#E8B4B8] text-white shadow-md'
                       : 'text-[#6C757D] hover:text-[#2D2D2D] hover:bg-[#F8F9FA]'
                   }`}
                 >
@@ -774,7 +774,7 @@ const NuriAssistant = () => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden bg-white/95 backdrop-blur-md border-t border-white/30 shadow-lg"
+              className="md:hidden bg-white/95 border-t border-[#E8B4B8] shadow-lg"
             >
               <nav className="px-4 py-4 space-y-2">
                 {[
@@ -816,7 +816,7 @@ const NuriAssistant = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className="bg-white/20 backdrop-blur-md rounded-3xl p-8 max-w-lg w-full border border-white/30">
+            <div className="bg-white/20 rounded-3xl p-8 max-w-lg w-full border border-white/30">
               {/* Progress Bar */}
               <div className="mb-6">
                 <div className="flex justify-between text-sm text-white/70 mb-2">
@@ -849,8 +849,8 @@ const NuriAssistant = () => {
                 </div>
                 
                 {/* Chat Message */}
-                <div className="flex-1">
-                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
+                <div className="flex-1" aria-live="polite">
+                  <div className="bg-white/80 rounded-2xl p-4 shadow-lg">
                     <p className="text-gray-800 text-lg leading-relaxed">
                       {getCurrentQuestion()?.message}
                     </p>
@@ -905,7 +905,7 @@ const NuriAssistant = () => {
                     <input
                       type="text"
                       placeholder={getCurrentQuestion()?.placeholder}
-                      className="w-full px-4 py-3 bg-white/80 backdrop-blur-sm rounded-xl border border-white/50 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-400"
+                      className="w-full px-4 py-3 bg-white/80 rounded-xl border border-white/50 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-400"
                       onKeyPress={(e) => {
                         if (e.key === 'Enter') {
                           handleInputSubmit(e.target.value)
@@ -940,7 +940,7 @@ const NuriAssistant = () => {
                       <motion.button
                         key={option}
                         onClick={() => handleOnboardingAnswer(option)}
-                        className="w-full bg-white/80 backdrop-blur-sm rounded-xl p-4 text-left text-gray-800 hover:bg-white/90 transition-all duration-300 border border-white/50"
+                        className="w-full bg-white/80 rounded-xl p-4 text-left text-gray-800 hover:bg-white/90 transition-all duration-300 border border-white/50"
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
@@ -965,7 +965,7 @@ const NuriAssistant = () => {
                       <motion.button
                         key={option}
                         onClick={() => handleOnboardingAnswer(option)}
-                        className={`w-full backdrop-blur-sm rounded-xl p-4 text-left transition-all duration-300 border ${
+                        className={`w-full rounded-xl p-4 text-left transition-all duration-300 border ${
                           (onboardingData[getCurrentQuestion()?.field] || []).includes(option)
                             ? 'bg-green-400/80 text-white border-green-300'
                             : 'bg-white/80 text-gray-800 border-white/50 hover:bg-white/90'
@@ -1024,7 +1024,7 @@ const NuriAssistant = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className="bg-white/20 backdrop-blur-md rounded-3xl p-8 max-w-4xl w-full border border-white/30 max-h-[90vh] overflow-y-auto">
+            <div className="bg-white/20 rounded-3xl p-8 max-w-4xl w-full border border-white/30 max-h-[90vh] overflow-y-auto">
               {/* Header */}
               <div className="text-center mb-8">
                 <motion.h1 
@@ -1050,7 +1050,7 @@ const NuriAssistant = () => {
                 {resultsSections.map((section, index) => (
                   <motion.div
                     key={section.id}
-                    className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"
+                    className="bg-white/10 rounded-2xl p-6 border border-white/20"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 + index * 0.2 }}
@@ -1062,7 +1062,7 @@ const NuriAssistant = () => {
                     </div>
 
                     {/* Nuri Message */}
-                    <div className="flex items-start gap-4 mb-6">
+                    <div className="flex items-start gap-4 mb-6" aria-live="polite">
                       <div className="relative">
                         <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-teal-500 rounded-full flex items-center justify-center text-white text-lg">
                           🌱
@@ -1070,7 +1070,7 @@ const NuriAssistant = () => {
                         <div className="absolute inset-0 rounded-full border-2 border-green-300/50 animate-pulse"></div>
                       </div>
                       <div className="flex-1">
-                        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4">
+                        <div className="bg-white/80 rounded-xl p-4">
                           <p className="text-gray-800 text-lg leading-relaxed">
                             {section.nuriMessage}
                           </p>
@@ -1410,7 +1410,7 @@ const NuriAssistant = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className="bg-white/20 backdrop-blur-md rounded-3xl p-8 max-w-4xl w-full border border-white/30 max-h-[90vh] overflow-y-auto">
+            <div className="bg-white/20 rounded-3xl p-8 max-w-4xl w-full border border-white/30 max-h-[90vh] overflow-y-auto">
               {/* Premium Intro */}
               {currentPremiumStep === 0 && (
                 <motion.div
@@ -1437,7 +1437,7 @@ const NuriAssistant = () => {
                   </motion.h1>
                   
                   <motion.div 
-                    className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 mb-8"
+                    className="bg-white/80 rounded-2xl p-6 mb-8"
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.5 }}
@@ -1488,7 +1488,7 @@ const NuriAssistant = () => {
                   </div>
 
                   {/* Nuri Message */}
-                  <div className="flex items-start gap-4 mb-8">
+                  <div className="flex items-start gap-4 mb-8" aria-live="polite">
                     <div className="relative">
                       <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white text-lg">
                         🌱
@@ -1496,7 +1496,7 @@ const NuriAssistant = () => {
                       <div className="absolute inset-0 rounded-full border-2 border-purple-300/50 animate-pulse"></div>
                     </div>
                     <div className="flex-1">
-                      <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6">
+                      <div className="bg-white/80 rounded-xl p-6">
                         <p className="text-gray-800 text-lg leading-relaxed">
                           {premiumBenefits[currentPremiumStep].nuriMessage}
                         </p>
@@ -1625,7 +1625,7 @@ const NuriAssistant = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className="bg-white/20 backdrop-blur-md rounded-3xl p-8 max-w-4xl w-full border border-white/30 max-h-[90vh] overflow-y-auto">
+            <div className="bg-white/20 rounded-3xl p-8 max-w-4xl w-full border border-white/30 max-h-[90vh] overflow-y-auto">
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold text-white mb-4">🔬 Sneak Peek: Micronutrient Analysis</h2>
                 <p className="text-white/80 text-lg">
@@ -1706,7 +1706,7 @@ const NuriAssistant = () => {
         {/* Left Floating Badge - Hidden on Mobile */}
         <div className="fixed top-16 left-6 z-50 hidden md:block">
           <motion.div 
-            className="bg-white/90 backdrop-blur-md rounded-2xl px-4 py-2 shadow-lg border border-gray-200"
+            className="bg-white/90 rounded-2xl px-4 py-2 shadow-lg border border-gray-200"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
           >
@@ -1722,7 +1722,7 @@ const NuriAssistant = () => {
         <div className="fixed top-16 right-6 z-50 hidden md:block">
           <motion.button
             onClick={handleOnboardingStart}
-            className="bg-white/90 backdrop-blur-md rounded-2xl px-4 py-2 shadow-lg border border-gray-200 text-[#2D2D2D] font-medium hover:scale-105 transition-all duration-300"
+            className="bg-white/90 rounded-2xl px-4 py-2 shadow-lg border border-[#E8B4B8] text-[#2D2D2D] font-medium hover:scale-105 transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
           >
@@ -1742,17 +1742,17 @@ const NuriAssistant = () => {
           
           {showQuickActions && (
             <div className="ai-overlay">
-              <div className="ai-overlay-content">
+              <div className="ai-overlay-content bg-white/95 border border-[#E8B4B8] shadow-2xl">
                 <div className="ai-overlay-header">
-                  <h3>Nuri AI Assistant</h3>
-                  <button className="ai-close" onClick={() => setShowQuickActions(false)}>✕</button>
+                  <h3 className="text-[#2C2C2C] font-semibold">Nuri AI Assistant</h3>
+                  <button className="ai-close text-[#2C2C2C] hover:text-[#E8B4B8]" onClick={() => setShowQuickActions(false)}>✕</button>
                 </div>
                 <div className="ai-overlay-body">
-                  <p>How can I help you today?</p>
+                  <p className="text-[#2C2C2C] mb-4">How can I help you today?</p>
                   <div className="ai-quick-actions">
-                    <button className="ai-action-btn">🍽️ Log Meal</button>
-                    <button className="ai-action-btn">📊 Check Progress</button>
-                    <button className="ai-action-btn">🎯 Get Recommendations</button>
+                    <button className="ai-action-btn bg-gradient-to-r from-[#E8B4B8] to-[#EED6D3] text-white hover:from-[#EED6D3] hover:to-[#E8D5C4]">🍽️ Log Meal</button>
+                    <button className="ai-action-btn bg-gradient-to-r from-[#EED6D3] to-[#E8D5C4] text-white hover:from-[#E8D5C4] hover:to-[#E8B4B8]">📊 Check Progress</button>
+                    <button className="ai-action-btn bg-gradient-to-r from-[#E8D5C4] to-[#E8B4B8] text-white hover:from-[#E8B4B8] hover:to-[#EED6D3]">🎯 Get Recommendations</button>
                   </div>
                 </div>
               </div>
@@ -1761,16 +1761,16 @@ const NuriAssistant = () => {
         </div>
 
         {/* Center Column - Main Content */}
-        <div className="flex-1 flex flex-col px-4 sm:px-6 lg:px-8 pt-6 md:pt-10 pb-32 relative z-20 max-w-7xl mx-auto">
+        <main id="main" className="flex-1 flex flex-col px-4 sm:px-6 lg:px-8 pt-6 md:pt-10 pb-32 relative z-20 max-w-7xl mx-auto">
           
           {/* Dashboard View */}
           {currentView === 'dashboard' && (
             <>
               <div className="text-center mb-8">
-                <h1 className="text-[24px] sm:text-[28px] font-semibold mb-4 flex items-center justify-center gap-3 text-[#2D2D2D] leading-tight">
+                <h2 className="text-[24px] sm:text-[28px] font-semibold mb-4 flex items-center justify-center gap-3 text-[#2D2D2D] leading-tight">
                   Your Daily Wellness Hub
-                  <Leaf className="w-5 h-5 sm:w-6 sm:h-6 text-[#4CAF50]" />
-                </h1>
+                  <Leaf className="w-5 h-5 sm:w-6 sm:h-6 text-[#E8B4B8]" />
+                </h2>
                 <p className="text-[14px] sm:text-[16px] text-[#6C757D] mb-8 leading-relaxed px-4">
                   Track your nutrition, mood, and progress with Nuri
                 </p>
@@ -1778,25 +1778,34 @@ const NuriAssistant = () => {
 
               </div>
 
-          {/* 🌱 CUTE NURI CHARACTER */}
+          {/* 🌱 PREMIUM NURI CHARACTER - Enhanced Technology Feel */}
           <div className="relative mb-8 flex justify-center">
             <motion.div
               className="relative nuri-avatar"
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              animate={{ 
+                y: [0, -8, 0],
+                scale: [1, 1.02, 1]
+              }}
+              transition={{ 
+                duration: 4, 
+                repeat: Infinity, 
+                ease: "easeInOut",
+                scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+              }}
               style={{
                 width: '120px',
                 height: '120px',
-                filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.15))'
+                filter: 'drop-shadow(0 12px 32px rgba(232, 180, 184, 0.3))'
               }}
             >
-              {/* Glow effect */}
-              <div className="absolute -inset-2 bg-gradient-to-r from-green-400/20 via-teal-400/20 to-green-400/20 rounded-full blur-xl animate-pulse-glow"></div>
+              {/* Enhanced glow effect with pastel gradient */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-[#E8B4B8]/30 via-[#EED6D3]/20 to-[#E8B4B8]/30 rounded-full blur-2xl animate-pulse-glow"></div>
+              <div className="absolute -inset-2 bg-gradient-to-r from-[#E8B4B8]/20 via-[#E8D5C4]/20 to-[#E8B4B8]/20 rounded-full blur-xl animate-pulse-glow" style={{animationDelay: '1s'}}></div>
               
-              {/* Cute Nuri character */}
-              <div className="relative w-full h-full bg-gradient-to-b from-green-300 to-green-600 rounded-full shadow-xl border-4 border-white/20">
-                {/* Cute face */}
-                <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 flex gap-4">
+              {/* Premium Nuri character with pastel gradient */}
+              <div className="relative w-full h-full bg-gradient-to-br from-[#E8B4B8] via-[#EED6D3] to-[#E8D5C4] rounded-full shadow-2xl border-4 border-white/30">
+                {/* Simple Cute Eyes - Matching the mouth */}
+                <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 flex gap-2">
                   {/* Left eye */}
                   <div className="relative">
                     <div className="w-3 h-3 bg-black rounded-full"></div>
@@ -1808,6 +1817,7 @@ const NuriAssistant = () => {
                       transition={{ duration: 0.3, ease: "easeOut" }}
                     />
                   </div>
+                  
                   {/* Right eye */}
                   <div className="relative">
                     <div className="w-3 h-3 bg-black rounded-full"></div>
@@ -1906,7 +1916,7 @@ const NuriAssistant = () => {
 
           {/* Premium Quick Actions */}
           <motion.div 
-            className="w-full max-w-6xl mx-auto mb-20"
+            className="w-full max-w-6xl mx-auto py-20"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
@@ -1926,15 +1936,16 @@ const NuriAssistant = () => {
                 </button>
               </div>
             </div>
-            <div className="wellness-actions-grid">
-              {/* Recipe Generator Pro Card */}
+            {/* Dynamic Masonry Layout - Smart Wellness Actions */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr" style={{ gridTemplateRows: 'repeat(auto-fit, minmax(200px, auto))' }}>
+              {/* Recipe Generator Pro Card - Large */}
               <motion.div
-                className="metric-card nutrition-card"
-                whileHover={{ y: -12 }}
+                className="metric-card nutrition-card md:col-span-2 lg:col-span-1"
+                whileHover={{ y: -12, rotate: 1 }}
                 whileTap={{ scale: 0.98 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
+                initial={{ opacity: 0, y: 20, rotate: -2 }}
+                animate={{ opacity: 1, y: 0, rotate: 0 }}
+                transition={{ delay: 0.1, type: "spring", stiffness: 100 }}
               >
                 <div className="card-header">
                   <div className="icon-container">
@@ -1952,14 +1963,14 @@ const NuriAssistant = () => {
                 </div>
               </motion.div>
 
-              {/* Health Insights Dashboard Card */}
+              {/* Health Insights Dashboard Card - Tall */}
               <motion.div
-                className="metric-card nutrition-card"
-                whileHover={{ y: -12 }}
+                className="metric-card nutrition-card lg:row-span-2"
+                whileHover={{ y: -12, rotate: -1 }}
                 whileTap={{ scale: 0.98 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
+                initial={{ opacity: 0, y: 20, rotate: 2 }}
+                animate={{ opacity: 1, y: 0, rotate: 0 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
               >
                 <div className="card-header">
                   <div className="icon-container">
@@ -1977,14 +1988,14 @@ const NuriAssistant = () => {
                 </div>
               </motion.div>
 
-              {/* Personal Nutrition Coach Card */}
+              {/* Personal Nutrition Coach Card - Wide */}
               <motion.div
-                className="metric-card sleep-card"
-                whileHover={{ y: -12 }}
+                className="metric-card sleep-card md:col-span-2"
+                whileHover={{ y: -12, rotate: 0.5 }}
                 whileTap={{ scale: 0.98 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
+                initial={{ opacity: 0, y: 20, rotate: -1 }}
+                animate={{ opacity: 1, y: 0, rotate: 0 }}
+                transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
               >
                 <div className="card-header">
                   <div className="icon-container">
@@ -2002,14 +2013,14 @@ const NuriAssistant = () => {
                 </div>
               </motion.div>
 
-              {/* Smart Grocery Assistant Card */}
+              {/* Smart Grocery Assistant Card - Standard */}
               <motion.div
                 className="metric-card activity-card"
-                whileHover={{ y: -12 }}
+                whileHover={{ y: -12, rotate: -0.5 }}
                 whileTap={{ scale: 0.98 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
+                initial={{ opacity: 0, y: 20, rotate: 1 }}
+                animate={{ opacity: 1, y: 0, rotate: 0 }}
+                transition={{ delay: 0.4, type: "spring", stiffness: 100 }}
               >
                 <div className="card-header">
                   <div className="icon-container">
@@ -2031,15 +2042,15 @@ const NuriAssistant = () => {
 
           {/* Revolutionary AI Wellness Analytics */}
           <motion.div 
-            className="w-full max-w-7xl mx-auto mb-16"
+            className="w-full max-w-7xl mx-auto py-20"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.2 }}
           >
             <div className="section-header text-center mb-12">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#4CAF50]/20 to-green-100/80 rounded-full px-4 py-2 mb-6">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#E8B4B8]/20 to-[#EED6D3]/80 rounded-full px-4 py-2 mb-6">
                 <span className="text-sm">✨</span>
-                <span className="text-sm font-medium text-white">AI Insights</span>
+                <span className="text-sm font-medium text-[#2C2C2C]">AI Insights</span>
               </div>
               <h2 className="wellness-journey-title">Your Wellness Journey</h2>
               <p className="wellness-journey-subtitle">Advanced analytics powered by machine learning to track your health progress</p>
@@ -2062,23 +2073,13 @@ const NuriAssistant = () => {
               </div>
             </div>
             
-            {/* Premium Chart Container */}
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[24px] p-[1px]">
-                <div className="h-full w-full bg-white/95 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
-                  {/* Subtle background pattern */}
-                  <div className="absolute inset-0 opacity-5">
-                    <div className="absolute inset-0" style={{
-                      backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(76,175,80,0.3) 1px, transparent 0)',
-                      backgroundSize: '20px 20px'
-                    }}></div>
-                  </div>
-                  
-                  {/* Chart */}
-                  <div className="relative z-10">
-                    <div className="h-[350px] sm:h-[450px] lg:h-[550px]">
-                      <Line data={wellnessChartData} options={chartOptions} />
-                    </div>
+            {/* Compact Chart Container - Better Flow */}
+            <div className="relative mb-8">
+              <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-[#E8B4B8]">
+                {/* Chart */}
+                <div className="relative z-10">
+                  <div className="h-[250px] sm:h-[300px] lg:h-[350px]">
+                    <Line data={wellnessChartData} options={chartOptions} />
                   </div>
                 </div>
               </div>
@@ -2171,21 +2172,44 @@ const NuriAssistant = () => {
             </>
           )}
 
-          {/* Services View */}
+          {/* Services View - Enhanced Premium Features */}
           {currentView === 'services' && (
             <div className="w-full max-w-7xl mx-auto">
-              <div className="text-center mb-12">
-                <h1 className="text-[24px] sm:text-[28px] font-semibold mb-4 text-[#2D2D2D] leading-tight">Premium Wellness Tools</h1>
-                <p className="text-[14px] sm:text-[16px] text-[#6C757D] leading-relaxed px-4">
-                  Unlock personalized nutrition guidance with our premium features
-                </p>
+              {/* Premium Features Hero Section - Impossible to Miss */}
+              <div className="relative mb-12 p-8 rounded-3xl bg-gradient-to-br from-[#FFD700]/20 via-[#FFA500]/20 to-[#FF6B6B]/20 border-2 border-[#FFD700]/30 shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#FFD700]/10 to-[#FF6B6B]/10 rounded-3xl animate-pulse"></div>
+                <div className="relative z-10 text-center">
+                  <div className="flex justify-center mb-4">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                      className="text-4xl"
+                    >
+                      ⭐
+                    </motion.div>
+                  </div>
+                  <h2 className="text-[28px] sm:text-[32px] font-bold mb-4 text-[#2D2D2D] leading-tight">
+                    🚀 Premium Wellness Tools
+                  </h2>
+                  <p className="text-[16px] sm:text-[18px] text-[#2D2D2D] leading-relaxed px-4 mb-6 font-medium">
+                    Unlock your full potential with AI-powered nutrition guidance
+                  </p>
+                  <motion.button
+                    className="bg-gradient-to-r from-[#FFD700] to-[#FFA500] text-[#2D2D2D] px-8 py-4 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transition-all duration-300"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowPremiumModal(true)}
+                  >
+                    🎯 Explore Premium Features
+                  </motion.button>
+                </div>
               </div>
 
               {/* Premium Feature Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
                 {/* Recipe Generator Pro */}
                 <motion.div 
-                  className="bg-white/90 backdrop-blur-md rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
+                  className="bg-white/90 rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
                   whileHover={{ y: -2, scale: 1.02 }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -2215,7 +2239,7 @@ const NuriAssistant = () => {
 
                 {/* Health Insights Dashboard */}
                 <motion.div 
-                  className="bg-white/90 backdrop-blur-md rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
+                  className="bg-white/90 rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
                   whileHover={{ y: -2, scale: 1.02 }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -2245,7 +2269,7 @@ const NuriAssistant = () => {
 
                 {/* Personal Nutrition Coach - Featured */}
                 <motion.div 
-                  className="md:col-span-2 lg:col-span-1 bg-gradient-to-br from-[#4CAF50]/20 to-green-100/80 backdrop-blur-md rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border-2 border-[#4CAF50]/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
+                  className="md:col-span-2 lg:col-span-1 bg-gradient-to-br from-[#4CAF50]/20 to-green-100/80 rounded-xl p-4 sm:p-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border-2 border-[#4CAF50]/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200"
                   whileHover={{ y: -2, scale: 1.02 }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -2280,12 +2304,12 @@ const NuriAssistant = () => {
           {currentView === 'chat' && (
             <div className="w-full max-w-4xl mx-auto text-center">
               <div className="mb-8">
-                <h1 className="text-[24px] sm:text-[28px] font-semibold mb-4 text-[#2D2D2D] leading-tight">Chat with Nuri</h1>
+                <h2 className="text-[24px] sm:text-[28px] font-semibold mb-4 text-[#2D2D2D] leading-tight">Chat with Nuri</h2>
                 <p className="text-[14px] sm:text-[16px] text-[#6C757D] leading-relaxed px-4">
                   Get personalized nutrition advice and guidance
                 </p>
               </div>
-              <div className="bg-white/95 backdrop-blur-md rounded-xl p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30">
+              <div className="bg-white/95 rounded-xl p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30">
                 <MessageCircle className="w-16 h-16 text-[#4CAF50] mx-auto mb-4" />
                 <h3 className="text-[18px] sm:text-[20px] font-medium text-[#2D2D2D] mb-2">Coming Soon</h3>
                 <p className="text-[14px] sm:text-[16px] text-[#6C757D]">Chat functionality will be available soon!</p>
@@ -2297,12 +2321,12 @@ const NuriAssistant = () => {
           {currentView === 'profile' && (
             <div className="w-full max-w-4xl mx-auto text-center">
               <div className="mb-8">
-                <h1 className="text-[24px] sm:text-[28px] font-semibold mb-4 text-[#2D2D2D] leading-tight">Your Profile</h1>
+                <h2 className="text-[24px] sm:text-[28px] font-semibold mb-4 text-[#2D2D2D] leading-tight">Your Profile</h2>
                 <p className="text-[14px] sm:text-[16px] text-[#6C757D] leading-relaxed px-4">
                   Manage your account and preferences
                 </p>
               </div>
-              <div className="bg-white/95 backdrop-blur-md rounded-xl p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30">
+              <div className="bg-white/95 rounded-xl p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-white/30">
                 <Users className="w-16 h-16 text-[#4CAF50] mx-auto mb-4" />
                 <h3 className="text-[18px] sm:text-[20px] font-medium text-[#2D2D2D] mb-2">Profile Settings</h3>
                 <p className="text-[#6C757D] text-[14px] sm:text-[16px]">Profile management coming soon!</p>
@@ -2317,299 +2341,157 @@ const NuriAssistant = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
           >
-            <div className="bg-gradient-to-r from-[#FF6B6B]/20 to-[#FF8E8E]/20 backdrop-blur-md rounded-3xl p-4 mb-6 inline-block border border-[#FF6B6B]/20">
+            <div className="bg-gradient-to-r from-[#FF6B6B]/20 to-[#FF8E8E]/20 rounded-3xl p-4 mb-6 inline-block border border-[#FF6B6B]/20">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-[#FF6B6B]" />
                 <span className="text-sm font-medium text-[#2C2C2C]">Premium Features</span>
               </div>
             </div>
             
-            <h2 className="text-4xl md:text-5xl font-bold text-[#2C2C2C] mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>Your Personal Health Symphony</h2>
-            <p className="text-xl text-[#6B7280] mb-8 leading-relaxed max-w-3xl mx-auto">
-              Unlock AI-tailored meal plans, advanced analytics, and Zen Mode. Join an elite circle of 10,000+ thriving users.
-            </p>
-
-            {/* Premium Feature Cards with Stunning Glassmorphism */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {/* Recipe Generator Pro */}
-              <motion.div 
-                className="relative group cursor-pointer"
-                whileHover={{ y: -8 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2 }}
-                style={{
-                  animation: 'float 6s ease-in-out infinite',
-                  animationDelay: '0s'
-                }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B] via-[#FF8E8E] to-[#95C99B] rounded-[24px] p-[1px]">
-                  <div className="h-full w-full bg-white/90 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
-                    {/* Top gradient line */}
-                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#FF6B6B]/40 to-transparent"></div>
-                    
-                    {/* Pastel glass icon container - Coral */}
-                    <div className="w-16 h-16 bg-gradient-to-br from-[#FF6B6B]/30 to-[#FF8E8E]/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-[#FF6B6B]/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
-                      <ChefHat className="w-8 h-8 text-white" />
-                    </div>
-                    
-                    {/* Premium badge */}
-                    <div className="bg-[#FF6B6B]/20 backdrop-blur-[10px] border border-[#FF6B6B]/30 rounded-lg px-3 py-1 text-xs font-semibold text-[#FF6B6B] inline-block mb-4">
-                      ✨ AI-Powered
-                    </div>
-                    
-                    {/* Enhanced typography */}
-                    <h3 className="text-[22px] font-bold text-[#2C2C2C] mb-3 leading-tight tracking-tight">
-                      Recipe Generator Pro
-                    </h3>
-                    <p className="text-[#6B7280] text-sm mb-4 leading-relaxed font-medium">
-                      AI creates custom recipes based on your ingredients
-                    </p>
-                    <p className="text-[#6B7280] text-sm mb-6 leading-relaxed">
-                      Get personalized recipes that match your dietary preferences, available ingredients, and nutritional goals.
-                    </p>
-                    
-                    {/* Premium glassmorphism button */}
-                    <motion.button
-                      className="w-full bg-gradient-to-r from-[#FF6B6B]/90 to-[#FF8E8E]/80 backdrop-blur-[10px] border border-[#FF6B6B]/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
-                      whileHover={{ y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      Try Free (3 days)
-                    </motion.button>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Health Insights Dashboard */}
-              <motion.div 
-                className="relative group cursor-pointer"
-                whileHover={{ y: -8 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.4 }}
-                style={{
-                  animation: 'float 6s ease-in-out infinite',
-                  animationDelay: '3s'
-                }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B] via-[#FF8E8E] to-[#95C99B] rounded-[24px] p-[1px]">
-                  <div className="h-full w-full bg-white/90 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
-                    {/* Top gradient line */}
-                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#FF6B6B]/40 to-transparent"></div>
-                    
-                    {/* Pastel glass icon container - Coral */}
-                    <div className="w-16 h-16 bg-gradient-to-br from-[#FF6B6B]/30 to-[#FF8E8E]/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-[#FF6B6B]/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
-                      <BarChart3 className="w-8 h-8 text-white" />
-                    </div>
-                    
-                    {/* Premium badge */}
-                    <div className="bg-[#FF6B6B]/20 backdrop-blur-[10px] border border-[#FF6B6B]/30 rounded-lg px-3 py-1 text-xs font-semibold text-[#FF6B6B] inline-block mb-4">
-                      📊 Advanced Analytics
-                    </div>
-                    
-                    {/* Enhanced typography */}
-                    <h3 className="text-[22px] font-bold text-[#2C2C2C] mb-3 leading-tight tracking-tight">
-                      Health Insights Dashboard
-                    </h3>
-                    <p className="text-[#6B7280] text-sm mb-4 leading-relaxed font-medium">
-                      Advanced analytics & correlations
-                    </p>
-                    <p className="text-[#6B7280] text-sm mb-6 leading-relaxed">
-                      Discover correlations between food, mood, energy, sleep, and biomarkers with detailed analytics.
-                    </p>
-                    
-                    {/* Premium glassmorphism button */}
-                    <motion.button
-                      className="w-full bg-gradient-to-r from-[#FF6B6B]/90 to-[#FF8E8E]/80 backdrop-blur-[10px] border border-white/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
-                      whileHover={{ y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      Try Free (3 days)
-                    </motion.button>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Personal Nutrition Coach */}
-              <motion.div 
-                className="relative group cursor-pointer"
-                whileHover={{ y: -8 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.6 }}
-                style={{
-                  animation: 'float 6s ease-in-out infinite',
-                  animationDelay: '1.5s'
-                }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#4CAF50] via-[#81C784] to-[#A5D6A7] rounded-[24px] p-[1px]">
-                  <div className="h-full w-full bg-white/15 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
-                    {/* Top gradient line */}
-                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
-                    
-                    {/* Pastel glass icon container - Fresh Mint */}
-                    <div className="w-16 h-16 bg-gradient-to-br from-green-400/30 to-teal-500/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-white/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
-                      <Users className="w-8 h-8 text-white" />
-                    </div>
-                    
-                    {/* Premium badge */}
-                    <div className="bg-green-400/20 backdrop-blur-[10px] border border-green-400/30 rounded-lg px-3 py-1 text-xs font-semibold text-green-700/90 inline-block mb-4">
-                      👨‍⚕️ Expert Guidance
-                    </div>
-                    
-                    {/* Enhanced typography */}
-                    <h3 className="text-[22px] font-bold text-white/90 mb-3 leading-tight tracking-tight" style={{textShadow: '0 1px 2px rgba(255, 255, 255, 0.5)'}}>
-                      Personal Nutrition Coach
-                    </h3>
-                    <p className="text-white/80 text-sm mb-4 leading-relaxed font-medium">
-                      Real-time chat with certified nutritionists
-                    </p>
-                    <p className="text-white/70 text-sm mb-6 leading-relaxed">
-                      Get personalized meal plans and real-time guidance from certified nutritionists.
-                    </p>
-                    
-                    {/* Premium glassmorphism button */}
-                    <motion.button
-                      className="w-full bg-gradient-to-r from-[#4CAF50]/90 to-green-600/80 backdrop-blur-[10px] border border-white/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
-                      whileHover={{ y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      Try Free (3 days)
-                    </motion.button>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Smart Grocery Assistant */}
-              <motion.div 
-                className="relative group cursor-pointer"
-                whileHover={{ y: -8 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.8 }}
-                style={{
-                  animation: 'float 6s ease-in-out infinite',
-                  animationDelay: '4.5s'
-                }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#2C5530] via-[#4A7C59] to-[#7FB069] rounded-[24px] p-[1px]">
-                  <div className="h-full w-full bg-white/15 backdrop-blur-[20px] rounded-[23px] p-8 relative overflow-hidden">
-                    {/* Top gradient line */}
-                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
-                    
-                    {/* Pastel glass icon container - Health Green */}
-                    <div className="w-16 h-16 bg-gradient-to-br from-[#7FB069]/30 to-[#A8D5BA]/20 backdrop-blur-[10px] rounded-[18px] flex items-center justify-center shadow-lg mb-5 border border-white/20 group-hover:scale-110 group-hover:rotate-5 transition-all duration-300">
-                      <ShoppingCart className="w-8 h-8 text-white" />
-                    </div>
-                    
-                    {/* Premium badge */}
-                    <div className="bg-[#7FB069]/20 backdrop-blur-[10px] border border-[#7FB069]/30 rounded-lg px-3 py-1 text-xs font-semibold text-white/90 inline-block mb-4">
-                      🛒 Smart Lists
-                    </div>
-                    
-                    {/* Enhanced typography */}
-                    <h3 className="text-[22px] font-bold text-white/90 mb-3 leading-tight tracking-tight" style={{textShadow: '0 1px 2px rgba(255, 255, 255, 0.5)'}}>
-                      Smart Grocery Assistant
-                    </h3>
-                    <p className="text-white/80 text-sm mb-4 leading-relaxed font-medium">
-                      AI-generated shopping lists & local prices
-                    </p>
-                    <p className="text-white/70 text-sm mb-6 leading-relaxed">
-                      Get smart shopping lists based on your goals, dietary restrictions, and local store prices.
-                    </p>
-                    
-                    {/* Premium glassmorphism button */}
-                    <motion.button
-                      className="w-full bg-gradient-to-r from-[#7FB069]/90 to-[#A8D5BA]/80 backdrop-blur-[10px] border border-white/20 rounded-xl py-3 px-6 text-white font-semibold text-sm shadow-lg transition-all duration-300 hover:shadow-xl"
-                      whileHover={{ y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      Try Free (3 days)
-                    </motion.button>
-                  </div>
-                </div>
-              </motion.div>
+            {/* Clean Premium Features Section */}
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-[#2C2C2C] mb-6 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>Premium Features</h2>
+              <p className="text-xl text-[#6B7280] leading-relaxed max-w-3xl mx-auto">
+                Unlock AI-tailored meal plans, advanced analytics, and Zen Mode. Join an elite circle of 10,000+ thriving users.
+              </p>
             </div>
 
-            {/* Enhanced Social Proof Section with Glassmorphism */}
-            <motion.div 
-              className="relative group"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2 }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-[#2C5530] via-[#4A7C59] to-[#7FB069] rounded-[28px] p-[1px]">
-                <div className="h-full w-full bg-white/12 backdrop-blur-[25px] rounded-[27px] p-10 relative overflow-hidden">
-                  {/* Subtle background pattern */}
-                  <div className="absolute inset-0 opacity-5">
-                    <div className="absolute inset-0" style={{
-                      backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)',
-                      backgroundSize: '30px 30px'
-                    }}></div>
+            {/* Clean Feature Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              {/* Recipe Generator Pro - Clean Card */}
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-coral-200 hover:shadow-xl transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E] rounded-xl flex items-center justify-center">
+                    <ChefHat className="w-6 h-6 text-white" />
                   </div>
-                  
-                  <div className="relative z-10 text-center">
-                    <h3 className="text-[28px] font-bold text-white/90 mb-3 leading-tight" style={{textShadow: '0 2px 4px rgba(0,0,0,0.3)'}}>
-                      Join 10,000+ users transforming their health
-                    </h3>
-                    <p className="text-white/80 text-lg mb-8 font-medium">Limited time: Premium features 40% off</p>
-                    
-                    {/* Enhanced User Testimonials */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                      <div className="bg-white/15 backdrop-blur-[15px] rounded-2xl p-6 text-center border border-white/20 shadow-lg">
-                        <div className="w-14 h-14 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg border-2 border-white/30">
-                          <span className="text-white font-bold text-lg">A</span>
-                        </div>
-                        <p className="text-white/90 text-sm mb-3 font-medium">"Ana is healthier than ever"</p>
-                        <div className="flex justify-center gap-1">
-                          {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 text-yellow-300 fill-current" />)}
-                        </div>
-                      </div>
-                      
-                      <div className="bg-white/15 backdrop-blur-[15px] rounded-2xl p-6 text-center border border-white/20 shadow-lg">
-                        <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-teal-500 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg border-2 border-white/30">
-                          <span className="text-white font-bold text-lg">M</span>
-                        </div>
-                        <p className="text-white/90 text-sm mb-3 font-medium">"Lost 15lbs in 3 months"</p>
-                        <div className="flex justify-center gap-1">
-                          {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 text-yellow-300 fill-current" />)}
-                        </div>
-                      </div>
-                      
-                      <div className="bg-white/15 backdrop-blur-[15px] rounded-2xl p-6 text-center border border-white/20 shadow-lg">
-                        <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg border-2 border-white/30">
-                          <span className="text-white font-bold text-lg">J</span>
-                        </div>
-                        <p className="text-white/90 text-sm mb-3 font-medium">"Energy levels through the roof!"</p>
-                        <div className="flex justify-center gap-1">
-                          {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 text-yellow-300 fill-current" />)}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Premium Glassmorphism CTA Button */}
-                    <motion.button
-                      className="bg-gradient-to-r from-[#7FB069]/90 to-[#A8D5BA]/80 backdrop-blur-[15px] border border-white/30 text-white px-10 py-4 rounded-2xl font-bold text-lg shadow-2xl transition-all duration-300 hover:shadow-3xl"
-                      whileHover={{ scale: 1.05, y: -3 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      🚀 Start Free Trial (3 days)
-                    </motion.button>
+                  <div>
+                    <h3 className="text-xl font-bold text-[#2C2C2C]">Recipe Generator Pro</h3>
+                    <p className="text-[#6B7280] text-sm">AI-powered recipe creation</p>
                   </div>
                 </div>
+                <p className="text-[#6B7280] mb-4 leading-relaxed">
+                  Get personalized recipes that match your dietary preferences, available ingredients, and nutritional goals.
+                </p>
+                <button className="w-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300">
+                  Try Free (3 days)
+                </button>
               </div>
-            </motion.div>
-          </motion.div>
 
-        </div>
+              {/* Health Insights Dashboard - Clean Card */}
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-coral-200 hover:shadow-xl transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E] rounded-xl flex items-center justify-center">
+                    <BarChart3 className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-[#2C2C2C]">Health Insights Dashboard</h3>
+                    <p className="text-[#6B7280] text-sm">Advanced analytics & correlations</p>
+                  </div>
+                </div>
+                <p className="text-[#6B7280] mb-4 leading-relaxed">
+                  Discover correlations between food, mood, energy, sleep, and biomarkers with detailed analytics.
+                </p>
+                <button className="w-full bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300">
+                  Try Free (3 days)
+                </button>
+              </div>
+
+              {/* Personal Nutrition Coach - Clean Card */}
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-coral-200 hover:shadow-xl transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#4CAF50] to-[#81C784] rounded-xl flex items-center justify-center">
+                    <Users className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-[#2C2C2C]">Personal Nutrition Coach</h3>
+                    <p className="text-[#6B7280] text-sm">Expert guidance & meal plans</p>
+                  </div>
+                </div>
+                <p className="text-[#6B7280] mb-4 leading-relaxed">
+                  Get personalized meal plans and real-time guidance from certified nutritionists.
+                </p>
+                <button className="w-full bg-gradient-to-r from-[#4CAF50] to-[#81C784] text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300">
+                  Try Free (3 days)
+                </button>
+              </div>
+
+              {/* Smart Grocery Assistant - Clean Card */}
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-coral-200 hover:shadow-xl transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#7FB069] to-[#A8D5BA] rounded-xl flex items-center justify-center">
+                    <ShoppingCart className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-[#2C2C2C]">Smart Grocery Assistant</h3>
+                    <p className="text-[#6B7280] text-sm">AI shopping lists & prices</p>
+                  </div>
+                </div>
+                <p className="text-[#6B7280] mb-4 leading-relaxed">
+                  Get smart shopping lists based on your goals, dietary restrictions, and local store prices.
+                </p>
+                <button className="w-full bg-gradient-to-r from-[#7FB069] to-[#A8D5BA] text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300">
+                  Try Free (3 days)
+                </button>
+              </div>
+            </div>
+
+
+
+            {/* Clean Social Proof Section */}
+            <div className="bg-white rounded-3xl p-10 shadow-xl border border-coral-200">
+              <div className="text-center">
+                <h3 className="text-3xl font-bold text-[#2C2C2C] mb-4">
+                  Join 10,000+ users transforming their health
+                </h3>
+                <p className="text-[#6B7280] text-lg mb-8">Limited time: Premium features 40% off</p>
+                
+                {/* User Testimonials */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <div className="bg-coral-50 rounded-2xl p-6 text-center border border-coral-200 shadow-lg">
+                    <div className="w-14 h-14 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg border-2 border-coral-200">
+                      <span className="text-white font-bold text-lg">A</span>
+                    </div>
+                    <p className="text-[#2C2C2C] text-sm mb-3 font-medium">"Ana is healthier than ever"</p>
+                    <div className="flex justify-center gap-1">
+                      {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />)}
+                    </div>
+                  </div>
+                  
+                  <div className="bg-coral-50 rounded-2xl p-6 text-center border border-coral-200 shadow-lg">
+                    <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-teal-500 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg border-2 border-coral-200">
+                      <span className="text-white font-bold text-lg">M</span>
+                    </div>
+                    <p className="text-[#2C2C2C] text-sm mb-3 font-medium">"Lost 15lbs in 3 months"</p>
+                    <div className="flex justify-center gap-1">
+                      {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />)}
+                    </div>
+                  </div>
+                  
+                  <div className="bg-coral-50 rounded-2xl p-6 text-center border border-coral-200 shadow-lg">
+                    <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg border-2 border-coral-200">
+                      <span className="text-white font-bold text-lg">J</span>
+                    </div>
+                    <p className="text-[#2C2C2C] text-sm mb-3 font-medium">"Energy levels through the roof!"</p>
+                    <div className="flex justify-center gap-1">
+                      {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />)}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Premium CTA Button */}
+                <button className="bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] text-white px-12 py-4 rounded-2xl font-bold text-xl shadow-2xl transition-all duration-300 hover:shadow-3xl">
+                  🚀 Start Free Trial (3 days)
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </main>
 
         {/* Premium Features Modal */}
         <PremiumFeaturesModal 
           isOpen={showPremiumModal} 
           onClose={() => setShowPremiumModal(false)} 
         />
-
       </div>
     </div>
   )

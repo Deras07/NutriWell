@@ -175,14 +175,57 @@ export function AuthProvider({ children }) {
       config={{
         appearance: {
           theme: 'light',
-          accentColor: '#3B82F6'
+          accentColor: '#E8B4B8', // Using your app's pastel coral color
+          showWalletLoginFirst: false,
+          logo: 'https://your-logo-url.com/logo.png' // Add your app logo URL here
         },
-        loginMethods: ['email', 'sms'],
+        loginMethods: [
+          'email',
+          'sms', 
+          'wallet',
+          'google',
+          'twitter',
+          'discord',
+          'github'
+        ],
         embeddedWallets: {
-          createOnLogin: 'off'
+          createOnLogin: 'users-without-wallets', // Create wallet for users who don't have one
+          noPromptOnSignature: true
         },
-        // Privy requires at least one chain, using Viem's mainnet chain config
-        supportedChains: [mainnet]
+        supportedChains: [
+          mainnet,
+          // Add more chains as needed
+        ],
+        defaultChain: mainnet,
+        // Email and SMS configuration
+        emailLogin: {
+          requireVerification: true,
+          showWalletOnboardingAfterLogin: true
+        },
+        // SMS configuration
+        smsLogin: {
+          requireVerification: true,
+          showWalletOnboardingAfterLogin: true
+        },
+        // Social login configuration
+        socialLogins: {
+          google: {
+            clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID || '', // Add your Google OAuth client ID
+          },
+          twitter: {
+            clientId: process.env.REACT_APP_TWITTER_CLIENT_ID || '', // Add your Twitter OAuth client ID
+          },
+          discord: {
+            clientId: process.env.REACT_APP_DISCORD_CLIENT_ID || '', // Add your Discord OAuth client ID
+          },
+          github: {
+            clientId: process.env.REACT_APP_GITHUB_CLIENT_ID || '', // Add your GitHub OAuth client ID
+          }
+        },
+        // Wallet configuration
+        walletConnect: {
+          projectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID || '', // Add your WalletConnect project ID
+        }
       }}
     >
       <AuthProviderInner>

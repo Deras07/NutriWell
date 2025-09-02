@@ -5,9 +5,16 @@ import './App.css'
 
 function App() {
   return (
-    // <AuthProvider>
-      <NuriAssistant />
-    // </AuthProvider>
+    <>
+      {/* Skip Link for Accessibility */}
+      <a href="#main" className="sr-only focus:not-sr-only fixed top-2 left-2 bg-white px-3 py-2 rounded shadow-soft z-[var(--z-tooltip)]">
+        Skip to content
+      </a>
+      
+      {/* <AuthProvider> */}
+        <NuriAssistant />
+      {/* </AuthProvider> */}
+    </>
   )
 }
 
