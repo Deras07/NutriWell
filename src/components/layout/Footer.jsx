@@ -1,8 +1,8 @@
 import React from 'react'
 
 export const Footer = ({ 
-  logo,
-  description,
+  logo = null,
+  description = "Your Personal Nutrition Companion",
   links = [],
   socialLinks = [],
   contactInfo = {},

@@ -330,7 +330,7 @@ export const HealthGoalsStep = ({ onNext, onPrevious, data, isFirstStep, isLastS
   ]
 
   const handleNext = () => {
-    if (!goal) return
+    if (!goal) {return}
     onNext({ healthGoal: goal })
   }
 

@@ -1,0 +1,2713 @@
+import React, { useState, useEffect, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+
+// Unified Empathetic Nuri System
+const nuriPersonality = {
+  core: {
+    empathetic: true,
+    supportive: true, 
+    scientificallyAccurate: true,
+    celebratory: true,
+    understanding: true
+  },
+  adaptiveResponse: {
+    // Nuri reads the user's answers and adapts tone accordingly
+    energetic_user: "I can feel your energy! ⭐ Let's channel that into your wellness journey.",
+    tired_user: "I hear you - some days are harder than others. Let's work with where you are right now. 💙",
+    motivated_user: "Love that drive! 🌟 Let's build on that momentum.",
+    struggling_user: "Thank you for being honest with me. We'll take this one step at a time. 🤗"
+  },
+  universalApproach: "Meet people where they are, support their journey",
+  gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+  animation: "smooth"
+};
+
+// Unified Animation Presets
+const nuriAnimationPresets = {
+  transition: { duration: 0.6, ease: "easeInOut" },
+  hover: { scale: 1.03, boxShadow: "0 10px 30px rgba(0,0,0,0.1)" },
+  celebration: { scale: [1, 1.1, 1], transition: { duration: 0.5 } },
+  supportive: { scale: [1, 1.02, 1], transition: { duration: 0.3 } }
+};
+
+// Contextual Empathetic Responses
+const contextualResponses = {
+  sleep: {
+    "7-9 hours, rested": {
+      response: "Amazing! You're already winning at recovery! 🌟 This gives us a great foundation to work with.",
+      bgGradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      animation: "celebration",
+      tip: "💡 Pro tip: Consistent sleep like this boosts metabolism by 15%!"
+    },
+    "Less than 6 hours": {
+      response: "I hear you - rough night! 😔 Let's create a gentle plan that works with your current reality.",
+      bgGradient: "linear-gradient(135deg, #ffa726 0%, #fb8c00 100%)", 
+      animation: "supportive",
+      tip: "⚡ Quick energy boost: Try 10 jumping jacks or water with lemon!",
+      supportMessage: "You're not alone in this - we'll work together! 💪"
+    }
+  },
+  mood: {
+    "Excited and motivated": {
+      response: "I can feel your energy! ⭐ Let's channel that into your wellness journey.",
+      animation: "celebration"
+    },
+    "Overwhelmed or discouraged": {
+      response: "Thank you for being honest with me. We'll take this one step at a time. 🤗",
+      animation: "supportive"
+    }
+  }
+};
+
+// Progress messages for wellness tree
+const progressMessages = {
+  1: "Planting your wellness seed... 🌱",
+  2: "Your energy roots are growing! 🌿", 
+  3: "Nutrition branches sprouting! 🌳",
+  4: "Activity leaves unfurling! 🍃",
+  5: "Goal fruits beginning to form! 🍎",
+  6: "Your wellness tree is thriving! 🌳⭐",
+  7: "Your personalized wellness forest is complete! 🌲🌟"
+};
+
+// Add custom CSS for scrollbar hiding
+const scrollbarHideStyles = `
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+`
+import { Button } from '../ui/button'
+import { Card } from '../ui/card'
+import FloatingInput from '../ui/FloatingInput'
+import FloatingSelect from '../ui/FloatingSelect'
+import DailyCheckIn from './DailyCheckIn'
+import HealthTipCard from './HealthTipCard'
+import { useNuriLogic } from '../../hooks/useNuriLogic'
+import { useAdaptiveTheme } from '../../hooks/useAdaptiveTheme'
+import { useAuth } from '../../providers/PrivyProvider'
+import AnimatedCard from '../ui/AnimatedCard'
+import GlassCard from '../ui/GlassCard'
+import DataSources from '../DataSources'
+import NuriAvatar from '../ui/NuriAvatar'
+import SpeechBubble from '../ui/SpeechBubble'
+import { 
+  ArrowRight, 
+  ArrowLeft, 
+  Heart, 
+  Zap, 
+  Target, 
+  TrendingUp,
+  Calculator,
+  Download,
+  Share2,
+  RefreshCw,
+  MessageCircle,
+  Sparkles,
+  Crown,
+  Shield,
+  Star
+} from 'lucide-react'
+
+const NuriAssistant = () => {
+  // Safety check for any potential user object issues
+  const { user, dbUser } = useAuth?.() || {}
+  
+  // Debug logging for user objects (removed for production)
+  
+  const [currentStep, setCurrentStep] = useState(0)
+  const [isCalculating, setIsCalculating] = useState(false)
+  const [showCheckIn, setShowCheckIn] = useState(false)
+  const [showHealthTip, setShowHealthTip] = useState(false)
+  const [userInput, setUserInput] = useState('')
+  const [conversation, setConversation] = useState([])
+  const [isTyping, setIsTyping] = useState(false)
+  const [showGuidedFlow, setShowGuidedFlow] = useState(true)
+  const [guidedResults, setGuidedResults] = useState(null)
+  const [macroProgress, setMacroProgress] = useState({ protein: 65, carbs: 80, fats: 45 })
+  const [guidedStep, setGuidedStep] = useState(0)
+  const [guidedAnswers, setGuidedAnswers] = useState({})
+  const [showSummary, setShowSummary] = useState(false)
+  
+  // Enhanced state for unified Nuri system
+  const [emotionalContext, setEmotionalContext] = useState('neutral')
+  const [supportLevel, setSupportLevel] = useState('standard')
+  const [currentUserMood, setCurrentUserMood] = useState('neutral')
+  
+  // NEW: Greeting acknowledgment state
+  const [greetingAcknowledged, setGreetingAcknowledged] = useState(false)
+  const [showGreeting, setShowGreeting] = useState(true)
+  
+  // NEW: Skip functionality state
+  const [skippedSteps, setSkippedSteps] = useState(new Set())
+  
+  // NEW: Data Sources modal state
+  const [showDataSources, setShowDataSources] = useState(false)
+
+  // Welcome Component for Unified Nuri
+    const WelcomeScreen = () => {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="max-w-4xl mx-auto p-8 text-center"
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+          className="mb-8"
+        >
+          {/* Nuri Avatar */}
+          <div className="flex justify-center mb-6">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+            >
+              <NuriAvatar 
+                size="xlarge" 
+                variant="excited" 
+                speaking={true}
+                className="mx-auto"
+              />
+            </motion.div>
+          </div>
+          
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            Welcome to Nuri
+          </h1>
+          <p className="text-xl text-gray-600 mb-8">
+            Your empathetic wellness companion
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100"
+        >
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            Let's Get Started! 🚀
+          </h2>
+          <p className="text-gray-600 mb-6">
+            I'm here to understand your unique wellness journey and create a personalized plan just for you.
+          </p>
+
+          <motion.button
+            onClick={() => setShowGuidedFlow(true)}
+            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Start My Wellness Journey ⭐
+          </motion.button>
+        </motion.div>
+      </motion.div>
+    )
+  }
+
+  // Universal Questions - One Version for Everyone
+  const guidedSteps = [
+    {
+      id: 'sleep',
+      question: "How did you sleep last night? 😴",
+      subtitle: "Your rest affects everything from energy to cravings",
+      options: [
+        { value: "7-9 hours, rested", label: "Great! Slept 7-9 hours and feeling rested", icon: "🌅" },
+        { value: "6-7 hours, okay", label: "Pretty good - got around 6-7 hours", icon: "😌" },
+        { value: "Less than 6 hours", label: "Not great - less than 6 hours or restless", icon: "😔" },
+        { value: "Very poor", label: "Terrible - barely slept or very interrupted", icon: "😫" }
+      ]
+    },
+    {
+      id: 'activity',
+      question: "How active are you in a typical week? 🏃‍♀️",
+      subtitle: "This helps me calculate your energy needs accurately",
+      options: [
+        { value: "very_active", label: "Very active - intense exercise 5+ times per week", icon: "🔥" },
+        { value: "moderately_active", label: "Moderately active - regular workouts 3-4 times per week", icon: "💪" },
+        { value: "lightly_active", label: "Lightly active - walks, yoga, gentle movement", icon: "🚶‍♀️" },
+        { value: "sedentary", label: "Mostly sedentary - desk work, minimal exercise", icon: "📚" }
+      ]
+    },
+    {
+      id: 'mood',
+      question: "How are you feeling about your health journey today? 💭",
+      subtitle: "There's no wrong answer - I want to meet you where you are",
+      options: [
+        { value: "excited", label: "Excited and motivated to make changes!", icon: "🌟" },
+        { value: "optimistic", label: "Cautiously optimistic, ready to try", icon: "😊" },
+        { value: "neutral", label: "Neutral - not sure what to expect", icon: "😐" },
+        { value: "overwhelmed", label: "Overwhelmed or discouraged right now", icon: "😞" }
+      ]
+    },
+    {
+      id: 'eating',
+      question: "How would you describe your relationship with food? 🍽️",
+      subtitle: "This helps me understand your current patterns",
+      options: [
+        { value: "balanced", label: "Pretty balanced, I enjoy food without overthinking", icon: "🍎" },
+        { value: "mindful", label: "I try to be mindful but sometimes struggle", icon: "🧘‍♀️" },
+        { value: "emotional", label: "I often eat when stressed or emotional", icon: "😤" },
+        { value: "restrictive", label: "I'm very careful, sometimes too restrictive", icon: "📏" }
+      ]
+    },
+    {
+      id: 'goal',
+      question: "What's your primary wellness goal right now? 🎯",
+      subtitle: "This helps me tailor your nutrition plan",
+      options: [
+        { value: "lose_weight", label: "Lose weight and feel lighter", icon: "⚖️" },
+        { value: "gain_muscle", label: "Build muscle and strength", icon: "💪" },
+        { value: "energy", label: "Have more energy throughout the day", icon: "⚡" },
+        { value: "health", label: "Improve overall health and wellness", icon: "❤️" }
+      ]
+    },
+    {
+      id: 'hydration',
+      question: "How's your hydration typically? 💧",
+      subtitle: "Hydration affects everything from energy to metabolism",
+      options: [
+        { value: "excellent", label: "Excellent - I drink water regularly", icon: "💧" },
+        { value: "good", label: "Good - I try to stay hydrated", icon: "🥤" },
+        { value: "poor", label: "Poor - I often forget to drink water", icon: "🏜️" },
+        { value: "variable", label: "Variable - depends on the day", icon: "🌊" }
+      ]
+    },
+    {
+      id: 'extras',
+      question: "Any specific concerns or conditions I should know about? 🤔",
+      subtitle: "This helps me provide more personalized advice",
+      options: [
+        { value: "none", label: "No specific concerns", icon: "✅" },
+        { value: "stress", label: "High stress levels", icon: "😰" },
+        { value: "digestive", label: "Digestive issues", icon: "🤢" },
+        { value: "medical", label: "Medical conditions or medications", icon: "🏥" }
+      ]
+    }
+  ]
+  
+  const {
+    nuriState,
+    currentPersonality,
+    generateResponse,
+    handleDailyCheckIn,
+    generateMacroInsights,
+    processJournalEntry,
+    isProFeatureAvailable,
+    getProUpgradeSuggestions,
+    updateNuriState
+  } = useNuriLogic()
+
+  const { theme, timeOfDay, userMood, isDark, isStressed } = useAdaptiveTheme(nuriState.userMood)
+
+  const [formData, setFormData] = useState({
+    name: '',
+    age: '',
+    gender: '',
+    height: '',
+    weight: '',
+    activityLevel: '',
+    goal: ''
+  })
+  const [results, setResults] = useState(null)
+
+  // Handle user input and generate Nuri response
+  const handleUserInput = (input) => {
+    if (!input.trim()) return
+
+    // Add user message to conversation
+    const userMessage = { type: 'user', message: input, timestamp: new Date() }
+    setConversation(prev => [...prev, userMessage])
+    setUserInput('')
+
+    // Show typing indicator
+    setIsTyping(true)
+
+    // Simulate typing delay
+    setTimeout(() => {
+      // Generate Nuri's response
+      const response = generateResponse(input, {
+        macroData: results?.macros,
+        exerciseToday: false // This would come from user data
+      })
+
+      // Add Nuri's response to conversation
+      const nuriMessage = { type: 'nuri', message: response.message, timestamp: new Date() }
+      setConversation(prev => [...prev, nuriMessage])
+      setIsTyping(false)
+
+      // Show health tip if available
+      if (response.healthTip) {
+        setShowHealthTip(true)
+      }
+
+      // Show check-in if needed
+      if (response.shouldCheckIn) {
+        setShowCheckIn(true)
+      }
+    }, 1500 + Math.random() * 1000) // Random delay for natural feel
+  }
+
+  // Handle daily check-in completion
+  const handleCheckInComplete = (mood, notes) => {
+    const response = handleDailyCheckIn(mood, notes)
+    setConversation(prev => [...prev, { type: 'nuri', message: response.message, timestamp: new Date() }])
+    setShowCheckIn(false)
+  }
+
+  // Handle journal entry
+  const handleJournalEntry = (entry) => {
+    const response = processJournalEntry(entry)
+    setConversation(prev => [...prev, { type: 'nuri', message: response.message, timestamp: new Date() }])
+  }
+
+  // Handle guided flow completion
+  const handleGuidedFlowComplete = (results) => {
+    setGuidedResults(results)
+    setShowGuidedFlow(false)
+    // Add a success message to conversation
+    setConversation(prev => [...prev, { 
+      type: 'nuri', 
+      message: "Great! I've created your personalized nutrition plan. Check out the results above! 🎉", 
+      timestamp: new Date() 
+    }])
+  }
+
+  // Handle guided flow skip
+  const handleGuidedFlowSkip = () => {
+    setShowGuidedFlow(false)
+    setConversation(prev => [...prev, { 
+      type: 'nuri', 
+      message: "No worries! You can always come back to complete the guided assessment later. How can I help you today?", 
+      timestamp: new Date() 
+    }])
+  }
+
+  const handleGuidedAnswer = (stepId, answer) => {
+    // Handle skipped answers
+    if (answer === 'skipped') {
+      // Batch state updates to prevent flashing
+      const newAnswers = { ...guidedAnswers, [stepId]: 'skipped' }
+      setGuidedAnswers(newAnswers)
+      
+      // Move to next step
+      if (guidedStep < guidedSteps.length - 1) {
+        setGuidedStep(prev => prev + 1)
+      } else {
+        // Complete the flow
+        const results = calculatePersonalizedResults()
+        // Batch these updates together
+        setGuidedResults(results)
+        setShowSummary(true)
+        setShowGuidedFlow(false)
+      }
+      return
+    }
+    
+    // Batch state updates to prevent flashing
+    const newAnswers = { ...guidedAnswers, [stepId]: answer }
+    setGuidedAnswers(newAnswers)
+    
+    // Enhanced conversational feedback
+    const conversationalFeedback = {
+      sleep: {
+        "7-9 hours, rested": "Amazing! Great sleep is the foundation of everything. You're already winning! 🌟",
+        "6-7 hours, okay": "Not bad! We can definitely work with that. Let's optimize it further! 😊",
+        "Less than 6 hours": "I understand - sleep can be tricky. Let's work on that together. You're not alone! 💙",
+        "Very poor": "Thank you for being honest. We'll address this together. Small steps lead to big changes! 🤗"
+      },
+      activity: {
+        "very_active": "Wow! You're really active - that's fantastic! Your body will love the extra fuel! 🔥",
+        "moderately_active": "Great balance! Regular movement is so important. You're doing great! 💪",
+        "lightly_active": "Perfect! Every bit of movement counts. Let's build on that foundation! 🌱",
+        "sedentary": "No judgment here! Let's find movement that works for you. We'll start small! 🚶‍♀️"
+      },
+      mood: {
+        "excited": "I love your energy! Let's channel that into amazing results! You're going to crush this! ⭐",
+        "optimistic": "That's a great mindset to start with! Optimism is powerful fuel! 🌟",
+        "neutral": "Perfect! We'll build on that stable foundation. Sometimes neutral is exactly what we need! 🎯",
+        "overwhelmed": "Thank you for being honest. We'll take this step by step. You've got this! 🤗"
+      },
+      eating: {
+        "balanced": "That's wonderful! A balanced relationship with food is so healthy. You're ahead of the game! 🍎",
+        "mindful": "Mindful eating is a superpower! Let's make it even easier for you! 🧘‍♀️",
+        "emotional": "You're not alone in this. Let's build healthier coping strategies together! 💪",
+        "restrictive": "Your health matters! Let's find a balanced approach that nourishes you! 🌸"
+      },
+      goal: {
+        "lose_weight": "Great goal! Let's focus on sustainable, healthy changes. You're going to feel amazing! 🎯",
+        "gain_muscle": "Excellent! Building strength is so empowering. Let's fuel those gains! 💪",
+        "energy": "Love that! Energy is the foundation of everything else. Let's optimize your fuel! ⚡",
+        "health": "Perfect! Health is wealth, and you're investing in yourself. Smart choice! ❤️"
+      },
+      hydration: {
+        "excellent": "Fantastic! Hydration is so important for your body. You're already winning! 💧",
+        "good": "Good effort! Let's make it even better. Small improvements add up! 🥤",
+        "poor": "No worries! Let's make hydration a habit together. We'll start simple! 💪",
+        "variable": "That's totally normal! Let's find consistency. We'll make it easy! 🌊"
+      },
+      extras: {
+        "none": "Perfect! We'll focus on general optimization. Clean slate! 🎯",
+        "stress": "Stress affects everything - let's address that together. You're not alone! 🧘‍♀️",
+        "digestive": "Digestive health is crucial - we'll be mindful of that. Your body will thank you! 🌱",
+        "medical": "Thank you for sharing. We'll work within your needs. Your health comes first! 🤗"
+      }
+    }
+    
+    // Get conversational feedback
+    const feedback = conversationalFeedback[stepId]?.[answer] || "Thanks for sharing that with me! Let's continue."
+    
+    // Add feedback to conversation
+    setConversation(prev => [...prev, { 
+      type: 'nuri', 
+      message: feedback,
+      timestamp: new Date() 
+    }])
+
+    // Add transition message between steps
+    if (guidedStep < guidedSteps.length - 1) {
+      const transitionMessages = [
+        "Great! Now let's move on to the next question...",
+        "Perfect! Here's the next thing I'd like to know...",
+        "Awesome! Let's continue with this next part...",
+        "Excellent! Now for the next step in our journey...",
+        "Wonderful! Let's keep going with this next question..."
+      ]
+      
+      const randomTransition = transitionMessages[Math.floor(Math.random() * transitionMessages.length)]
+      
+      setTimeout(() => {
+        setConversation(prev => [...prev, { 
+          type: 'nuri', 
+          message: randomTransition,
+          timestamp: new Date() 
+        }])
+      }, 1000)
+    }
+
+    // Move to next step or complete
+    if (guidedStep < guidedSteps.length - 1) {
+      setGuidedStep(prev => prev + 1)
+    } else {
+      // Complete the flow and show summary - batch updates
+      const results = calculatePersonalizedResults()
+      setGuidedResults(results)
+      setShowSummary(true)
+      setShowGuidedFlow(false)
+    }
+  }
+
+  const calculatePersonalizedResults = () => {
+    // Simple calculation based on guided answers
+    const { activity, goal } = guidedAnswers
+    
+    let baseCalories = 2000 // Base calculation
+    let proteinRatio = 0.25
+    let carbsRatio = 0.45
+    let fatsRatio = 0.30
+
+    // Adjust based on activity
+    if (activity === 'very_active') baseCalories += 500
+    else if (activity === 'moderate') baseCalories += 200
+    else if (activity === 'sedentary') baseCalories -= 200
+
+    // Adjust based on goal
+    if (goal === 'weight_loss') baseCalories -= 300
+    else if (goal === 'muscle') {
+      baseCalories += 200
+      proteinRatio = 0.30
+      carbsRatio = 0.40
+    }
+    else if (goal === 'energy') {
+      carbsRatio = 0.50
+      proteinRatio = 0.25
+      fatsRatio = 0.25
+    }
+
+    const proteinGrams = Math.round((baseCalories * proteinRatio) / 4)
+    const carbsGrams = Math.round((baseCalories * carbsRatio) / 4)
+    const fatsGrams = Math.round((baseCalories * fatsRatio) / 9)
+
+    return {
+      dailyCalories: baseCalories,
+      macros: {
+        protein: { grams: proteinGrams, percent: Math.round(proteinRatio * 100) },
+        carbs: { grams: carbsGrams, percent: Math.round(carbsRatio * 100) },
+        fats: { grams: fatsGrams, percent: Math.round(fatsRatio * 100) }
+      },
+      tip: getPersonalizedTip()
+    }
+  }
+
+  const getPersonalizedTip = () => {
+    const { mood, sleep, eating, activity, goal, hydration } = guidedAnswers
+    
+    if (sleep === 'poor') return "Prioritize 7-9 hours of sleep - it's the foundation of good health and metabolism."
+    if (hydration === 'poor') return "Start your day with a glass of water and aim for 8 glasses daily."
+    if (eating === 'skipping') return "Try eating within 1 hour of waking up to kickstart your metabolism."
+    if (activity === 'sedentary') return "Add a 10-minute walk to your daily routine - every bit of movement counts!"
+    if (goal === 'energy') return "Eat protein with every meal to maintain steady energy levels throughout the day."
+    if (goal === 'weight_loss') return "Focus on whole foods and try eating slowly to recognize fullness cues."
+    if (goal === 'muscle') return "Eat protein within 30 minutes after your workout for optimal muscle recovery."
+    
+    return "Consistency is key! Small, sustainable changes lead to lasting results."
+  }
+
+    // Guided Conversation Component - Memoized to prevent unnecessary re-renders
+  const GuidedConversation = React.memo(({ steps, currentStep, onAnswer, answers }) => {
+    const currentStepData = steps[currentStep]
+    const progress = ((currentStep + 1) / steps.length) * 100
+
+    // Dynamic greetings for Nuri
+    const nuriGreetings = [
+      "Hey there! I'm Nuri, your AI wellness assistant. Let's get started! ⭐",
+      "Nuri here! How are you doing today? Ready to create your personalized plan? 💫",
+      "Hi! I'm Nuri, and I'm excited to help you on your wellness journey! 💫",
+      "Welcome! I'm Nuri, your AI companion. Let's make this journey amazing together! 🚀",
+      "Hey! Nuri here. I can't wait to learn about you and create something special! ⭐"
+    ]
+
+    // Get a random greeting
+    const randomGreeting = nuriGreetings[Math.floor(Math.random() * nuriGreetings.length)]
+
+    // Make questions more conversational
+    const conversationalQuestions = {
+      sleep: "Alright, let's talk about your sleep. How did it go last night? 😴",
+      activity: "Now, I'm curious about your activity level. How active are you in a typical week? 🏃‍♀️",
+      mood: "I'd love to know how you're feeling about your health journey today. What's on your mind? 💭",
+      eating: "Let's chat about your relationship with food. How would you describe it? 🍽️",
+      goal: "This is exciting! What's your primary wellness goal right now? 🎯",
+      hydration: "Quick question about hydration - how's your water intake typically? 💧",
+      extras: "Almost done! Any specific concerns or conditions I should know about? 🤔"
+    }
+
+    // Enhanced questions with personality adaptation
+    const enhancedQuestions = {
+      sleep: {
+        coach: {
+          title: "Recovery Check! How's your sleep tank? ⛽",
+          subtitle: "Great athletes know recovery = gains!"
+        },
+        guide: {
+          title: "Let's talk about your rest... 😴",
+          subtitle: "Sleep is when your body heals and recharges"
+        },
+        buddy: {
+          title: "Sleep Data Collection 📊",
+          subtitle: "Sleep affects 14 different metabolic pathways!"
+        }
+      }
+    };
+
+    // NEW: Handle greeting acknowledgment
+    const handleGreetingAcknowledgment = () => {
+      setGreetingAcknowledged(true)
+      setShowGreeting(false)
+    }
+
+    // NEW: Handle skip functionality
+    const handleSkip = () => {
+      // Mark current step as skipped
+      setSkippedSteps(prev => new Set([...prev, currentStep]))
+      
+      // Move to next step
+      if (currentStep < steps.length - 1) {
+        onAnswer(currentStepData.id, 'skipped')
+      } else {
+        // Complete the flow
+        setShowSummary(true)
+        setShowGuidedFlow(false)
+      }
+    }
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          duration: 0.5,
+          ...nuriAnimationPresets.transition
+        }}
+        className="w-full"
+      >
+        {/* Wellness Tree Progress */}
+        <WellnessTree currentStep={currentStep} answers={answers} />
+
+        {/* Nuri's Greeting - Show first, then questions */}
+        {showGreeting && !greetingAcknowledged && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mb-6 border border-blue-200"
+          >
+            <div className="flex items-center gap-4">
+              {/* Nuri Avatar */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.4, type: "spring", stiffness: 200 }}
+              >
+                <NuriAvatar 
+                  size="large" 
+                  variant="excited" 
+                  speaking={true}
+                />
+              </motion.div>
+              
+              {/* Speech Bubble */}
+              <div className="flex-1">
+                <SpeechBubble 
+                  message={randomGreeting}
+                  type="nuri"
+                  animated={true}
+                />
+              </div>
+            </div>
+            
+            {/* Acknowledgment Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.5 }}
+              className="mt-4 text-center"
+            >
+              <button
+                onClick={handleGreetingAcknowledgment}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-300"
+              >
+                Got it! Let's continue ⭐
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+
+        {/* Question Card - Only show after greeting is acknowledged */}
+        {greetingAcknowledged && !showGreeting && (
+          <motion.div
+            key={currentStep}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ 
+              duration: 0.3,
+              ...nuriAnimationPresets.transition
+            }}
+            className="bg-white rounded-xl shadow-lg p-8 border border-gray-100"
+            style={{
+              background: `linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.98) 100%), ${nuriPersonality.gradient}`
+            }}
+          >
+            {/* Question Header */}
+            <div className="text-center mb-6">
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="flex items-center justify-center gap-3 mb-4"
+              >
+                <NuriAvatar 
+                  size="medium" 
+                  variant="excited" 
+                  speaking={true}
+                  className="mx-auto"
+                />
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm text-gray-500">Step {currentStep + 1} of {steps.length}</span>
+                </div>
+              </motion.div>
+              
+              <motion.h3
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="text-xl font-semibold text-gray-800 mb-2"
+              >
+                {conversationalQuestions[currentStepData.id] || currentStepData.question}
+              </motion.h3>
+              
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="text-gray-600 text-sm"
+              >
+                {currentStepData.subtitle || "Choose the option that best describes you"}
+              </motion.p>
+            </div>
+
+            {/* Answer Options */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="space-y-3"
+            >
+              {currentStepData.options.map((option, index) => (
+                <motion.button
+                  key={option.value}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6 + (index * 0.1) }}
+                  whileHover={{ scale: 1.02, boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => onAnswer(currentStepData.id, option.value)}
+                  className={`w-full p-4 rounded-lg border-2 transition-all duration-200 text-left ${
+                    answers[currentStepData.id] === option.value
+                      ? 'border-blue-500 bg-blue-50 shadow-md'
+                      : 'border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-gray-800">{option.label}</span>
+                    {answers[currentStepData.id] === option.value && (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center"
+                      >
+                        <span className="text-white text-xs">✓</span>
+                      </motion.div>
+                    )}
+                  </div>
+                </motion.button>
+              ))}
+            </motion.div>
+
+            {/* Skip Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              className="mt-6 text-center"
+            >
+              <button
+                onClick={handleSkip}
+                className="text-gray-500 hover:text-gray-700 text-sm underline transition-colors duration-200"
+              >
+                Skip for now
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </motion.div>
+    )
+  })
+
+  // Wellness Tree Component
+  const WellnessTree = ({ currentStep, answers }) => {
+    const treeStages = [
+      { step: 1, icon: "🌱", message: "Planting your wellness seed..." },
+      { step: 2, icon: "🌿", message: "Your energy roots are growing!" },
+      { step: 3, icon: "🌳", message: "Nutrition branches sprouting!" },
+      { step: 4, icon: "🍃", message: "Activity leaves unfurling!" },
+      { step: 5, icon: "🍎", message: "Goal fruits beginning to form!" },
+      { step: 6, icon: "🌳⭐", message: "Your wellness tree is thriving!" },
+      { step: 7, icon: "🌲🌟", message: "Your personalized wellness forest is complete!" }
+    ];
+
+    return (
+      <div className="wellness-tree-container mb-8">
+        <div className="flex justify-center items-center space-x-4">
+          {treeStages.map((stage, index) => (
+            <motion.div
+              key={stage.step}
+              className={`flex flex-col items-center ${index <= currentStep ? 'opacity-100' : 'opacity-30'}`}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ 
+                scale: index <= currentStep ? 1 : 0.8,
+                opacity: index <= currentStep ? 1 : 0.3
+              }}
+              transition={{ 
+                delay: index * 0.1,
+                type: "easeOut",
+                stiffness: 200
+              }}
+            >
+              <motion.div
+                className={`text-3xl mb-2 ${index <= currentStep ? 'animate-pulse' : ''}`}
+                animate={index <= currentStep ? {
+                  scale: [1, 1.2, 1],
+                  rotate: [0, 5, -5, 0]
+                } : {}}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatType: "reverse"
+                }}
+              >
+                {stage.icon}
+              </motion.div>
+              <div className="text-xs text-gray-600 text-center max-w-20">
+                {index <= currentStep ? stage.message : `Step ${stage.step}`}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+
+
+    const currentStepData = steps[currentStep]
+    const progress = ((currentStep + 1) / steps.length) * 100
+
+    // Dynamic greetings for Nuri
+    const nuriGreetings = [
+      "Hey there! I'm Nuri, your AI wellness assistant. Let's get started! ⭐",
+      "Nuri here! How are you doing today? Ready to create your personalized plan? ��",
+      "Hi! I'm Nuri, and I'm excited to help you on your wellness journey! 💫",
+      "Welcome! I'm Nuri, your AI companion. Let's make this journey amazing together! 🚀",
+      "Hey! Nuri here. I can't wait to learn about you and create something special! ⭐"
+    ]
+
+    // Get a random greeting
+    const randomGreeting = nuriGreetings[Math.floor(Math.random() * nuriGreetings.length)]
+
+    // Make questions more conversational
+    const conversationalQuestions = {
+      sleep: "Alright, let's talk about your sleep. How did it go last night? 😴",
+      activity: "Now, I'm curious about your activity level. How active are you in a typical week? 🏃‍♀️",
+      mood: "I'd love to know how you're feeling about your health journey today. What's on your mind? 💭",
+      eating: "Let's chat about your relationship with food. How would you describe it? 🍽️",
+      goal: "This is exciting! What's your primary wellness goal right now? 🎯",
+      hydration: "Quick question about hydration - how's your water intake typically? 💧",
+      extras: "Almost done! Any specific concerns or conditions I should know about? 🤔"
+    }
+
+    // Enhanced questions with personality adaptation
+    const enhancedQuestions = {
+      sleep: {
+        coach: {
+          title: "Recovery Check! How's your sleep tank? ⛽",
+          subtitle: "Great athletes know recovery = gains!"
+        },
+        guide: {
+          title: "Let's talk about your rest... 😴",
+          subtitle: "Sleep is when your body heals and recharges"
+        },
+        buddy: {
+          title: "Sleep Data Collection 📊",
+          subtitle: "Sleep affects 14 different metabolic pathways!"
+        }
+      }
+    };
+
+    // NEW: Handle greeting acknowledgment
+    const handleGreetingAcknowledgment = () => {
+      setGreetingAcknowledged(true)
+      setShowGreeting(false)
+    }
+
+    // NEW: Handle skip functionality
+    const handleSkip = () => {
+      // Mark current step as skipped
+      setSkippedSteps(prev => new Set([...prev, currentStep]))
+      
+      // Move to next step
+      if (currentStep < steps.length - 1) {
+        onAnswer(currentStepData.id, 'skipped')
+      } else {
+        // Complete the flow
+        setShowSummary(true)
+        setShowGuidedFlow(false)
+      }
+    }
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          duration: 0.5,
+          ...nuriAnimationPresets.transition
+        }}
+        className="w-full"
+      >
+        {/* Wellness Tree Progress */}
+        <WellnessTree currentStep={currentStep} answers={answers} />
+
+        {/* Nuri's Greeting - Show first, then questions */}
+        {showGreeting && !greetingAcknowledged && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mb-6 border border-blue-200"
+          >
+            <div className="flex items-center gap-4">
+              {/* Nuri Avatar */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.4, type: "spring", stiffness: 200 }}
+              >
+                <NuriAvatar 
+                  size="large" 
+                  variant="excited" 
+                  speaking={true}
+                />
+              </motion.div>
+              
+              {/* Speech Bubble */}
+              <div className="flex-1">
+                <SpeechBubble 
+                  message={randomGreeting}
+                  type="nuri"
+                  animated={true}
+                />
+              </div>
+            </div>
+            
+            {/* Acknowledgment Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.5 }}
+              className="mt-4 text-center"
+            >
+              <button
+                onClick={handleGreetingAcknowledgment}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-300"
+              >
+                Got it! Let's continue ⭐
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+
+        {/* Question Card - Only show after greeting is acknowledged */}
+        {greetingAcknowledged && !showGreeting && (
+          <motion.div
+            key={currentStep}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ 
+              duration: 0.3,
+              ...nuriAnimationPresets.transition
+            }}
+            className="bg-white rounded-xl shadow-lg p-8 border border-gray-100"
+            style={{
+              background: `linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.98) 100%), ${nuriPersonality.gradient}`
+            }}
+          >
+            <div className="text-center mb-8">
+              {/* Nuri Avatar for Questions */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
+                className="mb-4"
+              >
+                <NuriAvatar 
+                  size="medium" 
+                  variant="excited" 
+                  speaking={false}
+                  className="mx-auto"
+                />
+              </motion.div>
+              
+              <motion.h3 
+                className="text-2xl font-semibold text-gray-800 mb-4"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                {conversationalQuestions[currentStepData.id] || currentStepData.question}
+              </motion.h3>
+              <motion.p 
+                className="text-gray-600"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                {currentStepData.subtitle || "Choose the option that best describes your situation"}
+              </motion.p>
+            </div>
+
+            {/* Answer Options */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {currentStepData.options.map((option, index) => (
+                <motion.button
+                  key={option.value}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    delay: index * 0.1,
+                    ...nuriAnimationPresets.transition
+                  }}
+                  whileHover={nuriAnimationPresets.hover}
+                  onClick={() => onAnswer(currentStepData.id, option.value)}
+                  className="p-6 border-2 border-gray-200 rounded-xl hover:border-brandStart hover:shadow-md transition-all duration-200 text-left group relative overflow-hidden"
+                >
+                  {/* Subtle background animation */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                  
+                  <div className="flex items-center gap-3 relative z-10">
+                    <span className="text-2xl">{option.icon}</span>
+                    <div>
+                      <div className="font-medium text-gray-800 group-hover:text-brandStart transition-colors">
+                        {option.label}
+                      </div>
+                      <div className="text-sm text-gray-500 group-hover:text-gray-600 transition-colors">
+                        {option.description || "Click to select this option"}
+                      </div>
+                    </div>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+
+            {/* Skip Option - Fixed to advance to next step */}
+            <div className="text-center mt-6">
+              <button
+                onClick={handleSkip}
+                className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+              >
+                Skip for now
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </motion.div>
+    )
+  }
+
+  // Wellness Story Generator
+  const generateWellnessStory = (answers, personality) => {
+    const storyElements = {
+      coach: {
+        archetype: "wellness warrior",
+        challenge: "faces daily challenges",
+        goal: "achieve peak performance",
+        strengths: "determination and energy",
+        plan: "a strategic nutrition plan"
+      },
+      guide: {
+        archetype: "mindful seeker",
+        challenge: "seeks balance in life",
+        goal: "find inner peace and health",
+        strengths: "patience and wisdom",
+        plan: "a gentle wellness journey"
+      },
+      buddy: {
+        archetype: "curious explorer",
+        challenge: "wants to understand the science",
+        goal: "optimize health through knowledge",
+        strengths: "intelligence and curiosity",
+        plan: "an evidence-based approach"
+      }
+    };
+
+    const elements = storyElements[personality] || storyElements.guide;
+    
+    return {
+      title: `Your Wellness ${personality === 'coach' ? 'Superhero' : personality === 'guide' ? 'Journey' : 'Discovery'} Story`,
+      story: `Meet your inner ${elements.archetype}, who ${elements.challenge} but is ready to ${elements.goal}! With ${elements.strengths} as your foundation and ${elements.plan} as your guide, you're set for an amazing transformation!`
+    };
+  };
+
+  // Enhanced Personalized Summary Component
+  const PersonalizedSummary = ({ results, onRestart, answers }) => {
+    const premiumFeatures = [
+      {
+        title: "Smart Meal Plans",
+        description: "Your meals — done for you. Based on your mood, cravings, and goals.",
+        icon: "🍽️",
+        color: "from-blue-500 to-indigo-500"
+      },
+      {
+        title: "Cycle & Condition Sync",
+        description: "We get it — some days need different fuel. Nuri adjusts with you.",
+        icon: "🔄",
+        color: "from-purple-500 to-pink-500"
+      },
+      {
+        title: "Mood-Based Coaching",
+        description: "Feel off? Get gentle nudges, not guilt.",
+        icon: "🧠",
+        color: "from-green-500 to-emerald-500"
+      },
+      {
+        title: "Streak & Trend Insights",
+        description: "Track wins over time. Zoom out to stay motivated.",
+        icon: "📈",
+        color: "from-orange-500 to-red-500"
+      },
+      {
+        title: "Allergy & Condition Filters",
+        description: "Nuri remembers — no gluten? Allergic to dairy? We'll skip it.",
+        icon: "🛡️",
+        color: "from-yellow-500 to-amber-500"
+      }
+    ]
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="space-y-6"
+      >
+        {/* Wellness Story */}
+        <motion.div 
+          className="bg-white rounded-xl shadow-lg p-8 border border-gray-100 mb-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="text-center mb-6">
+            {/* Nuri Avatar */}
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+              className="mb-4"
+            >
+              <NuriAvatar 
+                size="large" 
+                variant="excited" 
+                speaking={true}
+                className="mx-auto"
+              />
+            </motion.div>
+            
+            <motion.h2 
+              className="text-3xl font-bold text-gray-800 mb-4"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              Your Wellness Journey Story 🦸‍♀️
+            </motion.h2>
+            <motion.p 
+              className="text-lg text-gray-700 leading-relaxed"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              Based on your answers, I can see you're ready for an amazing wellness transformation! Let's create a personalized plan that works for your unique needs and goals.
+            </motion.p>
+          </div>
+        </motion.div>
+
+        {/* Results Summary */}
+        <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+              Your Personalized Nutrition Plan
+            </h3>
+            <p className="text-gray-600">
+              Based on your responses, here's what your body needs
+            </p>
+          </div>
+
+          {/* Daily Calories */}
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 mb-6">
+            <div className="text-center">
+              <Calculator className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+              <h4 className="text-lg font-semibold text-blue-800 mb-2">Daily Calories</h4>
+              <div className="text-3xl font-bold text-blue-900">{results.dailyCalories}</div>
+              <p className="text-sm text-blue-700 mt-1">calories per day</p>
+            </div>
+          </div>
+
+          {/* Macronutrients */}
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-4 text-center">
+              <h5 className="font-semibold text-red-800 mb-2">Protein</h5>
+              <div className="text-2xl font-bold text-red-900">{results.macros.protein.grams}g</div>
+              <div className="text-sm text-red-700">{results.macros.protein.percent}%</div>
+            </div>
+            <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl p-4 text-center">
+              <h5 className="font-semibold text-yellow-800 mb-2">Carbs</h5>
+              <div className="text-2xl font-bold text-yellow-900">{results.macros.carbs.grams}g</div>
+              <div className="text-sm text-yellow-700">{results.macros.carbs.percent}%</div>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 text-center">
+              <h5 className="font-semibold text-purple-800 mb-2">Fats</h5>
+              <div className="text-2xl font-bold text-purple-900">{results.macros.fats.grams}g</div>
+              <div className="text-sm text-purple-700">{results.macros.fats.percent}%</div>
+            </div>
+          </div>
+
+          {/* Personalized Tip */}
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+            <div className="flex items-start gap-4">
+              <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-white" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-800 mb-2">Your Personalized Tip:</h4>
+                <p className="text-gray-700 leading-relaxed">{results.tip}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Premium Features Carousel */}
+        <motion.div 
+          className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl shadow-lg p-8 border border-gray-200"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          <div className="text-center mb-8">
+            <Crown className="w-8 h-8 text-yellow-500 mx-auto mb-3" />
+            <h4 className="text-xl font-semibold text-gray-800 mb-2">Unlock Premium Features</h4>
+            <p className="text-gray-600">Get even more personalized insights and advanced tracking</p>
+          </div>
+
+          {/* Horizontally Scrollable Carousel */}
+          <div className="relative">
+            <div 
+              className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide"
+              style={{ 
+                scrollbarWidth: 'none', 
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch'
+              }}
+
+              onKeyDown={(e) => {
+                const container = e.currentTarget;
+                if (e.key === 'ArrowLeft') {
+                  container.scrollBy({ left: -320, behavior: 'smooth' });
+                } else if (e.key === 'ArrowRight') {
+                  container.scrollBy({ left: 320, behavior: 'smooth' });
+                }
+              }}
+              tabIndex={0}
+              role="region"
+              aria-label="Premium features carousel"
+            >
+              {premiumFeatures.map((feature, index) => (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.9 + (index * 0.1) }}
+                  className="flex-shrink-0 w-80 md:w-80 bg-white rounded-xl shadow-md border border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group relative touch-manipulation"
+                  style={{ minWidth: '280px' }}
+                >
+                  {/* Coming Soon Badge */}
+                  <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">
+                    Coming Soon
+                  </div>
+                  
+                  <div className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-lg flex items-center justify-center shadow-sm`}>
+                        <span className="text-2xl">{feature.icon}</span>
+                      </div>
+                      <div className="flex-1">
+                        <h5 className="font-semibold text-gray-800 mb-2 text-lg">{feature.title}</h5>
+                        <p className="text-sm text-gray-600 leading-relaxed">{feature.description}</p>
+                      </div>
+                    </div>
+                    
+                    {/* Preview Button (Hidden by default, shown on hover) */}
+                    <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <button className="w-full bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg transition-all duration-200 text-sm">
+                        Preview
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            
+
+          </div>
+
+          <div className="text-center mt-6">
+            <Button className="bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white px-8 py-3 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl">
+              Upgrade to Pro
+            </Button>
+          </div>
+        </motion.div>
+
+        {/* Restart Button */}
+        <div className="text-center">
+          <button
+            onClick={onRestart}
+            className="text-gray-500 hover:text-gray-700 transition-colors flex items-center gap-2 mx-auto"
+          >
+            <RefreshCw className="w-4 h-4" />
+            Start Over
+          </button>
+        </div>
+      </motion.div>
+    )
+  }
+
+  // Step navigation
+  const nextStep = () => {
+    if (currentStep === 5) {
+      calculateResults()
+    } else {
+      setCurrentStep(prev => Math.min(prev + 1, 6))
+    }
+  }
+  const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 0))
+
+  // Update form data
+  const updateFormData = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+  }
+
+  // All calculation logic preserved from original NutritionWizard
+  const calculateBMR = () => {
+    const { age, gender, height, weight } = formData
+    const ageNum = parseInt(age)
+    const heightNum = parseFloat(height)
+    const weightNum = parseFloat(weight)
+
+    if (gender === 'male') {
+      return 10 * weightNum + 6.25 * heightNum - 5 * ageNum + 5
+    } else {
+      return 10 * weightNum + 6.25 * heightNum - 5 * ageNum - 161
+    }
+  }
+
+  const calculateDailyCalories = () => {
+    const bmr = calculateBMR()
+    const activityMultipliers = {
+      sedentary: 1.2,
+      light: 1.375,
+      moderate: 1.55,
+      active: 1.725,
+      very_active: 1.9
+    }
+    return Math.round(bmr * activityMultipliers[formData.activityLevel])
+  }
+
+  const calculateTargetCalories = () => {
+    const dailyCalories = calculateDailyCalories()
+    switch (formData.goal) {
+      case 'lose': 
+        return Math.round(dailyCalories - 500) // 1 lb/week loss
+      case 'gain': 
+        return Math.round(dailyCalories + 500) // 1 lb/week gain
+      case 'muscle':
+        return Math.round(dailyCalories + 300) // Moderate surplus for muscle building
+      case 'maintain':
+      case 'energy':
+      case 'health':
+      default: 
+        return dailyCalories // Maintenance calories
+    }
+  }
+
+  const calculateMacros = () => {
+    const targetCalories = calculateTargetCalories()
+    
+    // Health Canada & RDA macro percentage breakdowns
+    let proteinPercent, carbPercent, fatPercent
+    
+    switch (formData.goal) {
+      case 'lose':
+        proteinPercent = 30
+        carbPercent = 40
+        fatPercent = 30
+        break
+      case 'muscle':
+        proteinPercent = 30
+        carbPercent = 45
+        fatPercent = 25
+        break
+      default:
+        proteinPercent = 25
+        carbPercent = 50
+        fatPercent = 25
+        break
+    }
+
+    const proteinGrams = Math.round((targetCalories * proteinPercent / 100) / 4)
+    const fatGrams = Math.round((targetCalories * fatPercent / 100) / 9)
+    const carbGrams = Math.round((targetCalories * carbPercent / 100) / 4)
+
+    return {
+      protein: { grams: proteinGrams, percent: proteinPercent, calories: proteinGrams * 4 },
+      fat: { grams: fatGrams, percent: fatPercent, calories: fatGrams * 9 },
+      carbs: { grams: carbGrams, percent: carbPercent, calories: carbGrams * 4 }
+    }
+  }
+
+  const calculateResults = async () => {
+    setIsCalculating(true)
+    setNuriMood('thinking')
+    
+    // Simulate processing time for better UX
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    
+    const bmr = Math.round(calculateBMR())
+    const dailyCalories = calculateDailyCalories()
+    const targetCalories = calculateTargetCalories()
+    const macros = calculateMacros()
+
+    const resultsData = {
+      bmr,
+      dailyCalories,
+      targetCalories,
+      macros,
+      personalSummary: generatePersonalSummary(dailyCalories, targetCalories)
+    }
+
+    setResults(resultsData)
+    setIsCalculating(false)
+    nextStep()
+  }
+
+  const generatePersonalSummary = (daily, target) => {
+    const { age, activityLevel, goal } = formData
+    const activityText = {
+      sedentary: 'sedentary lifestyle',
+      light: 'lightly active',
+      moderate: 'moderately active', 
+      active: 'active lifestyle',
+      very_active: 'very active lifestyle'
+    }
+    
+    const goalText = {
+      lose: `To lose weight healthily, aim for ~${target} calories daily.`,
+      maintain: `To maintain your current weight, aim for ~${target} calories daily.`,
+      gain: `To gain weight healthily, aim for ~${target} calories daily.`,
+      muscle: `To build muscle effectively, aim for ~${target} calories daily with adequate protein.`,
+      energy: `To improve your energy levels, aim for ~${target} calories daily with balanced nutrition.`,
+      health: `To optimize your overall health, aim for ~${target} calories daily with nutrient-dense foods.`
+    }
+
+    return `At ${age} with a ${activityText[activityLevel]}, you burn approximately ${daily} calories per day. ${goalText[goal] || goalText.maintain}`
+  }
+
+  // Check if current step is valid to proceed
+  const canProceed = () => {
+    switch (currentStep) {
+      case 0: return true // Welcome
+      case 1: return formData.name.trim() !== '' // Name
+      case 2: return formData.age && formData.gender && formData.height && formData.weight // Demographics
+      case 3: return formData.activityLevel !== '' // Activity
+      case 4: return formData.goal !== '' // Goal
+      case 5: return true // Calculate
+      default: return false
+    }
+  }
+
+  const containerVariants = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 }
+  }
+
+
+
+  const renderCurrentStep = () => {
+    switch (currentStep) {
+      case 0: // Welcome
+        return (
+          <div className="text-center">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="p-6 bg-gradient-to-br from-green-50 to-emerald-100 border-2 border-green-300 rounded-xl hover:scale-105 transition-all duration-300 ease-in-out shadow-xl relative overflow-hidden group">
+                {/* Prominent Badge */}
+                <div className="absolute -top-2 -right-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse">
+                  START HERE
+                </div>
+                {/* Subtle Pulse Animation */}
+                <div className="absolute inset-0 bg-gradient-to-r from-green-400/10 to-emerald-400/10 rounded-xl animate-pulse opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                <Calculator className="w-8 h-8 text-green-600 mx-auto mb-3" />
+                <h3 className="font-semibold text-gray-800 mb-2">Your Exact Daily Fuel</h3>
+                <p className="text-sm text-gray-600">Science-based formula tailored to you</p>
+                
+                {/* Hover Tooltip */}
+                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-10">
+                  Science-based formula tailored to you
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                </div>
+              </div>
+              <div className="p-6 bg-gradient-to-br from-purple-50 to-indigo-100 border-2 border-purple-300 rounded-xl hover:scale-105 transition-all duration-300 ease-in-out shadow-xl hover:shadow-2xl">
+                <Target className="w-8 h-8 text-purple-600 mx-auto mb-3" />
+                <h3 className="font-semibold text-gray-800 mb-2">Personal Targets</h3>
+                <p className="text-sm text-gray-600">Customized goals for your body type</p>
+              </div>
+              <div className="p-6 bg-gradient-to-br from-orange-50 to-red-100 border-2 border-orange-300 rounded-xl hover:scale-105 transition-all duration-300 ease-in-out shadow-xl hover:shadow-2xl">
+                <TrendingUp className="w-8 h-8 text-orange-600 mx-auto mb-3" />
+                <h3 className="font-semibold text-gray-800 mb-2">Progress Tracking</h3>
+                <p className="text-sm text-gray-600">Monitor your health journey</p>
+              </div>
+            </div>
+            <p className="text-gray-600 text-lg">
+              Let's create your personalized nutrition plan together!
+            </p>
+          </div>
+        )
+      case 1: // Name
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">What's your name?</h3>
+            <input
+              type="text"
+              value={formData.name}
+              onChange={(e) => updateFormData('name', e.target.value)}
+              placeholder="Enter your name"
+              className="w-full max-w-md p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandStart focus:border-transparent"
+            />
+          </div>
+        )
+      case 2: // Demographics
+        return (
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">Tell us about yourself</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Age</label>
+                <input
+                  type="number"
+                  value={formData.age}
+                  onChange={(e) => updateFormData('age', e.target.value)}
+                  placeholder="25"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandStart focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                <select
+                  value={formData.gender}
+                  onChange={(e) => updateFormData('gender', e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandStart focus:border-transparent"
+                >
+                  <option value="">Select gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Height (cm)</label>
+                <input
+                  type="number"
+                  value={formData.height}
+                  onChange={(e) => updateFormData('height', e.target.value)}
+                  placeholder="170"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandStart focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Weight (kg)</label>
+                <input
+                  type="number"
+                  value={formData.weight}
+                  onChange={(e) => updateFormData('weight', e.target.value)}
+                  placeholder="70"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandStart focus:border-transparent"
+                />
+              </div>
+            </div>
+          </div>
+        )
+      case 3: // Activity Level
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">How active are you?</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                { value: 'sedentary', label: 'Sedentary', desc: 'Little to no exercise' },
+                { value: 'light', label: 'Lightly Active', desc: 'Light exercise 1-3 days/week' },
+                { value: 'moderate', label: 'Moderately Active', desc: 'Moderate exercise 3-5 days/week' },
+                { value: 'active', label: 'Very Active', desc: 'Hard exercise 6-7 days/week' },
+                { value: 'very_active', label: 'Extremely Active', desc: 'Very hard exercise, physical job' }
+              ].map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => updateFormData('activityLevel', option.value)}
+                  className={`p-4 border rounded-lg text-left transition-all ${
+                    formData.activityLevel === option.value
+                      ? 'border-brandStart bg-brandStart/10 text-brandStart'
+                      : 'border-gray-300 hover:border-brandStart/50'
+                  }`}
+                >
+                  <div className="font-medium">{option.label}</div>
+                  <div className="text-sm text-gray-600">{option.desc}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )
+      case 4: // Goal
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">What's your goal?</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                { value: 'lose', label: 'Lose Weight', desc: 'Reduce body fat' },
+                { value: 'maintain', label: 'Maintain Weight', desc: 'Stay at current weight' },
+                { value: 'gain', label: 'Gain Weight', desc: 'Build muscle mass' },
+                { value: 'muscle', label: 'Build Muscle', desc: 'Focus on muscle growth' },
+                { value: 'energy', label: 'Improve Energy', desc: 'Boost daily energy levels' },
+                { value: 'health', label: 'Overall Health', desc: 'General wellness' }
+              ].map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => updateFormData('goal', option.value)}
+                  className={`p-4 border rounded-lg text-left transition-all ${
+                    formData.goal === option.value
+                      ? 'border-brandStart bg-brandStart/10 text-brandStart'
+                      : 'border-gray-300 hover:border-brandStart/50'
+                  }`}
+                >
+                  <div className="font-medium">{option.label}</div>
+                  <div className="text-sm text-gray-600">{option.desc}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )
+      case 5: // Calculate
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">Ready to calculate your nutrition plan?</h3>
+            <p className="text-gray-600 mb-6">
+              Based on your information, I'll calculate your personalized calorie and macronutrient needs.
+            </p>
+            <div className="bg-gray-50 p-4 rounded-lg text-left">
+              <h4 className="font-medium mb-2">Your Information:</h4>
+              <div className="text-sm text-gray-600 space-y-1">
+                <div>Name: {formData.name}</div>
+                <div>Age: {formData.age} years</div>
+                <div>Gender: {formData.gender}</div>
+                <div>Height: {formData.height} cm</div>
+                <div>Weight: {formData.weight} kg</div>
+                <div>Activity: {formData.activityLevel}</div>
+                <div>Goal: {formData.goal}</div>
+              </div>
+            </div>
+          </div>
+        )
+      case 6: // Results
+        return results ? (
+          <div className="space-y-6">
+            <div className="text-center">
+              <h3 className="text-2xl font-semibold mb-2 text-gray-800">Your Personalized Nutrition Plan</h3>
+              <p className="text-gray-600">Here's what your body needs to reach your goals</p>
+            </div>
+
+            {/* Summary Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+                <div className="text-center">
+                  <Calculator className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+                  <h4 className="text-lg font-semibold text-blue-800 mb-2">Daily Calories</h4>
+                  <div className="text-3xl font-bold text-blue-900">{results.targetCalories}</div>
+                  <p className="text-sm text-blue-700 mt-1">per day</p>
+                </div>
+              </Card>
+
+              {/* Goal Badge */}
+              <Card className="p-6 bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+                <div className="text-center">
+                  <Target className="w-8 h-8 text-green-600 mx-auto mb-3" />
+                  <h4 className="text-lg font-semibold text-green-800 mb-2">Your Goal</h4>
+                  <div className="text-xl font-bold text-green-900 capitalize">
+                    {formData.goal === 'lose' ? 'Weight Loss' :
+                     formData.goal === 'gain' ? 'Weight Gain' :
+                     formData.goal === 'muscle' ? 'Build Muscle' :
+                     formData.goal === 'energy' ? 'Improve Energy' :
+                     formData.goal === 'health' ? 'Overall Health' :
+                     'Maintain Weight'}
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            {/* Macronutrients */}
+            <div className="grid grid-cols-3 gap-4">
+              <Card className="p-6 bg-gradient-to-br from-red-50 to-red-100 border-red-200 text-center">
+                <h5 className="font-semibold text-red-800 mb-2">Protein</h5>
+                <div className="text-2xl font-bold text-red-900">{results.macros.protein.grams}g</div>
+                <div className="text-sm text-red-700">{results.macros.protein.percent}%</div>
+              </Card>
+              <Card className="p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200 text-center">
+                <h5 className="font-semibold text-yellow-800 mb-2">Carbs</h5>
+                <div className="text-2xl font-bold text-yellow-900">{results.macros.carbs.grams}g</div>
+                <div className="text-sm text-yellow-700">{results.macros.carbs.percent}%</div>
+              </Card>
+              <Card className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 text-center">
+                <h5 className="font-semibold text-purple-800 mb-2">Fats</h5>
+                <div className="text-2xl font-bold text-purple-900">{results.macros.fats.grams}g</div>
+                <div className="text-sm text-purple-700">{results.macros.fats.percent}%</div>
+              </Card>
+            </div>
+
+            {/* Nuri's Insight */}
+            <div className="p-6 bg-gradient-to-r from-brandStart/10 to-brandEnd/10 rounded-xl border border-brandStart/20">
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-gradient-to-r from-brandStart to-brandEnd rounded-full flex items-center justify-center">
+                  <Sparkles className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-800 mb-2">Nuri's Insight:</h4>
+                  <p className="text-gray-700 leading-relaxed">
+                    This nutrition plan gives your body the perfect fuel it needs! 
+                    {formData.goal === 'muscle' && " Focus on hitting that protein target to support muscle growth."}
+                    {formData.goal === 'lose' && " The higher protein will help preserve muscle while you lose fat."}
+                    {formData.goal === 'energy' && " These balanced macros will keep your energy steady throughout the day."}
+                    {formData.goal === 'health' && " This balanced approach supports overall wellness and vitality."}
+                    {(formData.goal === 'maintain' || formData.goal === 'gain') && " This balanced plan supports your goals while maintaining optimal health."}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex justify-center gap-4 pt-4">
+              <Button variant="outline" className="flex items-center gap-2">
+                <Download className="w-4 h-4" />
+                Save Plan
+              </Button>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Share2 className="w-4 h-4" />
+                Share
+              </Button>
+              <Button 
+                onClick={() => {
+                  setCurrentStep(0)
+                  setFormData({
+                    name: '',
+                    age: '',
+                    gender: '',
+                    height: '',
+                    weight: '',
+                    activityLevel: '',
+                    goal: ''
+                  })
+                  setResults(null)
+                }}
+                className="flex items-center gap-2 bg-gradient-to-r from-brandStart to-brandEnd text-white"
+              >
+                <RefreshCw className="w-4 h-4" />
+                Start Over
+              </Button>
+            </div>
+          </div>
+        ) : null
+
+      default:
+        return null
+    }
+  }
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 0: // Welcome
+        return (
+          <div className="text-center">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="p-6 bg-gradient-to-br from-green-50 to-emerald-100 border border-green-200 rounded-xl hover:scale-105 transition-transform duration-300 ease-in-out shadow-lg">
+                <Calculator className="w-8 h-8 text-green-600 mx-auto mb-3" />
+                <h3 className="font-semibold text-gray-800 mb-2">Precise Calculations</h3>
+                <p className="text-sm text-gray-600">Science-based formulas for accurate results</p>
+              </div>
+              <div className="p-6 bg-gradient-to-br from-purple-50 to-indigo-100 border border-purple-200 rounded-xl hover:scale-105 transition-transform duration-300 ease-in-out shadow-lg">
+                <Target className="w-8 h-8 text-purple-600 mx-auto mb-3" />
+                <h3 className="font-semibold text-gray-800 mb-2">Personal Targets</h3>
+                <p className="text-sm text-gray-600">Customized goals for your body type</p>
+              </div>
+              <div className="p-6 bg-gradient-to-br from-orange-50 to-red-100 border border-orange-200 rounded-xl hover:scale-105 transition-transform duration-300 ease-in-out shadow-lg">
+                <TrendingUp className="w-8 h-8 text-orange-600 mx-auto mb-3" />
+                <h3 className="font-semibold text-gray-800 mb-2">Progress Tracking</h3>
+                <p className="text-sm text-gray-600">Monitor your health journey</p>
+              </div>
+            </div>
+            <p className="text-gray-600 text-lg">
+              Let's create your personalized nutrition plan together!
+            </p>
+          </div>
+        )
+      case 1: // Name
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">What's your name?</h3>
+            <input
+              type="text"
+              value={formData.name}
+              onChange={(e) => updateFormData('name', e.target.value)}
+              placeholder="Enter your name"
+              className="w-full max-w-md p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandStart focus:border-transparent"
+            />
+          </div>
+        )
+      case 2: // Demographics
+        return (
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">Tell us about yourself</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Age</label>
+                <input
+                  type="number"
+                  value={formData.age}
+                  onChange={(e) => updateFormData('age', e.target.value)}
+                  placeholder="25"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandStart focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                <select
+                  value={formData.gender}
+                  onChange={(e) => updateFormData('gender', e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandStart focus:border-transparent"
+                >
+                  <option value="">Select gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Height (cm)</label>
+                <input
+                  type="number"
+                  value={formData.height}
+                  onChange={(e) => updateFormData('height', e.target.value)}
+                  placeholder="170"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandStart focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Weight (kg)</label>
+                <input
+                  type="number"
+                  value={formData.weight}
+                  onChange={(e) => updateFormData('weight', e.target.value)}
+                  placeholder="70"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandStart focus:border-transparent"
+                />
+              </div>
+            </div>
+          </div>
+        )
+      case 3: // Activity Level
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">How active are you?</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                { value: 'sedentary', label: 'Sedentary', desc: 'Little to no exercise' },
+                { value: 'light', label: 'Lightly Active', desc: 'Light exercise 1-3 days/week' },
+                { value: 'moderate', label: 'Moderately Active', desc: 'Moderate exercise 3-5 days/week' },
+                { value: 'active', label: 'Very Active', desc: 'Hard exercise 6-7 days/week' },
+                { value: 'very_active', label: 'Extremely Active', desc: 'Very hard exercise, physical job' }
+              ].map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => updateFormData('activityLevel', option.value)}
+                  className={`p-4 border rounded-lg text-left transition-all ${
+                    formData.activityLevel === option.value
+                      ? 'border-brandStart bg-brandStart/10 text-brandStart'
+                      : 'border-gray-300 hover:border-brandStart/50'
+                  }`}
+                >
+                  <div className="font-medium">{option.label}</div>
+                  <div className="text-sm text-gray-600">{option.desc}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )
+      case 4: // Goal
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">What's your goal?</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                { value: 'lose', label: 'Lose Weight', desc: 'Reduce body fat' },
+                { value: 'maintain', label: 'Maintain Weight', desc: 'Stay at current weight' },
+                { value: 'gain', label: 'Gain Weight', desc: 'Build muscle mass' },
+                { value: 'muscle', label: 'Build Muscle', desc: 'Focus on muscle growth' },
+                { value: 'energy', label: 'Improve Energy', desc: 'Boost daily energy levels' },
+                { value: 'health', label: 'Overall Health', desc: 'General wellness' }
+              ].map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => updateFormData('goal', option.value)}
+                  className={`p-4 border rounded-lg text-left transition-all ${
+                    formData.goal === option.value
+                      ? 'border-brandStart bg-brandStart/10 text-brandStart'
+                      : 'border-gray-300 hover:border-brandStart/50'
+                  }`}
+                >
+                  <div className="font-medium">{option.label}</div>
+                  <div className="text-sm text-gray-600">{option.desc}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )
+      case 5: // Calculate
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">Ready to calculate your nutrition plan?</h3>
+            <p className="text-gray-600 mb-6">
+              Based on your information, I'll calculate your personalized calorie and macronutrient needs.
+            </p>
+            <div className="bg-gray-50 p-4 rounded-lg text-left">
+              <h4 className="font-medium mb-2">Your Information:</h4>
+              <div className="text-sm text-gray-600 space-y-1">
+                <div>Name: {formData.name}</div>
+                <div>Age: {formData.age} years</div>
+                <div>Gender: {formData.gender}</div>
+                <div>Height: {formData.height} cm</div>
+                <div>Weight: {formData.weight} kg</div>
+                <div>Activity: {formData.activityLevel}</div>
+                <div>Goal: {formData.goal}</div>
+              </div>
+            </div>
+          </div>
+        )
+      case 6: // Results
+        return results ? (
+          <div className="space-y-6">
+            <div className="text-center">
+              <h3 className="text-2xl font-semibold mb-2 text-gray-800">Your Personalized Nutrition Plan</h3>
+              <p className="text-gray-600">Here's what your body needs to reach your goals</p>
+            </div>
+
+            {/* Summary Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+                <div className="text-center">
+                  <Calculator className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+                  <h4 className="text-lg font-semibold text-blue-800 mb-2">Daily Calories</h4>
+                  <div className="text-3xl font-bold text-blue-900">{results.targetCalories}</div>
+                  <p className="text-sm text-blue-700 mt-1">per day</p>
+                </div>
+              </Card>
+
+              {/* Goal Badge */}
+              <Card className="p-6 bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+                <div className="text-center">
+                  <Target className="w-8 h-8 text-green-600 mx-auto mb-3" />
+                  <h4 className="text-lg font-semibold text-green-800 mb-2">Your Goal</h4>
+                  <div className="text-xl font-bold text-green-900 capitalize">
+                    {formData.goal === 'lose' ? 'Weight Loss' :
+                     formData.goal === 'gain' ? 'Weight Gain' :
+                     formData.goal === 'muscle' ? 'Build Muscle' :
+                     formData.goal === 'energy' ? 'Improve Energy' :
+                     formData.goal === 'health' ? 'Overall Health' :
+                     'Maintain Weight'}
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            {/* Macronutrients */}
+            <div className="grid grid-cols-3 gap-4">
+              <Card className="p-6 bg-gradient-to-br from-red-50 to-red-100 border-red-200 text-center">
+                <h5 className="font-semibold text-red-800 mb-2">Protein</h5>
+                <div className="text-2xl font-bold text-red-900">{results.macros.protein.grams}g</div>
+                <div className="text-sm text-red-700">{results.macros.protein.percent}%</div>
+              </Card>
+              <Card className="p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200 text-center">
+                <h5 className="font-semibold text-yellow-800 mb-2">Carbs</h5>
+                <div className="text-2xl font-bold text-yellow-900">{results.macros.carbs.grams}g</div>
+                <div className="text-sm text-yellow-700">{results.macros.carbs.percent}%</div>
+              </Card>
+              <Card className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 text-center">
+                <h5 className="font-semibold text-purple-800 mb-2">Fats</h5>
+                <div className="text-2xl font-bold text-purple-900">{results.macros.fats.grams}g</div>
+                <div className="text-sm text-purple-700">{results.macros.fats.percent}%</div>
+              </Card>
+            </div>
+
+            {/* Nuri's Insight */}
+            <div className="p-6 bg-gradient-to-r from-brandStart/10 to-brandEnd/10 rounded-xl border border-brandStart/20">
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-gradient-to-r from-brandStart to-brandEnd rounded-full flex items-center justify-center">
+                  <Sparkles className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-800 mb-2">Nuri's Insight:</h4>
+                  <p className="text-gray-700 leading-relaxed">
+                    This nutrition plan gives your body the perfect fuel it needs! 
+                    {formData.goal === 'muscle' && " Focus on hitting that protein target to support muscle growth."}
+                    {formData.goal === 'lose' && " The higher protein will help preserve muscle while you lose fat."}
+                    {formData.goal === 'energy' && " These balanced macros will keep your energy steady throughout the day."}
+                    {formData.goal === 'health' && " This balanced approach supports overall wellness and vitality."}
+                    {(formData.goal === 'maintain' || formData.goal === 'gain') && " This balanced plan supports your goals while maintaining optimal health."}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex justify-center gap-4 pt-4">
+              <Button variant="outline" className="flex items-center gap-2">
+                <Download className="w-4 h-4" />
+                Save Plan
+              </Button>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Share2 className="w-4 h-4" />
+                Share
+              </Button>
+              <Button 
+                onClick={() => {
+                  setCurrentStep(0)
+                  setFormData({
+                    name: '',
+                    age: '',
+                    gender: '',
+                    height: '',
+                    weight: '',
+                    activityLevel: '',
+                    goal: ''
+                  })
+                  setResults(null)
+                }}
+                className="flex items-center gap-2 bg-gradient-to-r from-brandStart to-brandEnd text-white"
+              >
+                <RefreshCw className="w-4 h-4" />
+                Start Over
+              </Button>
+            </div>
+          </div>
+        ) : null
+
+      default:
+        return null
+    }
+  }
+
+
+
+  // Handle guided flow start
+  const handleStartGuidedFlow = () => {
+    setShowGuidedFlow(true)
+  }
+
+  // Safety check - show loading if critical objects are undefined
+  if (!currentPersonality || !nuriState || !theme) {
+    // Critical objects undefined, showing loading state
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading assistant...</p>
+          <p className="text-sm text-gray-500 mt-2">Please wait while we initialize Nuri</p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <>
+      <style>{scrollbarHideStyles}</style>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-8 px-4 transition-all duration-1000 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-brandStart/10 to-brandEnd/10 rounded-full animate-float" />
+        <div className="absolute top-40 right-32 w-24 h-24 bg-gradient-to-r from-accent-coral/10 to-accent-golden/10 rounded-full animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute bottom-32 left-1/4 w-16 h-16 bg-gradient-to-r from-success/10 to-info/10 rounded-full animate-bounce-gentle" />
+        <div className="absolute top-1/2 left-1/4 w-20 h-20 bg-gradient-to-r from-purple-400/8 to-pink-400/8 rounded-full animate-pulse" style={{ animationDelay: '1.5s' }} />
+        <div className="absolute bottom-1/3 right-1/4 w-12 h-12 bg-gradient-to-r from-green-400/8 to-blue-400/8 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }} />
+        <div className="absolute top-1/3 right-1/3 w-8 h-8 bg-gradient-to-r from-yellow-400/6 to-orange-400/6 rounded-full animate-ping" style={{ animationDelay: '3s' }} />
+      </div>
+
+      {/* FIXED: Centered Grid Layout */}
+      <div className="max-w-7xl mx-auto relative z-10">
+        
+        {/* Enhanced Nuri Status Indicator */}
+        <motion.div 
+          className="fixed top-8 left-8 z-50"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.5, type: "spring" }}
+        >
+          <AnimatedCard 
+            className={`${theme?.card || 'bg-white'} shadow-xl`}
+            shimmer={nuriState?.proEnabled || false}
+            glow={isStressed}
+          >
+            <div className="flex items-center gap-3 px-4 py-2">
+              <NuriAvatar 
+                size="small" 
+                variant="excited" 
+                speaking={false}
+              />
+              <span className={`text-sm font-medium ${theme?.text || 'text-gray-700'}`}>
+                Nuri is here
+                {timeOfDay === 'morning' && ' 🌅'}
+                {timeOfDay === 'afternoon' && ' ☀️'}
+                {timeOfDay === 'evening' && ' 🌆'}
+                {timeOfDay === 'night' && ' 🌙'}
+              </span>
+              {nuriState?.proEnabled && (
+                <Crown className="w-4 h-4 text-yellow-500 animate-pulse" />
+              )}
+            </div>
+          </AnimatedCard>
+        </motion.div>
+
+        {/* FIXED: Main Grid Layout */}
+        <motion.div 
+          className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          {/* Left Panel - Wellness Journey & Content */}
+          <motion.div 
+            className="lg:col-span-2 flex flex-col gap-6"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            {/* HERO NURI SECTION - Main Focus */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-center mb-8"
+            >
+              {/* Large Nuri Avatar - Hero Position */}
+              <motion.div
+                className="flex justify-center mb-6"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.4, type: "spring", stiffness: 200 }}
+              >
+                <div className="relative">
+                  <NuriAvatar 
+                    size="xlarge" 
+                    variant="excited" 
+                    speaking={true}
+                    className="w-24 h-24 md:w-32 md:h-32"
+                  />
+                  {/* Speaking indicator */}
+                  <motion.div
+                    className="absolute -top-2 -right-2 w-6 h-6 bg-blue-400 rounded-full opacity-75"
+                    animate={{
+                      scale: [1, 1.2, 1],
+                      opacity: [0.75, 0.3, 0.75]
+                    }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                </div>
+              </motion.div>
+
+              {/* Nuri's Welcome Message */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="max-w-2xl mx-auto"
+              >
+                <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                  Welcome! I'm Nuri 🌱
+                </h2>
+                <p className="text-lg text-gray-600 mb-4 leading-relaxed">
+                  Your AI wellness companion ready to make this journey amazing together! 
+                  Let's build healthy habits and grow together. ⭐
+                </p>
+                
+                {/* Credibility Badge */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.8 }}
+                  className="bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg p-3 mb-4"
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-xs">✓</span>
+                    </div>
+                    <span className="text-sm font-medium text-blue-700">
+                      Powered by trusted sources
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-600 text-center mt-1">
+                    Unlike other apps, I source my insights from Health Canada and USDA - the gold standard in nutrition data
+                  </p>
+                </motion.div>
+                
+                {/* Status indicator */}
+                <div className="flex items-center justify-center gap-2 mb-6">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm text-gray-500 font-medium">Ready to help</span>
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Conversation Area - Centered around Nuri */}
+            <motion.div 
+              className="relative flex justify-center"
+            >
+              {!showGuidedFlow && !showSummary ? (
+                <WelcomeScreen />
+              ) : showGuidedFlow ? (
+                <div className="w-full max-w-2xl">
+                  <GuidedConversation 
+                    key="guided-conversation"
+                    steps={guidedSteps}
+                    currentStep={guidedStep}
+                    onAnswer={handleGuidedAnswer}
+                    answers={guidedAnswers}
+                  />
+                </div>
+              ) : showSummary ? (
+                <div className="w-full max-w-2xl">
+                  <PersonalizedSummary 
+                    results={guidedResults}
+                    onRestart={() => {
+                      setGuidedStep(0)
+                      setGuidedAnswers({})
+                      setShowSummary(false)
+                      setShowGuidedFlow(true)
+                    }}
+                    answers={guidedAnswers}
+                  />
+                </div>
+              ) : (
+                <AnimatedCard 
+                  className={`${theme?.card || 'bg-white'} shadow-xl max-w-2xl`}
+                  delay={0.2}
+                  shimmer={nuriState?.proEnabled || false}
+                >
+                  <div className="p-8">
+                    {/* Welcome Message */}
+                    {conversation.length === 0 && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-center mb-8"
+                      >
+                        {!currentPersonality ? (
+                          <div className="text-center">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                            <p className="text-gray-600">Loading assistant...</p>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="flex items-center justify-center gap-2 mb-4">
+                              <Sparkles className={`w-6 h-6 ${theme?.text?.replace('text-', 'text-') || 'text-gray-600'}`} />
+                              <h2 className={`text-2xl font-semibold ${theme?.text || 'text-gray-800'}`}>
+                                {currentPersonality?.greeting || "Hi! I'm Nuri, your health companion. How can I help you today?"}
+                              </h2>
+                            </div>
+                            <p className="text-gray-600">
+                              I'm here to support your health journey. How can I help you today?
+                            </p>
+                          </>
+                        )}
+                      </motion.div>
+                    )}
+
+                  {/* Conversation History */}
+                  <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
+                    {conversation.map((message, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: message.type === 'user' ? 20 : -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <AnimatedCard
+                          className={`max-w-xs lg:max-w-md p-3 rounded-2xl ${
+                            message.type === 'user' 
+                              ? `bg-gradient-to-r ${theme?.primary || 'from-blue-500 to-indigo-600'} text-white` 
+                              : 'bg-gray-100 text-gray-800'
+                          }`}
+                          hover={false}
+                          delay={index * 0.1}
+                        >
+                          <p className="text-sm">{message.message}</p>
+                        </AnimatedCard>
+                      </motion.div>
+                    ))}
+                    
+                    {/* Typing Indicator */}
+                    <TypingIndicator isTyping={isTyping} theme={timeOfDay} />
+                  </div>
+
+                  {/* Enhanced Input Area - Only for Pro Users */}
+                  {nuriState?.proEnabled && (
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={userInput}
+                        onChange={(e) => setUserInput(e.target.value)}
+                        onKeyPress={(e) => e.key === 'Enter' && handleUserInput(userInput)}
+                        placeholder="Tell Nuri how you're feeling..."
+                        className={`flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 focus:border-transparent transition-all duration-300 ${
+                          theme?.primary?.includes('blue') ? 'focus:ring-blue-500' :
+                          theme?.primary?.includes('green') ? 'focus:ring-green-500' :
+                          theme?.primary?.includes('purple') ? 'focus:ring-purple-500' :
+                          'focus:ring-blue-500'
+                        }`}
+                      />
+                      <Button
+                        onClick={() => handleUserInput(userInput)}
+                        disabled={!userInput.trim()}
+                        className={`bg-gradient-to-r ${theme?.primary || 'from-blue-500 to-indigo-600'} hover:opacity-90 text-white transition-all duration-300`}
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* Free User Message */}
+                  {!nuriState?.proEnabled && conversation.length > 0 && (
+                    <div className="text-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+                      <p className="text-sm text-gray-600 mb-2">
+                        💡 Want unlimited conversations with Nuri?
+                      </p>
+                      <div className="flex gap-2 justify-center">
+                        <Button 
+                          className="bg-gradient-to-r from-brandStart to-brandEnd text-white text-sm"
+                          onClick={() => setShowGuidedFlow(true)}
+                        >
+                          Start Guided Assessment
+                        </Button>
+                        <Button 
+                          variant="outline"
+                          className="text-sm"
+                          onClick={() => setShowGuidedFlow(true)}
+                        >
+                          Restart Assessment
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </AnimatedCard>
+            )}
+            </motion.div>
+
+            {/* MINIMIZED Progress Growth Section */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.8 }}
+              className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-4 border border-green-200 mb-6"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-semibold text-gray-800">Your Wellness Journey</h3>
+                <div className="flex gap-1">
+                  {[...Array(7)].map((_, i) => (
+                    <div
+                      key={i}
+                      className={`w-2 h-2 rounded-full ${
+                        i < 4 ? 'bg-green-500' : 'bg-gray-300'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div className="flex items-center justify-center h-12">
+                <div className="relative">
+                  <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center">
+                    <span className="text-sm">🌱</span>
+                  </div>
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full flex items-center justify-center">
+                    <span className="text-xs">⭐</span>
+                  </div>
+                </div>
+              </div>
+              <p className="text-center text-xs text-gray-600 mt-2">
+                Day 7 - Your wellness plant is growing strong! Keep up the great work.
+              </p>
+            </motion.div>
+
+            {/* Quick Actions Row */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9 }}
+              className="flex gap-3 justify-center"
+            >
+              <Button 
+                variant="outline"
+                className="flex items-center gap-2 bg-white hover:bg-gray-50"
+              >
+                <span>📷</span>
+                Log Food
+              </Button>
+              <Button 
+                variant="outline"
+                className="flex items-center gap-2 bg-white hover:bg-gray-50"
+              >
+                <span>💧</span>
+                Add Water
+              </Button>
+              <Button 
+                variant="outline"
+                className="flex items-center gap-2 bg-white hover:bg-gray-50"
+              >
+                <span>🏃</span>
+                Log Activity
+              </Button>
+            </motion.div>
+          </motion.div>
+
+          {/* Right Panel - Progress Dashboard */}
+          <motion.div 
+            className="space-y-4"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
+              {/* Enhanced Progress Dashboard */}
+              <GlassCard 
+                className="shadow-xl hover:shadow-2xl transition-all duration-300"
+                delay={0.4}
+                shimmer={nuriState?.proEnabled || false}
+              >
+                <div className="p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <TrendingUp className="w-5 h-5 text-brandStart" />
+                    <h3 className="text-lg font-semibold text-gray-800">
+                      Today's Progress
+                    </h3>
+                    <div className="ml-auto">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" title="Active tracking"></div>
+                    </div>
+                  </div>
+                  
+                  {/* NEW: Clear Example Data Label */}
+                  <div className="mb-3 p-2 bg-blue-50 rounded-lg border border-blue-200">
+                    <p className="text-xs text-blue-600 text-center font-medium">
+                      📊 (Example Data)
+                    </p>
+                  </div>
+                  
+                  {/* Progress Indicators - COMPACT CARDS */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between p-3 bg-gradient-to-r from-red-50 to-orange-50 rounded-lg border border-red-100 hover:shadow-md transition-shadow duration-200" style={{ maxHeight: '100px' }}>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-gradient-to-r from-red-400 to-orange-400 rounded-full flex items-center justify-center">
+                          <Zap className="w-4 h-4 text-white" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-800 text-sm">Energy Level</p>
+                          <p className="text-xs text-gray-500">Based on your activity</p>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <motion.div 
+                          className="text-lg font-bold text-red-600"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                        >
+                          {macroProgress.protein >= 80 ? 'High' : macroProgress.protein >= 50 ? 'Moderate' : 'Low'}
+                        </motion.div>
+                        <div className="text-xs text-gray-500">
+                          {macroProgress.protein >= 80 ? 'Excellent' : macroProgress.protein >= 50 ? 'Good' : 'Needs attention'}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-lg border border-yellow-100 hover:shadow-md transition-shadow duration-200" style={{ maxHeight: '100px' }}>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-amber-400 rounded-full flex items-center justify-center">
+                          <Heart className="w-4 h-4 text-white" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-800 text-sm">Mood</p>
+                          <p className="text-xs text-gray-500">How you're feeling</p>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <motion.div 
+                          className="text-lg font-bold text-yellow-600"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: 0.4, type: "spring", stiffness: 200 }}
+                        >
+                          {macroProgress.carbs >= 80 ? 'High' : macroProgress.carbs >= 50 ? 'Moderate' : 'Low'}
+                        </motion.div>
+                        <div className="text-xs text-gray-500">
+                          {macroProgress.carbs >= 80 ? 'Excellent' : macroProgress.carbs >= 50 ? 'Good' : 'Needs attention'}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg border border-purple-100 hover:shadow-md transition-shadow duration-200" style={{ maxHeight: '100px' }}>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full flex items-center justify-center">
+                          <Target className="w-4 h-4 text-white" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-800 text-sm">Focus</p>
+                          <p className="text-xs text-gray-500">Mental clarity</p>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <motion.div 
+                          className="text-lg font-bold text-purple-600"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: 0.6, type: "spring", stiffness: 200 }}
+                        >
+                          {macroProgress.fats >= 80 ? 'High' : macroProgress.fats >= 50 ? 'Moderate' : 'Low'}
+                        </motion.div>
+                        <div className="text-xs text-gray-500">
+                          {macroProgress.fats >= 80 ? 'Excellent' : macroProgress.fats >= 50 ? 'Good' : 'Needs attention'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* NEW: Nuri's Tip Section - COMPACT */}
+                  <div className="mt-4 p-3 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg border border-green-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <NuriAvatar size="small" variant="excited" speaking={false} />
+                      <h4 className="font-semibold text-gray-800 text-sm">Nuri's Tip</h4>
+                    </div>
+                    <p className="text-xs text-gray-700 leading-relaxed">
+                      A balanced breakfast can help stabilize your energy levels for the day! Try including protein, healthy fats, and complex carbs. 🌅
+                    </p>
+                  </div>
+                  
+                  {/* NEW: Daily Streak Tracker - COMPACT */}
+                  <div className="mt-4 p-3 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg border border-orange-200">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 bg-gradient-to-r from-orange-400 to-red-400 rounded-full flex items-center justify-center">
+                          <Star className="w-3 h-3 text-white" />
+                        </div>
+                        <h4 className="font-semibold text-gray-800 text-sm">Daily Streak</h4>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-xl font-bold text-orange-600">7</div>
+                        <div className="text-xs text-gray-500">days</div>
+                      </div>
+                    </div>
+                    <div className="flex gap-1">
+                      {[...Array(7)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className={`w-6 h-1.5 rounded-full ${i < 7 ? 'bg-gradient-to-r from-orange-400 to-red-400' : 'bg-gray-200'}`}
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: i * 0.1 }}
+                        />
+                      ))}
+                    </div>
+                    <p className="text-xs text-gray-600 mt-2 text-center">
+                      Keep up the great work! 🔥
+                    </p>
+                  </div>
+                  
+                  {/* Tooltip/Legend */}
+                  <div className="mt-3 p-2 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg border border-gray-200">
+                    <p className="text-xs text-gray-600 text-center">
+                      💡 Hover over each indicator for detailed insights
+                    </p>
+                    <div className="flex justify-center gap-2 mt-1">
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span className="text-xs text-gray-500">High</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                        <span className="text-xs text-gray-500">Moderate</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                        <span className="text-xs text-gray-500">Low</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </GlassCard>
+
+            {/* Daily Check-in */}
+            {showCheckIn && (
+              <AnimatedCard 
+                className="shadow-xl"
+                delay={0.6}
+                glow={isStressed}
+              >
+                <DailyCheckIn
+                  onComplete={handleCheckInComplete}
+                  onSkip={() => setShowCheckIn(false)}
+                  streakDays={nuriState?.streakDays || 0}
+                />
+              </AnimatedCard>
+            )}
+
+            {/* Health Tip */}
+            {showHealthTip && (
+              <AnimatedCard 
+                className="shadow-xl"
+                delay={0.8}
+                shimmer={nuriState?.proEnabled || false}
+              >
+                <HealthTipCard
+                  tip="Stay hydrated and get enough sleep for optimal health!"
+                  onDismiss={() => setShowHealthTip(false)}
+                />
+              </AnimatedCard>
+            )}
+
+            {/* Enhanced Pro Upgrade Suggestion */}
+            {!nuriState?.proEnabled && conversation.length > 2 && (
+              <AnimatedCard 
+                className="shadow-xl"
+                delay={1.0}
+                shimmer={true}
+                glow={true}
+              >
+                <div className="p-6 bg-gradient-to-br from-yellow-50 to-amber-50 border-yellow-200 rounded-xl">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Crown className="w-5 h-5 text-yellow-600 animate-pulse" />
+                    <h4 className="font-semibold text-gray-800">Unlock Nuri Pro</h4>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-3">
+                    Get advanced features like mood tracking, journaling, and personalized insights.
+                  </p>
+                  <Button className="w-full bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white transition-all duration-300">
+                    Learn More
+                  </Button>
+                </div>
+              </AnimatedCard>
+            )}
+          </motion.div>
+        </motion.div>
+      </div>
+      
+      {/* Discrete Footer Link */}
+      <div className="fixed bottom-4 right-4 z-40">
+        <button
+          onClick={() => setShowDataSources(true)}
+          className="text-xs text-gray-400 hover:text-gray-600 transition-colors flex items-center gap-1"
+        >
+          <Shield className="w-3 h-3" />
+          <span>Data Sources</span>
+        </button>
+      </div>
+      
+      {/* Data Sources Modal */}
+      <DataSources 
+        isOpen={showDataSources}
+        onClose={() => setShowDataSources(false)}
+      />
+    </div>
+    </>
+  )
+}
+
+export default NuriAssistant

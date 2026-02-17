@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
@@ -26,55 +26,62 @@ import {
   X
 } from 'lucide-react'
 
-// Mock user data
-const mockUserData = {
-  name: "Sarah Johnson",
-  email: "sarah.johnson@email.com",
-  phone: "+1 (555) 123-4567",
-  location: "San Francisco, CA",
-  joinDate: "March 2024",
-  plan: "free", // or "premium"
-  profileImage: null,
-  bio: "Nutrition enthusiast and busy professional trying to maintain a healthy lifestyle.",
-  goals: {
-    primary: "Weight Management",
-    secondary: "Increase Energy",
-    target: "Lose 15 lbs"
-  },
-  preferences: {
-    dietaryRestrictions: ["Vegetarian", "Gluten-Free"],
-    allergies: ["Nuts"],
-    cuisinePreferences: ["Mediterranean", "Asian", "Mexican"],
-    mealFrequency: "3 meals + 2 snacks",
-    cookingSkill: "Intermediate",
-    prepTime: "30-45 minutes"
-  },
-  settings: {
-    notifications: {
-      email: true,
-      push: true,
-      mealReminders: true,
-      workoutReminders: false,
-      communityUpdates: true,
-      weeklyReports: true
+// Default user data structure for new users
+const getDefaultUserData = (dbUser) => {
+  console.log('🟢 UserProfile: getDefaultUserData called with dbUser:', dbUser)
+  
+  // Replace test email with empty string so user can enter their real email
+  const userEmail = dbUser?.email === 'test@nutriwell.com' ? '' : (dbUser?.email || '')
+  
+  return {
+    name: dbUser?.display_name || dbUser?.email?.split('@')[0] || "User",
+    email: userEmail,
+    phone: dbUser?.phone || "",
+    location: dbUser?.location || "",
+    joinDate: dbUser?.created_at ? new Date(dbUser.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : "Recently",
+    plan: dbUser?.subscription_tier || "free",
+    profileImage: dbUser?.avatar_url || null,
+    bio: dbUser?.bio || "Welcome to NutriWell! Update your profile to get started on your health journey.",
+    goals: {
+      primary: dbUser?.goals?.primary || "General Health",
+      secondary: dbUser?.goals?.secondary || "Improve Energy",
+      target: dbUser?.goals?.target || "Set your personal target"
     },
-    privacy: {
-      profileVisibility: "friends",
-      activitySharing: false,
-      communityPosts: true
+    preferences: {
+      dietaryRestrictions: dbUser?.dietary_restrictions || [],
+      allergies: dbUser?.allergies || [],
+      cuisinePreferences: dbUser?.cuisine_preferences || [],
+      mealFrequency: dbUser?.meal_frequency || "3 meals + 2 snacks",
+      cookingSkill: dbUser?.cooking_skill || "Beginner",
+      prepTime: dbUser?.prep_time || "15-30 minutes"
     },
-    units: {
-      weight: "lbs",
-      distance: "miles",
-      temperature: "fahrenheit"
+    settings: {
+      notifications: {
+        email: dbUser?.settings?.notifications?.email ?? true,
+        push: dbUser?.settings?.notifications?.push ?? false,
+        mealReminders: dbUser?.settings?.notifications?.mealReminders ?? false,
+        workoutReminders: dbUser?.settings?.notifications?.workoutReminders ?? false,
+        communityUpdates: dbUser?.settings?.notifications?.communityUpdates ?? false,
+        weeklyReports: dbUser?.settings?.notifications?.weeklyReports ?? false
+      },
+      privacy: {
+        profileVisibility: dbUser?.settings?.privacy?.profileVisibility || "friends",
+        activitySharing: dbUser?.settings?.privacy?.activitySharing ?? false,
+        communityPosts: dbUser?.settings?.privacy?.communityPosts ?? true
+      },
+      units: {
+        weight: dbUser?.settings?.units?.weight || "lbs",
+        distance: dbUser?.settings?.units?.distance || "miles",
+        temperature: dbUser?.settings?.units?.temperature || "fahrenheit"
+      }
+    },
+    stats: {
+      streakDays: dbUser?.stats?.streak_days || 0,
+      mealsLogged: dbUser?.stats?.meals_logged || 0,
+      recipesCreated: dbUser?.stats?.recipes_created || 0,
+      communityPosts: dbUser?.stats?.community_posts || 0,
+      achievementsEarned: dbUser?.stats?.achievements_earned || 0
     }
-  },
-  stats: {
-    streakDays: 15,
-    mealsLogged: 124,
-    recipesCreated: 8,
-    communityPosts: 12,
-    achievementsEarned: 7
   }
 }
 
@@ -89,12 +96,23 @@ const achievements = [
   { id: 8, name: "Social Butterfly", description: "Get 50 likes", icon: "❤️", earned: false }
 ]
 
-export const UserProfile = ({ userPlan = 'free' }) => {
-  const [userData, setUserData] = useState(mockUserData)
+export const UserProfile = ({ userPlan = 'free', dbUser = null }) => {
+  const [userData, setUserData] = useState(() => getDefaultUserData(dbUser))
   const [activeTab, setActiveTab] = useState('profile')
   const [isEditing, setIsEditing] = useState(false)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [editedData, setEditedData] = useState(userData)
+
+  // Update userData when dbUser changes
+  useEffect(() => {
+    console.log('🟢 UserProfile: dbUser changed, updating userData', dbUser)
+    if (dbUser) {
+      const newUserData = getDefaultUserData(dbUser)
+      console.log('🟢 UserProfile: setting new userData:', newUserData)
+      setUserData(newUserData)
+      setEditedData(newUserData)
+    }
+  }, [dbUser])
 
   const tabs = [
     { id: 'profile', label: 'Profile', icon: User },
@@ -132,7 +150,7 @@ export const UserProfile = ({ userPlan = 'free' }) => {
   }
 
   const UpgradeModal = () => {
-    if (!showUpgradeModal) return null
+    if (!showUpgradeModal) {return null}
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -711,41 +729,95 @@ export const UserProfile = ({ userPlan = 'free' }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cream-50 to-sage-50 p-4 md:p-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-charcoal mb-4">
-            Profile & Settings
-          </h1>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Manage your account, preferences, and subscription settings.
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-primary-sage/10 via-secondary-white to-accent-coral/10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Header Section with Gradient Background */}
+        <div className="bg-gradient-to-r from-primary-teal to-accent-coral rounded-3xl p-8 mb-8 text-white shadow-xl">
+          <div className="flex flex-col lg:flex-row items-center gap-6">
+            {/* Profile Image */}
+            <div className="relative">
+              <div className="w-32 h-32 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-2xl border-4 border-white/30">
+                {userData.profileImage ? (
+                  <img 
+                    src={userData.profileImage} 
+                    alt="Profile" 
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                ) : (
+                  <User className="w-16 h-16 text-white" />
+                )}
+              </div>
+              <button className="absolute bottom-2 right-2 w-8 h-8 bg-accent-golden rounded-full flex items-center justify-center shadow-lg hover:bg-accent-golden/80 transition-colors">
+                <Camera className="w-4 h-4 text-white" />
+              </button>
+            </div>
+
+            {/* User Info */}
+            <div className="text-center lg:text-left flex-1">
+              <h1 className="text-4xl font-bold mb-2">{userData.name}</h1>
+              <p className="text-white/90 text-lg mb-1">{userData.email}</p>
+              <p className="text-white/80 mb-4">Member since {userData.joinDate}</p>
+              
+              {/* Plan Badge */}
+              <div className="flex justify-center lg:justify-start items-center gap-3">
+                <Badge 
+                  variant={userData.plan === 'premium' ? 'premium' : 'free'} 
+                  size="large"
+                  className="px-4 py-2 text-base font-semibold"
+                >
+                  {userData.plan === 'premium' ? (
+                    <>
+                      <Crown className="w-4 h-4 mr-2" />
+                      Premium Plan
+                    </>
+                  ) : (
+                    'Free Plan'
+                  )}
+                </Badge>
+                {userData.plan === 'free' && (
+                  <Button 
+                    onClick={() => setShowUpgradeModal(true)}
+                    className="bg-accent-golden hover:bg-accent-golden/80 text-text-dark font-semibold px-6 py-2 rounded-xl"
+                  >
+                    <Zap className="w-4 h-4 mr-2" />
+                    Upgrade to Premium
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 gap-4 lg:gap-6">
+              <div className="text-center">
+                <div className="text-2xl font-bold">{userData.stats.streakDays}</div>
+                <div className="text-white/80 text-sm">Day Streak</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold">{userData.stats.mealsLogged}</div>
+                <div className="text-white/80 text-sm">Meals Logged</div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="mb-8">
-          <div className="border-b border-gray-200">
-            <nav className="-mb-px flex space-x-8 overflow-x-auto">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                    activeTab === tab.id
-                      ? 'border-sage-500 text-sage-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  <tab.icon className="h-4 w-4" />
-                  {tab.label}
-                  {tab.id === 'subscription' && userData.plan === 'free' && (
-                    <Crown className="h-3 w-3 text-amber-500" />
-                  )}
-                </button>
-              ))}
-            </nav>
-          </div>
+        {/* Navigation Tabs */}
+        <div className="flex flex-wrap gap-2 mb-8">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`
+                flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-200
+                ${activeTab === tab.id 
+                  ? 'bg-gradient-to-r from-primary-teal to-accent-coral text-white shadow-lg transform scale-105' 
+                  : 'bg-white text-text-charcoal hover:bg-primary-sage/10 hover:text-primary-teal border border-gray-200'
+                }
+              `}
+            >
+              <tab.icon className="w-5 h-5" />
+              {tab.label}
+            </button>
+          ))}
         </div>
 
         {/* Tab Content */}
